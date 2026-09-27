@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/link-card-grid",
+	"title": "Link-Karten-Raster",
+	"category": "elfzwo-blocks",
+	"icon": "screenoptions",
+	"textdomain": "11zwo",
+	"attributes": {
+		"cards": {
+			"type": "array",
+			"default": [
+				{ "tag": "", "title": "", "body": "", "url": "", "icon": "flame", "accent": "bg-wood/35" },
+				{ "tag": "", "title": "", "body": "", "url": "", "icon": "flame", "accent": "bg-wood/35" },
+				{ "tag": "", "title": "", "body": "", "url": "", "icon": "flame", "accent": "bg-wood/35" }
+			],
+			"items": {
+				"type": "object",
+				"properties": {
+					"tag": { "type": "string" },
+					"title": { "type": "string" },
+					"body": { "type": "string" },
+					"url": { "type": "string" },
+					"icon": { "type": "string" },
+					"accent": { "type": "string" }
+				}
+			}
+		}
+	},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

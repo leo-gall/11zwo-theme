@@ -1,0 +1,332 @@
+:root {
+  --radius: 1.25rem;
+  --background: oklch(98.531% 0.005 260);
+  --foreground: oklch(0.22 0.035 265);
+  --card: oklch(0.99 0.006 260);
+  --card-foreground: oklch(0.22 0.035 265);
+  --primary: #8c0000;
+  --primary-foreground: oklch(0.98 0.01 85);
+  --secondary: oklch(0.93 0.015 260);
+  --secondary-foreground: oklch(0.22 0.035 265);
+  --muted: oklch(0.94 0.012 260);
+  --muted-foreground: oklch(0.48 0.03 265);
+  --border: oklch(0.88 0.015 260);
+
+  --ember: #c1121c;
+  --ember-foreground: oklch(0.98 0.01 85);
+  --signal: #8c0000;
+  --signal-foreground: oklch(0.98 0.01 85);
+  --wood: #7f1d1d;
+  --wood-foreground: oklch(0.98 0.01 85);
+  --cream: oklch(0.96 0.01 260);
+  --ink: #1a1a1a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  overflow-x: clip;
+}
+
+h1, h2, h3, h4 {
+  font-family: "Nunito", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-hand {
+  font-family: "Caveat", cursive;
+}
+
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@keyframes ff-wobble {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+.wobble {
+  animation: ff-wobble 6s ease-in-out infinite;
+}
+
+.nav-dropdown-panel {
+  transform-origin: top;
+  transform: translateY(-4px) scale(.95);
+  opacity: 0;
+  pointer-events: none;
+  transition: all .2s ease-out;
+}
+
+.nav-dropdown.is-open .nav-dropdown-panel {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav-dropdown.is-open .nav-chevron {
+  transform: rotate(180deg);
+}
+
+#menu-icon-open, #menu-icon-close {
+  grid-area: 1 / 1;
+}
+
+/* Long-form content (the_content) — Tailwind's CDN build ships without the
+   Typography plugin, so ".prose" needs its own rules here. */
+.prose {
+  color: var(--foreground);
+  line-height: 1.75;
+}
+
+.prose > * + * {
+  margin-top: 1.25em;
+}
+
+.prose h2, .prose h3, .prose h4 {
+  font-family: "Nunito", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  color: var(--foreground);
+}
+
+.prose h2 {
+  margin-top: 2em;
+  font-size: 1.5em;
+  line-height: 1.3;
+}
+
+.prose h3 {
+  margin-top: 1.6em;
+  font-size: 1.15em;
+  line-height: 1.35;
+}
+
+.prose p {
+  color: var(--muted-foreground);
+}
+
+.prose ul, .prose ol {
+  padding-left: 1.3em;
+  color: var(--muted-foreground);
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li + li {
+  margin-top: 0.4em;
+}
+
+.prose li::marker {
+  color: var(--signal);
+}
+
+.prose a {
+  color: var(--signal);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  color: var(--wood);
+}
+
+.prose strong {
+  color: var(--foreground);
+  font-weight: 700;
+}
+
+.prose hr {
+  margin: 2em 0;
+  border-color: var(--border);
+}
+
+/* Checklist im Feature-Panel (Tailwind-Arbitrary-Selektoren mit "&" werden
+   von WordPresss the_content-Filtern (convert_chars) kaputt escaped, daher
+   feste Klassen statt [&_li]:... im Block-Markup). */
+.elfzwo-feature-list ul {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .elfzwo-feature-list ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.elfzwo-feature-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  background-color: color-mix(in oklch, var(--primary) 10%, transparent);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.elfzwo-feature-list li::before {
+  content: "";
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background-color: var(--primary);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center / 60%;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center / 60%;
+}
+
+/* Cream-Box (z. B. "Für Eltern"-Kurzinfo auf der Jugendfeuerwehr-Seite) */
+.elfzwo-cream-box {
+  border-radius: 1.5rem;
+  background-color: var(--cream);
+  padding: 1.5rem;
+}
+
+.elfzwo-cream-box .wp-block-heading {
+  font-family: "Caveat", cursive;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--signal);
+}
+
+.elfzwo-cream-box ul {
+  margin-top: 0.75rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+.elfzwo-cream-box li {
+  margin-top: 0.5rem;
+}
+
+.elfzwo-cream-box li::before {
+  content: "• ";
+}
+
+.elfzwo-cream-box .elfzwo-cream-box-contact {
+  margin-top: 1rem;
+}
+
+/* Termin-Beschreibungstext (native post_content innerhalb der Termin-Karte) */
+.elfzwo-termin-content a {
+  text-decoration: underline;
+}
+
+.elfzwo-termin-content h2 {
+  font-family: "Nunito", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.25rem;
+}
+
+.elfzwo-termin-content ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+}
+
+/* FAQ-Akkordeon: Höhe wird per Web-Animations-API (assets/js/faq-accordion.js) animiert */
+.elfzwo-faq-item summary {
+  list-style: none;
+}
+
+.elfzwo-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.elfzwo-faq-item .elfzwo-faq-chevron {
+  transition: transform 0.25s ease;
+}
+
+.elfzwo-faq-item[open] .elfzwo-faq-chevron {
+  transform: rotate(180deg);
+}
+
+/* Beitrags-Bildercarousel: per JS (Pointer Events) gezogen, Track per transform verschoben */
+.elfzwo-carousel-track {
+  cursor: grab;
+  will-change: transform;
+}
+
+.elfzwo-carousel-track.elfzwo-carousel-dragging {
+  cursor: grabbing;
+}
+
+/* !important nötig: die Tailwind-CDN-Utility "bg-white/40" auf demselben Element
+   hat dieselbe Selektor-Spezifität und lädt zeitlich später, würde die Aktiv-Farbe
+   also sonst wieder überschreiben — dadurch war kein Punkt als aktiv erkennbar. */
+.elfzwo-carousel-dot-active {
+  background-color: #fff !important;
+}
+
+/* Sticky Header: unter statt hinter der fixierten WP-Adminleiste einordnen (nur für eingeloggte Redakteure sichtbar) */
+body.admin-bar header.sticky {
+  top: 32px;
+}
+
+@media (max-width: 782px) {
+  body.admin-bar header.sticky {
+    top: 46px;
+  }
+}
+
+/* Einsatzchronik-Jahres-Chips: horizontal scrollbar, aber ohne sichtbaren Scrollbalken (YouTube-Filterleisten-Look) */
+.elfzwo-einsatzliste-years {
+  scrollbar-width: none;
+}
+
+.elfzwo-einsatzliste-years::-webkit-scrollbar {
+  display: none;
+}
+
+/* Native, Compositor-gestützte Scroll-Animation NUR während assets/js/einsatzliste.js
+   sie per Klasse gezielt anschaltet (Jahreswechsel/Edge-Klick) -- ohne diese
+   Beschränkung würde JEDE Scroll-Änderung animiert, auch die Positions-
+   Wiederherstellung bei reiner Pagination, wo gar keine Bewegung sichtbar sein soll. */
+.elfzwo-einsatzliste-years.is-animating {
+  scroll-behavior: smooth;
+}
+
+/* Unsichtbare Klick-Zonen an den Rändern der Jahres-Chip-Leiste: kein Pfeil-Icon,
+   kein optischer Verlauf (der sah über den abgerundeten Pillen unsauber/
+   verwaschen aus) -- rein funktionale Hitbox, ein Klick scrollt die Leiste
+   per JS smooth weiter (assets/js/einsatzliste.js). Per JS an/aus geschaltet,
+   je nachdem ob in die jeweilige Richtung noch was kommt. */
+.elfzwo-einsatzliste-years-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  z-index: 2;
+  cursor: pointer;
+  pointer-events: none;
+}
+
+.elfzwo-einsatzliste-years-edge.is-active {
+  pointer-events: auto;
+}
+
+.elfzwo-einsatzliste-years-edge--left {
+  left: 0;
+}
+
+.elfzwo-einsatzliste-years-edge--right {
+  right: 0;
+}

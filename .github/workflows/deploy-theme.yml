@@ -1,0 +1,74 @@
+# Deployt das Theme "11zwo" per rsync/SSH auf den Webserver.
+#
+# Benoetigte Secrets (Settings -> Environments -> production):
+#   DEPLOY_SSH_HOST         Hostname des Servers, z. B. ssh.example.de
+#   DEPLOY_SSH_USER         SSH-Benutzer
+#   DEPLOY_SSH_KEY          Privater SSH-Key (der Public Key liegt in ~/.ssh/authorized_keys auf dem Server)
+#   DEPLOY_SSH_KNOWN_HOSTS  Ausgabe von `ssh-keyscan -p <port> <host>`
+#   DEPLOY_PATH             Absoluter Zielpfad des Themes, z. B. /var/www/html/wp-content/themes/11zwo
+# Optionale Variable (Settings -> Variables):
+#   DEPLOY_SSH_PORT         SSH-Port, Standard 22
+
+name: Deploy Theme
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-theme
+  cancel-in-progress: false
+
+env:
+  THEME_DIR: .
+
+jobs:
+  lint:
+    name: PHP-Syntax pruefen
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: none
+
+      - name: php -l
+        run: find "$THEME_DIR" -name '*.php' -print0 | xargs -0 -n1 -P4 php -l > /dev/null
+
+  deploy:
+    name: Auf Server deployen
+    needs: lint
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: SSH einrichten
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Theme per rsync hochladen
+        env:
+          HOST: ${{ secrets.DEPLOY_SSH_HOST }}
+          USER: ${{ secrets.DEPLOY_SSH_USER }}
+          PORT: ${{ vars.DEPLOY_SSH_PORT || '22' }}
+          TARGET: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          rsync -rlz --checksum --delete --delay-updates --itemize-changes \
+            --exclude='.DS_Store' \
+            --exclude='.git*' \
+            -e "ssh -p $PORT -i ~/.ssh/deploy_key -o StrictHostKeyChecking=yes" \
+            "$THEME_DIR/" "$USER@$HOST:${TARGET%/}/"
+
+      - name: SSH-Key entfernen
+        if: always()
+        run: rm -f ~/.ssh/deploy_key

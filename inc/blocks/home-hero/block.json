@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/home-hero",
+	"title": "Startseiten-Hero",
+	"category": "elfzwo-blocks",
+	"icon": "cover-image",
+	"textdomain": "11zwo",
+	"attributes": {
+		"title1": { "type": "string", "default": "" },
+		"title2": { "type": "string", "default": "" },
+		"subtitle": { "type": "string", "default": "" },
+		"description": { "type": "string", "default": "" },
+		"ctaPrimaryText": { "type": "string", "default": "" },
+		"ctaSecondaryText": { "type": "string", "default": "" },
+		"ctaSecondaryUrl": { "type": "string", "default": "" },
+		"emergencyBadge": { "type": "string", "default": "" },
+		"image1Id": { "type": "number", "default": 0 },
+		"image1Url": { "type": "string", "default": "" },
+		"image2Id": { "type": "number", "default": 0 },
+		"image2Url": { "type": "string", "default": "" },
+		"image3Id": { "type": "number", "default": 0 },
+		"image3Url": { "type": "string", "default": "" }
+	},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

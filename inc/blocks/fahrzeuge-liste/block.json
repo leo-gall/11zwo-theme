@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/fahrzeuge-liste",
+	"title": "Fahrzeuge-Liste (live)",
+	"category": "elfzwo-blocks",
+	"icon": "car",
+	"textdomain": "11zwo",
+	"attributes": {},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

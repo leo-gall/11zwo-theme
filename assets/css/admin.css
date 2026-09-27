@@ -1,0 +1,118 @@
+.elfzwo-combobox {
+	position: relative;
+	max-width: 520px;
+}
+
+.elfzwo-combobox-results {
+	display: none;
+	position: absolute;
+	z-index: 10;
+	top: 100%;
+	left: 0;
+	right: 0;
+	max-height: 320px;
+	overflow-y: auto;
+	margin-top: 2px;
+	background: #fff;
+	border: 1px solid #8c8f94;
+	border-radius: 4px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.elfzwo-combobox-group {
+	padding: 6px 10px 2px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #6b7280;
+	background: #f6f7f7;
+}
+
+.elfzwo-combobox-option {
+	padding: 6px 12px;
+	cursor: pointer;
+	font-size: 13px;
+}
+
+.elfzwo-combobox-option:hover {
+	background: #2271b1;
+	color: #fff;
+}
+
+.elfzwo-combobox-empty {
+	padding: 8px 12px;
+	font-size: 12px;
+	color: #6b7280;
+	font-style: italic;
+}
+
+.elfzwo-checkbox-list-item {
+	display: block;
+	margin-bottom: 6px;
+}
+
+.elfzwo-repeater-template {
+	display: none;
+}
+
+.elfzwo-repeater-row {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	margin-bottom: 8px;
+}
+
+.elfzwo-repeater-row input {
+	flex: 1 1 auto;
+}
+
+.elfzwo-repeater-add {
+	margin-top: 4px;
+}
+
+.elfzwo-partner-combobox {
+	position: relative;
+	flex: 1 1 auto;
+}
+
+.elfzwo-partner-combobox .elfzwo-partner-combobox-input {
+	width: 100%;
+}
+
+.elfzwo-gallery-preview {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 8px;
+}
+
+.elfzwo-gallery-item {
+	position: relative;
+	width: 80px;
+	height: 80px;
+}
+
+.elfzwo-gallery-item img {
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	border-radius: 4px;
+	border: 1px solid #dcdcde;
+}
+
+.elfzwo-gallery-item-remove {
+	position: absolute;
+	top: -6px;
+	right: -6px;
+	width: 20px;
+	height: 20px;
+	line-height: 18px;
+	border-radius: 50%;
+	border: 1px solid #dcdcde;
+	background: #fff;
+	color: #d63638;
+	font-size: 14px;
+	cursor: pointer;
+	padding: 0;
+}

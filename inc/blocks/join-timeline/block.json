@@ -1,0 +1,34 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/join-timeline",
+	"title": "Mitmachen-Timeline",
+	"category": "elfzwo-blocks",
+	"icon": "clock",
+	"textdomain": "11zwo",
+	"attributes": {
+		"columns": { "type": "number", "default": 4 },
+		"steps": {
+			"type": "array",
+			"default": [
+				{ "number": "01", "title": "", "body": "", "buttonText": "", "buttonUrl": "" },
+				{ "number": "02", "title": "", "body": "", "buttonText": "", "buttonUrl": "" },
+				{ "number": "03", "title": "", "body": "", "buttonText": "", "buttonUrl": "" },
+				{ "number": "04", "title": "", "body": "", "buttonText": "", "buttonUrl": "" }
+			],
+			"items": {
+				"type": "object",
+				"properties": {
+					"number": { "type": "string" },
+					"title": { "type": "string" },
+					"body": { "type": "string" },
+					"buttonText": { "type": "string" },
+					"buttonUrl": { "type": "string" }
+				}
+			}
+		}
+	},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

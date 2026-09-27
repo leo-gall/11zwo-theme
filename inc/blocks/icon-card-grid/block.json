@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/icon-card-grid",
+	"title": "Icon-Karten-Raster",
+	"category": "elfzwo-blocks",
+	"icon": "grid-view",
+	"textdomain": "11zwo",
+	"attributes": {
+		"columns": { "type": "number", "default": 4 },
+		"cards": {
+			"type": "array",
+			"default": [
+				{ "icon": "flame", "title": "", "body": "" },
+				{ "icon": "flame", "title": "", "body": "" },
+				{ "icon": "flame", "title": "", "body": "" },
+				{ "icon": "flame", "title": "", "body": "" }
+			],
+			"items": {
+				"type": "object",
+				"properties": {
+					"icon": { "type": "string" },
+					"title": { "type": "string" },
+					"body": { "type": "string" }
+				}
+			}
+		}
+	},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

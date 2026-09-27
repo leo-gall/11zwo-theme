@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/info-card-grid",
+	"title": "Info-Karten-Raster",
+	"category": "elfzwo-blocks",
+	"icon": "id",
+	"textdomain": "11zwo",
+	"attributes": {
+		"cards": {
+			"type": "array",
+			"default": [
+				{ "icon": "shield-check", "title": "", "body": "" },
+				{ "icon": "shield-check", "title": "", "body": "" }
+			],
+			"items": {
+				"type": "object",
+				"properties": {
+					"icon": { "type": "string" },
+					"title": { "type": "string" },
+					"body": { "type": "string" }
+				}
+			}
+		}
+	},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

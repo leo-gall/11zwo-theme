@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/aktuelle-einsaetze",
+	"title": "Aktuelle Einsätze (Featured + Chronik-Tabelle, live)",
+	"category": "elfzwo-blocks",
+	"icon": "sos",
+	"textdomain": "11zwo",
+	"attributes": {},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

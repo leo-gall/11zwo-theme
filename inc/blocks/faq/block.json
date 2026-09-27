@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/faq",
+	"title": "FAQ-Liste (aufklappbare Fragen)",
+	"category": "elfzwo-blocks",
+	"icon": "editor-help",
+	"textdomain": "11zwo",
+	"attributes": {
+		"items": {
+			"type": "array",
+			"default": [
+				{ "question": "", "answer": "" },
+				{ "question": "", "answer": "" }
+			],
+			"items": {
+				"type": "object",
+				"properties": {
+					"question": { "type": "string" },
+					"answer": { "type": "string" }
+				}
+			}
+		}
+	},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

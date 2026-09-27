@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/related-person-card",
+	"title": "Ansprechpartner-Karte",
+	"category": "elfzwo-blocks",
+	"icon": "id-alt",
+	"textdomain": "11zwo",
+	"attributes": {
+		"name": { "type": "string", "default": "" },
+		"rolle": { "type": "string", "default": "" },
+		"telefon": { "type": "string", "default": "" },
+		"email": { "type": "string", "default": "" },
+		"showEmail": { "type": "boolean", "default": false }
+	},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

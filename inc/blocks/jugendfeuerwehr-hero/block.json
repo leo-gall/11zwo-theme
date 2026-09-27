@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/jugendfeuerwehr-hero",
+	"title": "Jugendfeuerwehr-Hero",
+	"category": "elfzwo-blocks",
+	"icon": "cover-image",
+	"textdomain": "11zwo",
+	"attributes": {
+		"badge": { "type": "string", "default": "" },
+		"titleLine1": { "type": "string", "default": "" },
+		"titleHighlight": { "type": "string", "default": "" },
+		"titleLine2": { "type": "string", "default": "" },
+		"description": { "type": "string", "default": "" },
+		"ctaPrimary": { "type": "string", "default": "" },
+		"ctaUrl": { "type": "string", "default": "/mitmachen/" },
+		"zitat": { "type": "string", "default": "" },
+		"imageId": { "type": "number", "default": 0 },
+		"imageUrl": { "type": "string", "default": "" }
+	},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

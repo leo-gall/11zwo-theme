@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/simple-hero",
+	"title": "Seiten-Hero (einfach)",
+	"category": "elfzwo-blocks",
+	"icon": "cover-image",
+	"textdomain": "11zwo",
+	"attributes": {
+		"kicker": { "type": "string", "default": "" },
+		"title": { "type": "string", "default": "" },
+		"description": { "type": "string", "default": "" },
+		"imageId": { "type": "number", "default": 0 },
+		"imageUrl": { "type": "string", "default": "" },
+		"ctaPrimaryText": { "type": "string", "default": "" },
+		"ctaPrimaryUrl": { "type": "string", "default": "" },
+		"ctaSecondaryText": { "type": "string", "default": "" },
+		"ctaSecondaryUrl": { "type": "string", "default": "" },
+		"width": { "type": "string", "default": "3xl" }
+	},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

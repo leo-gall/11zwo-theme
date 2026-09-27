@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<?php wp_head(); ?>
+</head>
+<body <?php body_class( 'min-h-screen overflow-x-clip' ); ?>>
+<?php wp_body_open(); ?>
+
+<?php
+if ( ! function_exists( 'elfzwo_render_nav_group' ) ) {
+	function elfzwo_render_nav_group( $nodes, $justify ) {
+		$pill_class = 'rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition-all duration-200 hover:bg-secondary hover:text-foreground';
+		?>
+		<nav class="hidden items-center gap-1 lg:flex <?php echo esc_attr( $justify ); ?>">
+			<?php foreach ( $nodes as $node ) :
+				$item = $node['item'];
+				if ( $node['children'] ) :
+					?>
+					<div class="nav-dropdown relative">
+						<button type="button" class="nav-dropdown-trigger <?php echo esc_attr( $pill_class ); ?> flex items-center gap-1 cursor-pointer" aria-expanded="false" aria-haspopup="menu">
+							<?php echo esc_html( $item->title ); ?>
+							<?php echo elfzwo_icon( 'chevron-down', 'nav-chevron h-3.5 w-3.5 transition-transform duration-200' ); ?>
+						</button>
+						<div role="menu" class="nav-dropdown-panel absolute left-0 top-full z-50 mt-2 w-64 rounded-2xl border border-border bg-card p-2 shadow-lg">
+							<?php foreach ( $node['children'] as $child ) : ?>
+								<a href="<?php echo esc_url( $child->url ); ?>" role="menuitem" class="block rounded-xl px-3 py-2.5 text-sm text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"><?php echo esc_html( $child->title ); ?></a>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				<?php else : ?>
+					<a href="<?php echo esc_url( $item->url ); ?>" class="<?php echo esc_attr( $pill_class ); ?>"><?php echo esc_html( $item->title ); ?></a>
+				<?php
+				endif;
+			endforeach;
+			?>
+		</nav>
+		<?php
+	}
+}
+
+$elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
+?>
+
+<header class="sticky top-0 z-40 border-b border-border/60 bg-background">
+	<div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-2.5 md:px-8 lg:grid lg:grid-cols-[auto_1fr_auto]">
+		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="group shrink-0" aria-label="Freiwillige Feuerwehr Greifenberg — Startseite">
+			<img
+				src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>"
+				alt="Freiwillige Feuerwehr Greifenberg"
+				class="h-14 w-auto transition-transform duration-200 group-hover:scale-105 md:h-16"
+			>
+		</a>
+
+		<?php elfzwo_render_nav_group( $elfzwo_nav_items, 'justify-center' ); ?>
+
+		<div class="flex items-center gap-2 lg:justify-self-end">
+			<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="hidden items-center gap-2 rounded-full bg-ember px-5 py-2.5 text-sm font-semibold text-ember-foreground transition-colors hover:bg-ember/90 sm:inline-flex">
+				Mach mit! <span aria-hidden="true">→</span>
+			</a>
+			<button id="mobile-toggle" type="button" class="relative grid h-11 w-11 place-items-center rounded-lg border border-border bg-card transition-colors hover:bg-secondary lg:hidden" aria-label="Menü" aria-expanded="false">
+				<span id="menu-icon-open"><?php echo elfzwo_icon( 'menu', 'h-5 w-5' ); ?></span>
+				<span id="menu-icon-close" class="hidden"><?php echo elfzwo_icon( 'x', 'h-5 w-5' ); ?></span>
+			</button>
+		</div>
+	</div>
+
+	<div id="mobile-menu" class="hidden border-t border-border/60 bg-background lg:hidden">
+		<div class="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-4">
+			<?php foreach ( $elfzwo_nav_items as $elfzwo_mnode ) :
+				$elfzwo_mitem = $elfzwo_mnode['item'];
+				if ( $elfzwo_mnode['children'] ) :
+					?>
+					<div>
+						<span class="block px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground"><?php echo esc_html( $elfzwo_mitem->title ); ?></span>
+						<div class="ml-2 flex flex-col gap-0.5 border-l border-border pl-3">
+							<?php foreach ( $elfzwo_mnode['children'] as $elfzwo_mchild ) : ?>
+								<a href="<?php echo esc_url( $elfzwo_mchild->url ); ?>" class="rounded-lg px-3 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-foreground"><?php echo esc_html( $elfzwo_mchild->title ); ?></a>
+							<?php endforeach; ?>
+						</div>
+					</div>
+				<?php else : ?>
+					<a href="<?php echo esc_url( $elfzwo_mitem->url ); ?>" class="rounded-xl px-4 py-3 text-base font-medium text-foreground/80 hover:bg-secondary"><?php echo esc_html( $elfzwo_mitem->title ); ?></a>
+				<?php
+				endif;
+			endforeach;
+			?>
+			<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-ember px-5 py-3 text-sm font-semibold text-ember-foreground">Mach mit! →</a>
+		</div>
+	</div>
+</header>
