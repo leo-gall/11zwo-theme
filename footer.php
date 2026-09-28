@@ -50,7 +50,7 @@ for ( $i = 1; $i <= 3; $i++ ) {
 			<p class="mt-6 font-hand text-3xl text-signal"><?php echo esc_html( elfzwo_option( 'elfzwo_footer_claim', 'Nicht ohne dich!' ) ); ?></p>
 		</div>
 
-		<!-- Über uns + Einsatz -->
+		<!-- Über uns + Sonstige -->
 		<div>
 			<p class="text-xs font-bold uppercase tracking-[0.18em] text-ember">Über uns</p>
 			<ul class="mt-5 space-y-2.5 text-sm">
@@ -68,13 +68,13 @@ for ( $i = 1; $i <= 3; $i++ ) {
 				?>
 			</ul>
 
-			<p class="mt-8 text-xs font-bold uppercase tracking-[0.18em] text-ember">Einsatz</p>
+			<p class="mt-8 text-xs font-bold uppercase tracking-[0.18em] text-ember">Sonstige</p>
 			<ul class="mt-5 space-y-2.5 text-sm">
 				<?php
-				if ( has_nav_menu( 'footer-einsatz' ) ) {
+				if ( has_nav_menu( 'footer-sonstige' ) ) {
 					wp_nav_menu(
 						array(
-							'theme_location' => 'footer-einsatz',
+							'theme_location' => 'footer-sonstige',
 							'container'      => false,
 							'items_wrap'     => '%3$s',
 							'walker'         => new ELFZWO_Footer_Nav_Walker(),

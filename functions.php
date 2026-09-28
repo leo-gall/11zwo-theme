@@ -17,11 +17,34 @@ function elfzwo_setup() {
 		array(
 			'primary'           => __( 'Hauptmenü', '11zwo' ),
 			'footer-ueber-uns'  => __( 'Footer: Über uns', '11zwo' ),
-			'footer-einsatz'    => __( 'Footer: Einsatz', '11zwo' ),
+			'footer-sonstige'   => __( 'Footer: Sonstige', '11zwo' ),
 		)
 	);
 }
 add_action( 'after_setup_theme', 'elfzwo_setup' );
+
+/**
+ * Menü-Ort "footer-einsatz" wurde in "footer-sonstige" umbenannt: bestehende
+ * Zuordnung (und den Namen des zugeordneten Menüs) einmalig übernehmen.
+ */
+function elfzwo_migrate_footer_sonstige_location() {
+	$locations = get_theme_mod( 'nav_menu_locations', array() );
+	if ( ! isset( $locations['footer-einsatz'] ) ) {
+		return;
+	}
+	$menu_id = (int) $locations['footer-einsatz'];
+	if ( empty( $locations['footer-sonstige'] ) ) {
+		$locations['footer-sonstige'] = $menu_id;
+	}
+	unset( $locations['footer-einsatz'] );
+	set_theme_mod( 'nav_menu_locations', $locations );
+
+	$menu = wp_get_nav_menu_object( $menu_id );
+	if ( $menu && 'Footer: Einsatz' === $menu->name ) {
+		wp_update_nav_menu_object( $menu_id, array( 'menu-name' => 'Footer: Sonstige' ) );
+	}
+}
+add_action( 'after_setup_theme', 'elfzwo_migrate_footer_sonstige_location', 20 );
 
 function elfzwo_enqueue_assets() {
 	// Tailwind Play CDN — kein Build-Schritt im Theme vorhanden, siehe README-Hinweis im Repo.
