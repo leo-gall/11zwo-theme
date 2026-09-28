@@ -1,141 +1,202 @@
 <?php
 /**
- * Settings API: sitweite, nicht WordPress-native Angaben (Gerätehaus/
- * Kontakt, NINA-Warnungs-PLZ), gebündelt auf einer Einstellungen-Seite.
+ * Sitweite, nicht WordPress-native Angaben: Die Footer-Inhalte (Gerätehaus/
+ * Kontakt, Ansprechpartner) werden direkt unter "Design → Menüs" gepflegt.
+ * Die Mach-mit-Einstellungen liegen im Block "Mach-mit-Formular".
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-function elfzwo_register_settings_page() {
-	add_options_page(
-		'Feuerwehr Greifenberg',
-		'Feuerwehr Greifenberg',
-		'manage_options',
-		'elfzwo-einstellungen',
-		'elfzwo_render_settings_page'
-	);
-}
-add_action( 'admin_menu', 'elfzwo_register_settings_page' );
-
-function elfzwo_settings_sections() {
+/** Unterfelder einer Footer-Ansprechperson (Repeater-Zeile). */
+function elfzwo_footer_person_subfields() {
 	return array(
-		'kontakt' => array(
-			'title'  => 'Gerätehaus & Kontakt',
-			'intro'  => 'Diese Angaben erscheinen im Footer auf allen Seiten.',
-			'fields' => array(
-				'elfzwo_geraetehaus_strasse'  => 'Straße & Hausnummer',
-				'elfzwo_geraetehaus_plz_ort'  => 'PLZ & Ort',
-				'elfzwo_geraetehaus_zeiten'   => 'Öffnungszeiten (Zeile 1)',
-				'elfzwo_geraetehaus_zeiten_2' => 'Öffnungszeiten (Zeile 2, klein)',
-				'elfzwo_kontakt_email'        => 'Allgemeine Kontakt-E-Mail',
-				'elfzwo_footer_claim'         => 'Footer-Slogan (handschriftlich)',
-				'elfzwo_footer_text'          => 'Footer-Beschreibungstext',
-				'elfzwo_gegruendet'           => 'Gegründet (Jahr, für "Seit …")',
-			),
-		),
-		'nina'    => array(
-			'title'  => 'Gefahrenwarnungen (NINA)',
-			'intro'  => 'Postleitzahl, für die auf der Seite „Einsätze & Aktuelles" echte Warnmeldungen der NINA-Warn-App des Bundes angezeigt werden.',
-			'fields' => array(
-				'elfzwo_nina_plz' => 'Postleitzahl',
-			),
-		),
-		'footer_ansprechpartner' => array(
-			'title'  => 'Footer-Ansprechpartner',
-			'intro'  => 'Diese bis zu 3 Personen erscheinen unten im Footer auf jeder Seite. Leer lassen, um eine Person auszublenden.',
-			'fields' => array(
-				'elfzwo_footer_person1_name'    => 'Person 1 — Name',
-				'elfzwo_footer_person1_rolle'   => 'Person 1 — Rolle',
-				'elfzwo_footer_person1_telefon' => 'Person 1 — Telefon',
-				'elfzwo_footer_person1_email'   => 'Person 1 — E-Mail',
-				'elfzwo_footer_person2_name'    => 'Person 2 — Name',
-				'elfzwo_footer_person2_rolle'   => 'Person 2 — Rolle',
-				'elfzwo_footer_person2_telefon' => 'Person 2 — Telefon',
-				'elfzwo_footer_person2_email'   => 'Person 2 — E-Mail',
-				'elfzwo_footer_person3_name'    => 'Person 3 — Name',
-				'elfzwo_footer_person3_rolle'   => 'Person 3 — Rolle',
-				'elfzwo_footer_person3_telefon' => 'Person 3 — Telefon',
-				'elfzwo_footer_person3_email'   => 'Person 3 — E-Mail',
-			),
-		),
-		'mitmachen' => array(
-			'title'  => 'Mach-mit-Anfragen',
-			'intro'  => 'Wird jemand über das „Mach mit"-Formular auf der Website aktiv, geht direkt eine E-Mail an die untenstehenden Empfänger raus — es wird nichts mehr im Backend gespeichert.',
-			'fields' => array(
-				'elfzwo_mitmachen_empfaenger' => 'Empfänger (eine E-Mail-Adresse pro Zeile)',
-				'elfzwo_mitmachen_betreff'    => 'Betreff der E-Mail',
-				'elfzwo_mitmachen_template'   => 'Text der E-Mail',
-			),
-		),
+		'name'    => array( 'placeholder' => 'Name' ),
+		'rolle'   => array( 'placeholder' => 'Rolle' ),
+		'telefon' => array( 'placeholder' => 'Telefon' ),
+		'email'   => array( 'placeholder' => 'E-Mail' ),
 	);
 }
 
-function elfzwo_settings_fields() {
-	$fields = array();
-	foreach ( elfzwo_settings_sections() as $section ) {
-		$fields = array_merge( $fields, $section['fields'] );
-	}
-	return $fields;
+/** Footer-Felder "Gerätehaus & Kontakt" (Design → Menüs). */
+function elfzwo_footer_kontakt_fields() {
+	return array(
+		'elfzwo_geraetehaus_strasse'  => 'Straße & Hausnummer',
+		'elfzwo_geraetehaus_plz_ort'  => 'PLZ & Ort',
+		'elfzwo_geraetehaus_zeiten'   => 'Öffnungszeiten (Zeile 1)',
+		'elfzwo_geraetehaus_zeiten_2' => 'Öffnungszeiten (Zeile 2, klein)',
+		'elfzwo_kontakt_email'        => 'Allgemeine Kontakt-E-Mail',
+		'elfzwo_footer_claim'         => 'Footer-Slogan (handschriftlich)',
+		'elfzwo_footer_text'          => 'Footer-Beschreibungstext',
+		'elfzwo_gegruendet'           => 'Gegründet (Jahr, für "Seit …")',
+	);
 }
 
-function elfzwo_register_settings() {
-	foreach ( elfzwo_settings_fields() as $key => $label ) {
-		register_setting( 'elfzwo_einstellungen_group', $key, array( 'sanitize_callback' => 'sanitize_text_field' ) );
-	}
-	register_setting( 'elfzwo_einstellungen_group', 'elfzwo_footer_text', array( 'sanitize_callback' => 'sanitize_textarea_field' ) );
-	register_setting( 'elfzwo_einstellungen_group', 'elfzwo_nina_plz', array( 'sanitize_callback' => 'elfzwo_sanitize_plz' ) );
-	register_setting( 'elfzwo_einstellungen_group', 'elfzwo_mitmachen_empfaenger', array( 'sanitize_callback' => 'sanitize_textarea_field' ) );
-	register_setting( 'elfzwo_einstellungen_group', 'elfzwo_mitmachen_template', array( 'sanitize_callback' => 'sanitize_textarea_field' ) );
-}
-add_action( 'admin_init', 'elfzwo_register_settings' );
-
-function elfzwo_sanitize_plz( $value ) {
-	$digits = preg_replace( '/\D/', '', (string) $value );
-	return substr( $digits, 0, 5 );
+function elfzwo_option_sanitizer( $key ) {
+	return 'elfzwo_footer_text' === $key ? 'sanitize_textarea_field' : 'sanitize_text_field';
 }
 
-function elfzwo_render_settings_page() {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		return;
+function elfzwo_sanitize_footer_personen( $value ) {
+	if ( ! is_array( $value ) ) {
+		return array();
 	}
+	$personen = array();
+	foreach ( $value as $row ) {
+		$person = array(
+			'name'    => sanitize_text_field( $row['name'] ?? '' ),
+			'rolle'   => sanitize_text_field( $row['rolle'] ?? '' ),
+			'telefon' => sanitize_text_field( $row['telefon'] ?? '' ),
+			'email'   => sanitize_email( $row['email'] ?? '' ),
+		);
+		if ( '' !== $person['name'] ) {
+			$personen[] = $person;
+		}
+	}
+	return $personen;
+}
+
+/**
+ * Footer-Ansprechpartner als Liste. Solange die neue Liste noch nie
+ * gespeichert wurde, werden die früheren festen Felder (Person 1–3)
+ * übernommen, damit der Footer nach dem Update nicht leer ist.
+ */
+function elfzwo_footer_personen() {
+	$personen = get_option( 'elfzwo_footer_personen', null );
+	if ( is_array( $personen ) ) {
+		return $personen;
+	}
+
+	$personen = array();
+	for ( $i = 1; $i <= 3; $i++ ) {
+		$name = elfzwo_option( "elfzwo_footer_person{$i}_name", '' );
+		if ( '' === $name ) {
+			continue;
+		}
+		$personen[] = array(
+			'name'    => $name,
+			'rolle'   => elfzwo_option( "elfzwo_footer_person{$i}_rolle", '' ),
+			'telefon' => elfzwo_option( "elfzwo_footer_person{$i}_telefon", '' ),
+			'email'   => elfzwo_option( "elfzwo_footer_person{$i}_email", '' ),
+		);
+	}
+	return $personen;
+}
+
+/**
+ * Footer-Inhalte als eigene Boxen in der linken Spalte von "Design → Menüs".
+ * Der Menü-Editor unterbindet das Absenden dieses Formulars, daher speichert
+ * jede Box per AJAX (siehe admin-footer-settings.js).
+ */
+function elfzwo_footer_menu_boxes() {
+	add_meta_box( 'elfzwo-footer-kontakt', 'Footer: Gerätehaus & Kontakt', 'elfzwo_render_footer_kontakt_box', 'nav-menus', 'side', 'low' );
+	add_meta_box( 'elfzwo-footer-personen', 'Footer: Ansprechpartner', 'elfzwo_render_footer_personen_box', 'nav-menus', 'side', 'low' );
+}
+add_action( 'load-nav-menus.php', 'elfzwo_footer_menu_boxes' );
+
+/** Footer-Boxen nie unter "Ansicht anpassen" verstecken lassen, auch nicht beim ersten Aufruf. */
+function elfzwo_footer_menu_boxes_visible( $hidden, $screen ) {
+	if ( $screen && 'nav-menus' === $screen->id ) {
+		$hidden = array_values( array_diff( (array) $hidden, array( 'elfzwo-footer-kontakt', 'elfzwo-footer-personen' ) ) );
+	}
+	return $hidden;
+}
+add_filter( 'hidden_meta_boxes', 'elfzwo_footer_menu_boxes_visible', 10, 2 );
+
+function elfzwo_footer_box_save_button( $box ) {
 	?>
-	<div class="wrap">
-		<h1>Feuerwehr Greifenberg &ndash; Einstellungen</h1>
-		<form method="post" action="options.php">
-			<?php settings_fields( 'elfzwo_einstellungen_group' ); ?>
-			<?php foreach ( elfzwo_settings_sections() as $section ) : ?>
-				<h2><?php echo esc_html( $section['title'] ); ?></h2>
-				<?php if ( ! empty( $section['intro'] ) ) : ?><p><?php echo esc_html( $section['intro'] ); ?></p><?php endif; ?>
-				<table class="form-table">
-					<?php foreach ( $section['fields'] as $key => $label ) : ?>
-						<tr>
-							<th style="width:280px;text-align:left;"><label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label></th>
-							<td>
-								<?php if ( in_array( $key, array( 'elfzwo_footer_text', 'elfzwo_mitmachen_empfaenger', 'elfzwo_mitmachen_template' ), true ) ) : ?>
-									<textarea id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>" rows="<?php echo 'elfzwo_footer_text' === $key ? '3' : '4'; ?>" class="large-text"><?php echo esc_textarea( get_option( $key ) ); ?></textarea>
-									<?php if ( 'elfzwo_mitmachen_template' === $key ) : ?>
-										<p class="description">Platzhalter: <code>{name}</code>, <code>{kontakt}</code>, <code>{interesse}</code></p>
-									<?php endif; ?>
-								<?php elseif ( 'elfzwo_nina_plz' === $key ) : ?>
-									<input type="text" id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( get_option( $key ) ); ?>" class="regular-text" pattern="\d{5}" maxlength="5" placeholder="86926" />
-								<?php else : ?>
-									<input type="text" id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( get_option( $key ) ); ?>" class="regular-text" />
-									<?php if ( 'elfzwo_mitmachen_betreff' === $key ) : ?>
-										<p class="description">Platzhalter: <code>{name}</code></p>
-									<?php endif; ?>
-								<?php endif; ?>
-							</td>
-						</tr>
-					<?php endforeach; ?>
-				</table>
-			<?php endforeach; ?>
-			<?php submit_button(); ?>
-		</form>
+	<p class="button-controls wp-clearfix">
+		<span class="add-to-menu">
+			<span class="elfzwo-footer-status" aria-live="polite"></span>
+			<span class="spinner"></span>
+			<button type="button" class="button elfzwo-footer-save" data-box="<?php echo esc_attr( $box ); ?>">Speichern</button>
+		</span>
+	</p>
+	<?php
+}
+
+function elfzwo_render_footer_kontakt_box() {
+	?>
+	<div class="elfzwo-footer-box">
+		<p class="description">Diese Angaben erscheinen im Footer auf allen Seiten.</p>
+		<?php foreach ( elfzwo_footer_kontakt_fields() as $key => $label ) : ?>
+			<p>
+				<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $label ); ?></label>
+				<?php if ( 'elfzwo_footer_text' === $key ) : ?>
+					<textarea id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>" rows="4" class="widefat"><?php echo esc_textarea( get_option( $key ) ); ?></textarea>
+				<?php else : ?>
+					<input type="text" id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( get_option( $key ) ); ?>" class="widefat" />
+				<?php endif; ?>
+			</p>
+		<?php endforeach; ?>
+		<?php elfzwo_footer_box_save_button( 'kontakt' ); ?>
 	</div>
 	<?php
 }
+
+function elfzwo_render_footer_personen_box() {
+	$key       = 'elfzwo_footer_personen';
+	$subfields = elfzwo_footer_person_subfields();
+	?>
+	<div class="elfzwo-footer-box">
+		<p class="description">Diese Personen erscheinen im Footer auf jeder Seite, in dieser Reihenfolge. Einträge ohne Namen werden beim Speichern entfernt.</p>
+		<div class="elfzwo-repeater">
+			<div class="elfzwo-repeater-rows">
+				<?php foreach ( elfzwo_footer_personen() as $i => $person ) : ?>
+					<?php echo elfzwo_render_repeater_row( $key, $i, $subfields, $person, '' ); // phpcs:ignore -- bereits escaped ?>
+				<?php endforeach; ?>
+			</div>
+			<button type="button" class="button elfzwo-repeater-add">+ Person hinzufügen</button>
+			<template class="elfzwo-repeater-template">
+				<?php echo elfzwo_render_repeater_row( $key, '__INDEX__', $subfields, array(), '' ); // phpcs:ignore -- bereits escaped ?>
+			</template>
+		</div>
+		<?php elfzwo_footer_box_save_button( 'personen' ); ?>
+	</div>
+	<?php
+}
+
+function elfzwo_footer_menu_assets( $hook ) {
+	if ( 'nav-menus.php' !== $hook ) {
+		return;
+	}
+	wp_enqueue_style( 'elfzwo-admin', get_template_directory_uri() . '/assets/css/admin.css', array(), filemtime( get_template_directory() . '/assets/css/admin.css' ) );
+	wp_enqueue_script( 'elfzwo-admin-repeater', get_template_directory_uri() . '/assets/js/admin-repeater.js', array(), filemtime( get_template_directory() . '/assets/js/admin-repeater.js' ), true );
+	wp_enqueue_script( 'elfzwo-admin-footer-settings', get_template_directory_uri() . '/assets/js/admin-footer-settings.js', array(), filemtime( get_template_directory() . '/assets/js/admin-footer-settings.js' ), true );
+	wp_localize_script(
+		'elfzwo-admin-footer-settings',
+		'elfzwoFooterSettings',
+		array(
+			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+			'nonce'   => wp_create_nonce( 'elfzwo_footer_save' ),
+		)
+	);
+}
+add_action( 'admin_enqueue_scripts', 'elfzwo_footer_menu_assets' );
+
+function elfzwo_ajax_save_footer() {
+	check_ajax_referer( 'elfzwo_footer_save', 'nonce' );
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
+		wp_send_json_error( 'Keine Berechtigung.', 403 );
+	}
+
+	$box = sanitize_key( $_POST['box'] ?? '' );
+	if ( 'kontakt' === $box ) {
+		foreach ( elfzwo_footer_kontakt_fields() as $key => $label ) {
+			if ( isset( $_POST[ $key ] ) ) {
+				$sanitize = elfzwo_option_sanitizer( $key );
+				update_option( $key, $sanitize( wp_unslash( $_POST[ $key ] ) ) );
+			}
+		}
+	} elseif ( 'personen' === $box ) {
+		update_option( 'elfzwo_footer_personen', elfzwo_sanitize_footer_personen( wp_unslash( $_POST['elfzwo_footer_personen'] ?? array() ) ) ); // phpcs:ignore -- in elfzwo_sanitize_footer_personen() bereinigt
+	} else {
+		wp_send_json_error( 'Unbekannter Bereich.', 400 );
+	}
+
+	wp_send_json_success();
+}
+add_action( 'wp_ajax_elfzwo_save_footer', 'elfzwo_ajax_save_footer' );
 
 function elfzwo_option( $key, $default = '' ) {
 	$value = get_option( $key );

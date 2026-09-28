@@ -116,3 +116,34 @@
 	cursor: pointer;
 	padding: 0;
 }
+
+/* Footer-Boxen unter "Design → Menüs" (schmale Spalte). */
+.elfzwo-footer-box label {
+	display: block;
+	margin-bottom: 2px;
+	font-weight: 600;
+}
+
+.elfzwo-footer-box .elfzwo-repeater-row {
+	flex-direction: column;
+	align-items: stretch;
+	gap: 4px;
+	padding: 8px;
+	margin-bottom: 8px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #f6f7f7;
+}
+
+.elfzwo-footer-box .elfzwo-repeater-row input {
+	width: 100%;
+}
+
+.elfzwo-footer-box .elfzwo-repeater-remove {
+	align-self: flex-end;
+}
+
+.elfzwo-footer-box .elfzwo-footer-status {
+	margin-right: 6px;
+	color: #50575e;
+}

@@ -1,18 +1,4 @@
-<?php
-$footer_persons = array();
-for ( $i = 1; $i <= 3; $i++ ) {
-	$name = elfzwo_option( "elfzwo_footer_person{$i}_name", '' );
-	if ( '' === $name ) {
-		continue;
-	}
-	$footer_persons[] = array(
-		'name'    => $name,
-		'rolle'   => elfzwo_option( "elfzwo_footer_person{$i}_rolle", '' ),
-		'telefon' => elfzwo_option( "elfzwo_footer_person{$i}_telefon", '' ),
-		'email'   => elfzwo_option( "elfzwo_footer_person{$i}_email", '' ),
-	);
-}
-?>
+<?php $footer_persons = elfzwo_footer_personen(); ?>
 <footer class="mt-24 border-t border-border bg-background">
 	<!-- Notruf-Karte -->
 	<div class="mx-auto max-w-7xl px-5 pt-12 md:px-8">
