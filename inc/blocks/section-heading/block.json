@@ -11,6 +11,7 @@
 		"title": { "type": "string", "default": "" },
 		"description": { "type": "string", "default": "" },
 		"descriptionSource": { "type": "string", "default": "custom" },
+		"ninaPlz": { "type": "string", "default": "" },
 		"layout": { "type": "string", "default": "split" },
 		"accent": { "type": "string", "default": "text-primary" }
 	},

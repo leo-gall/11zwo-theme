@@ -1,8 +1,8 @@
 <?php
 /**
  * Echte Warnmeldungen der NINA-Warn-App (Bundesamt für Bevölkerungsschutz
- * und Katastrophenhilfe) für die in den Einstellungen hinterlegte
- * Postleitzahl. NINA liefert Warnungen nur auf Kreisebene über einen
+ * und Katastrophenhilfe) für die im Abschnitts-Überschrift-Block
+ * hinterlegte Postleitzahl. NINA liefert Warnungen nur auf Kreisebene über einen
  * "Amtlichen Regionalschlüssel" (ARS) — die PLZ wird daher einmalig über
  * die freie openplzapi.org auf den zuständigen Kreis (ARS) abgebildet.
  */
@@ -51,11 +51,10 @@ function elfzwo_nina_resolve_ars( $plz ) {
 }
 
 /**
- * Aktive NINA-Warnungen für die in den Einstellungen hinterlegte PLZ.
+ * Aktive NINA-Warnungen für die übergebene PLZ.
  * Liefert ein Array mit level/title/message/sent, neueste zuerst.
  */
-function elfzwo_nina_get_warnings() {
-	$plz = elfzwo_option( 'elfzwo_nina_plz', '' );
+function elfzwo_nina_get_warnings( $plz ) {
 	if ( ! $plz ) {
 		return array();
 	}
@@ -120,15 +119,6 @@ function elfzwo_nina_get_warnings() {
 }
 
 /**
- * Löscht die NINA-Caches, z. B. wenn die PLZ in den Einstellungen geändert wird.
- */
-function elfzwo_nina_flush_cache() {
-	global $wpdb;
-	$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '\\_transient\\_elfzwo\\_nina\\_%' OR option_name LIKE '\\_transient\\_timeout\\_elfzwo\\_nina\\_%'" );
-}
-add_action( 'update_option_elfzwo_nina_plz', 'elfzwo_nina_flush_cache' );
-
-/**
  * Ortsname aus der Einstellung "PLZ & Ort" (z. B. "86926 Greifenberg" -> "Greifenberg").
  */
 function elfzwo_ort_name() {
@@ -155,15 +145,15 @@ function elfzwo_bbk_logo_svg( $class = 'h-6 w-6' ) {
  * Liegen Warnungen vor, wird nur die Anzahl mit BBK-Logo gezeigt; ein
  * Klick öffnet ein Modal mit allen Meldungen (siehe nina-warnungen.js).
  */
-function elfzwo_nina_render_compact() {
-	$plz      = elfzwo_option( 'elfzwo_nina_plz', '' );
-	$warnings = elfzwo_nina_get_warnings();
+function elfzwo_nina_render_compact( $plz ) {
+	$plz      = preg_replace( '/\D/', '', (string) $plz );
+	$warnings = elfzwo_nina_get_warnings( $plz );
 
 	ob_start();
 
 	if ( ! $plz ) {
 		?>
-		<p class="max-w-md self-end text-sm text-muted-foreground">Für Warnmeldungen bitte in den Einstellungen unter „Feuerwehr Greifenberg“ eine Postleitzahl hinterlegen.</p>
+		<p class="max-w-md self-end text-sm text-muted-foreground">Für Warnmeldungen bitte im Block eine Postleitzahl hinterlegen.</p>
 		<?php
 		return ob_get_clean();
 	}

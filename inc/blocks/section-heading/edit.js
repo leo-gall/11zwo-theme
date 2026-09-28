@@ -38,6 +38,17 @@
 							options: [ { label: 'Freitext', value: 'custom' }, { label: 'Live NINA-Warnungen', value: 'nina' } ],
 							onChange: set( 'descriptionSource' ),
 						} ),
+						'nina' === ( a.descriptionSource || 'custom' ) && el( TextControl, {
+							label: 'Postleitzahl für NINA-Warnungen',
+							help: 'Für diese PLZ werden echte Warnmeldungen der NINA-Warn-App des Bundes angezeigt.',
+							value: a.ninaPlz,
+							placeholder: '86926',
+							maxLength: 5,
+							inputMode: 'numeric',
+							onChange: function ( v ) {
+								props.setAttributes( { ninaPlz: v.replace( /\D/g, '' ).slice( 0, 5 ) } );
+							},
+						} ),
 						el( TextareaControl, {
 							label: 'Beschreibung (Freitext)',
 							help: 'nina' === ( a.descriptionSource || 'custom' ) ? 'Wird im Frontend ignoriert, solange oben "Live NINA-Warnungen" gewählt ist.' : '',
