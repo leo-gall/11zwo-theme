@@ -10,14 +10,52 @@
 		"interests": {
 			"type": "array",
 			"default": [
-				{ "label": "Aktive Feuerwehr", "hint": "Ab 16 Jahren, echte Einsätze" },
-				{ "label": "Jugendfeuerwehr", "hint": "Für Kids ab 8 Jahren" },
-				{ "label": "Fördermitglied", "hint": "Unterstützen ohne Uniform" },
-				{ "label": "Erstmal nur schnuppern", "hint": "Kaffee, Halle, Fragen" }
+				{
+					"label": "Aktive Feuerwehr",
+					"hint": "Ab 16 Jahren, echte Einsätze",
+					"gruppe": "aktive"
+				},
+				{
+					"label": "Jugendfeuerwehr",
+					"hint": "Für Kids ab 8 Jahren",
+					"gruppe": "jugend"
+				},
+				{
+					"label": "Fördermitglied",
+					"hint": "Unterstützen ohne Uniform",
+					"gruppe": "verein"
+				},
+				{
+					"label": "Erstmal nur schnuppern",
+					"hint": "Kaffee, Halle, Fragen",
+					"gruppe": "aktive"
+				}
 			]
+		},
+		"mail": {
+			"type": "object",
+			"default": {
+				"aktive": {
+					"empfaenger": "",
+					"betreff": "",
+					"text": ""
+				},
+				"jugend": {
+					"empfaenger": "",
+					"betreff": "",
+					"text": ""
+				},
+				"verein": {
+					"empfaenger": "",
+					"betreff": "",
+					"text": ""
+				}
+			}
 		}
 	},
-	"supports": { "html": false },
+	"supports": {
+		"html": false
+	},
 	"render": "file:./render.php",
 	"editorScript": "file:./edit.js"
 }
