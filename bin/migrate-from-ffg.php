@@ -39,9 +39,13 @@ $posts = $wpdb->query(
 );
 
 // 4. Theme-Mods (Menue-Zuordnung, Logo, ...) uebernehmen und Theme aktivieren.
+// Wurde 11zwo schon manuell aktiviert, existieren dort leere Mods (z. B.
+// nav_menu_locations = []); die alten Werte fuellen diese Luecken auf.
 $old_mods = get_option( "theme_mods_{$old_slug}" );
-if ( false !== $old_mods && false === get_option( "theme_mods_{$new_slug}" ) ) {
-	update_option( "theme_mods_{$new_slug}", $old_mods );
+if ( is_array( $old_mods ) ) {
+	$new_mods = get_option( "theme_mods_{$new_slug}", array() );
+	$new_mods = is_array( $new_mods ) ? array_filter( $new_mods ) : array();
+	update_option( "theme_mods_{$new_slug}", array_merge( $old_mods, $new_mods ) );
 }
 if ( get_stylesheet() !== $new_slug ) {
 	switch_theme( $new_slug );
