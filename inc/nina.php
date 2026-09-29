@@ -12,17 +12,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Löst eine 5-stellige PLZ auf den 12-stelligen NINA-ARS (Kreisebene,
- * letzte 7 Stellen "0") auf. Ergebnis wird dauerhaft gecacht, da sich die
- * Kreiszugehörigkeit einer PLZ praktisch nie ändert.
+ * Schlägt eine 5-stellige PLZ bei openplzapi.org nach: NINA-ARS (Kreisebene,
+ * letzte 7 Stellen "0"), die Orte der PLZ und den Kreis. Ergebnis wird
+ * dauerhaft gecacht, da sich die Zuordnung einer PLZ praktisch nie ändert.
  */
-function elfzwo_nina_resolve_ars( $plz ) {
+function elfzwo_nina_lookup_plz( $plz ) {
 	$plz = preg_replace( '/\D/', '', (string) $plz );
 	if ( 5 !== strlen( $plz ) ) {
-		return '';
+		return array();
 	}
 
-	$cache_key = 'elfzwo_nina_ars_' . $plz;
+	$cache_key = 'elfzwo_nina_plz_' . $plz;
 	$cached    = get_transient( $cache_key );
 	if ( false !== $cached ) {
 		return $cached;
@@ -34,20 +34,56 @@ function elfzwo_nina_resolve_ars( $plz ) {
 	);
 
 	if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-		return '';
+		return array();
 	}
 
 	$data = json_decode( wp_remote_retrieve_body( $response ), true );
 	if ( empty( $data[0]['district']['key'] ) ) {
-		return '';
+		return array();
 	}
 
 	$kreisschluessel = preg_replace( '/\D/', '', $data[0]['district']['key'] );
-	$ars             = str_pad( $kreisschluessel, 5, '0' ) . '0000000';
+	$district        = $data[0]['district'];
+	$result          = array(
+		'ars'   => str_pad( $kreisschluessel, 5, '0' ) . '0000000',
+		'orte'  => array_values( array_unique( array_filter( wp_list_pluck( $data, 'name' ) ) ) ),
+		'kreis' => trim( ( $district['type'] ?? '' ) . ' ' . ( $district['name'] ?? '' ) ),
+	);
 
-	set_transient( $cache_key, $ars, MONTH_IN_SECONDS );
+	set_transient( $cache_key, $result, MONTH_IN_SECONDS );
 
-	return $ars;
+	return $result;
+}
+
+function elfzwo_nina_resolve_ars( $plz ) {
+	$lookup = elfzwo_nina_lookup_plz( $plz );
+	return $lookup['ars'] ?? '';
+}
+
+/**
+ * Ortsname für "Keine aktuellen Warnungen für …". Eine PLZ kann mehrere
+ * Orte umfassen (86926: Eresing und Greifenberg), daher der Reihe nach:
+ * Ort aus der Footer-Einstellung "PLZ & Ort", der Ort im Namen der Website,
+ * der einzige Ort der PLZ -- sonst der Kreis, auf dessen Ebene NINA warnt.
+ */
+function elfzwo_nina_ort_label( $plz ) {
+	$lookup = elfzwo_nina_lookup_plz( $plz );
+	$orte   = $lookup['orte'] ?? array();
+
+	foreach ( array( elfzwo_ort_name(), get_bloginfo( 'name' ) ) as $hint ) {
+		foreach ( $orte as $ort ) {
+			if ( $hint && false !== mb_stripos( $hint, $ort ) ) {
+				return $ort;
+			}
+		}
+	}
+	if ( 1 === count( $orte ) ) {
+		return $orte[0];
+	}
+	if ( ! empty( $lookup['kreis'] ) ) {
+		return 'den ' . $lookup['kreis'];
+	}
+	return elfzwo_ort_name() ?: 'PLZ ' . $plz;
 }
 
 /**
@@ -162,7 +198,7 @@ function elfzwo_nina_render_compact( $plz ) {
 		?>
 		<div class="flex max-w-md items-start gap-2 self-end text-sm text-muted-foreground">
 			<?php echo elfzwo_icon( 'shield-check', 'mt-0.5 h-4 w-4 shrink-0 text-primary' ); ?>
-			<span>Keine aktuellen Warnungen für <?php echo esc_html( elfzwo_ort_name() ); ?></span>
+			<span>Keine aktuellen Warnungen für <?php echo esc_html( elfzwo_nina_ort_label( $plz ) ); ?></span>
 		</div>
 		<?php
 		return ob_get_clean();
