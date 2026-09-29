@@ -28,8 +28,12 @@
 		}
 		var max       = track.scrollWidth - track.clientWidth;
 		var overflows = max > 1;
-		prev.classList.toggle( 'is-active', overflows && track.scrollLeft > 1 );
-		next.classList.toggle( 'is-active', overflows && track.scrollLeft < max - 1 );
+		var canLeft   = overflows && track.scrollLeft > 1;
+		var canRight  = overflows && track.scrollLeft < max - 1;
+		prev.classList.toggle( 'is-active', canLeft );
+		next.classList.toggle( 'is-active', canRight );
+		track.classList.toggle( 'is-fade-left', canLeft );
+		track.classList.toggle( 'is-fade-right', canRight );
 	}
 
 	/**

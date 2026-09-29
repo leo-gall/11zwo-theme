@@ -287,9 +287,34 @@ body.admin-bar header.sticky {
   }
 }
 
-/* Einsatzchronik-Jahres-Chips: horizontal scrollbar, aber ohne sichtbaren Scrollbalken (YouTube-Filterleisten-Look) */
+/* Einsatzchronik-Jahres-Chips: horizontal scrollbar, aber ohne sichtbaren Scrollbalken (YouTube-Filterleisten-Look).
+   Die äußeren Chips laufen per Maske weich aus -- nur auf der Seite, in die noch
+   gescrollt werden kann (Klassen setzt assets/js/einsatzliste.js). */
+@property --elfzwo-fade-left {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --elfzwo-fade-right {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
 .elfzwo-einsatzliste-years {
   scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--elfzwo-fade-left), #000 calc(100% - var(--elfzwo-fade-right)), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--elfzwo-fade-left), #000 calc(100% - var(--elfzwo-fade-right)), transparent 100%);
+  transition: --elfzwo-fade-left 0.2s ease, --elfzwo-fade-right 0.2s ease;
+}
+
+.elfzwo-einsatzliste-years.is-fade-left {
+  --elfzwo-fade-left: 48px;
+}
+
+.elfzwo-einsatzliste-years.is-fade-right {
+  --elfzwo-fade-right: 48px;
 }
 
 .elfzwo-einsatzliste-years::-webkit-scrollbar {
