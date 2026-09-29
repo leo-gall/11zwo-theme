@@ -121,7 +121,7 @@
 			<span class="flex items-center gap-4">
 				<a href="<?php echo esc_url( home_url( '/impressum/' ) ); ?>" class="transition-colors hover:text-signal">Impressum</a>
 				<a href="<?php echo esc_url( home_url( '/datenschutzerklarung/' ) ); ?>" class="transition-colors hover:text-signal">Datenschutz</a>
-				<a href="<?php echo esc_url( home_url( '/comments/feed/' ) ); ?>" class="inline-flex items-center gap-1.5 transition-colors hover:text-signal" title="Kommentare als RSS-Feed abonnieren"><?php echo elfzwo_icon( 'rss', 'h-3.5 w-3.5' ); ?> RSS</a>
+				<a href="<?php echo esc_url( home_url( '/rss.xml' ) ); ?>" class="inline-flex items-center gap-1.5 transition-colors hover:text-signal" title="Einsätze und Beiträge als RSS-Feed abonnieren"><?php echo elfzwo_icon( 'rss', 'h-3.5 w-3.5' ); ?> RSS</a>
 			</span>
 		</div>
 	</div>

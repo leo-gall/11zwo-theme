@@ -41,16 +41,52 @@ function elfzwo_theme_support_feed_links() {
 add_action( 'after_setup_theme', 'elfzwo_theme_support_feed_links' );
 
 /**
- * Der Haupt-RSS-Feed (/feed/) enthält standardmäßig nur Beiträge — hier
- * zusätzlich Einsätze, damit Abonnenten auch über neue Einsätze informiert
- * werden, nicht nur über "Aktuelles"-Beiträge.
+ * Der Haupt-RSS-Feed (/feed/, /rss.xml) enthält standardmäßig nur die
+ * neuesten 10 Beiträge — hier ALLE Beiträge und Einsätze, damit Abonnenten
+ * auch über neue Einsätze informiert werden, nicht nur über "Aktuelles".
+ * Gilt nicht für den Kommentar-Feed.
  */
 function elfzwo_feed_include_einsaetze( $query ) {
-	if ( ! is_admin() && $query->is_feed() && $query->is_main_query() ) {
-		$query->set( 'post_type', array( 'post', 'einsatz' ) );
+	if ( is_admin() || ! $query->is_main_query() || ! $query->is_feed() || $query->is_comment_feed() ) {
+		return;
 	}
+	$query->set( 'post_type', array( 'post', 'einsatz' ) );
+	$query->set( 'elfzwo_feed_all', true );
 }
 add_action( 'pre_get_posts', 'elfzwo_feed_include_einsaetze' );
+
+/**
+ * Feeds ignorieren posts_per_page = -1 (WordPress erzwingt dort immer das
+ * Limit aus "posts_per_rss"), daher das LIMIT für diese eine Abfrage direkt
+ * entfernen.
+ */
+function elfzwo_feed_no_limit( $limits, $query ) {
+	return $query->get( 'elfzwo_feed_all' ) ? '' : $limits;
+}
+add_filter( 'post_limits', 'elfzwo_feed_no_limit', 10, 2 );
+
+/**
+ * Einsätze tragen im Feed ihren tatsächlichen Einsatzzeitpunkt als
+ * Veröffentlichungsdatum -- nicht den Zeitpunkt, zu dem sie im CMS erfasst
+ * wurden (bei nachträglich eingetragenen Einsätzen sonst falsch).
+ */
+function elfzwo_feed_einsatz_pubdate( $time, $format, $gmt ) {
+	$post = get_post();
+	if ( ! is_feed() || ! $post || 'einsatz' !== $post->post_type ) {
+		return $time;
+	}
+	$datum = elfzwo_meta( $post->ID, 'datum', '' );
+	if ( ! $datum ) {
+		return $time;
+	}
+	$local = date_create_immutable( $datum, wp_timezone() );
+	if ( ! $local ) {
+		return $time;
+	}
+	$date = $gmt ? $local->setTimezone( new DateTimeZone( 'UTC' ) ) : $local;
+	return 'U' === $format ? $date->getTimestamp() : $date->format( $format );
+}
+add_filter( 'get_post_time', 'elfzwo_feed_einsatz_pubdate', 10, 3 );
 
 /**
  * Der RSS-Feed soll zusätzlich unter der kurzen, gut merkbaren URL /rss.xml
