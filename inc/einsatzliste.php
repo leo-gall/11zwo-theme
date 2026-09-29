@@ -80,7 +80,7 @@ function elfzwo_einsatzliste_render( $post_id, array $data ) {
 	?>
 	<div class="elfzwo-einsatzliste-years-row relative">
 		<div class="elfzwo-einsatzliste-years-edge elfzwo-einsatzliste-years-edge--left" data-dir="-1" aria-hidden="true"></div>
-		<div class="elfzwo-einsatzliste-years -mx-7 flex gap-2 overflow-x-auto px-7 pb-1" data-selected-year="<?php echo esc_attr( $selected_year ); ?>">
+		<div class="elfzwo-einsatzliste-years flex gap-2 overflow-x-auto pb-1" data-selected-year="<?php echo esc_attr( $selected_year ); ?>">
 			<?php foreach ( $years as $y ) :
 				$y_count = $year_counts[ $y ] ?? 0;
 				$y_label = esc_html( $y_count ) . ' ' . esc_html( 1 === $y_count ? 'Einsatz' : 'Einsätze' ) . ' ' . esc_html( $y );
