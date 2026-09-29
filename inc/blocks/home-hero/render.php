@@ -45,7 +45,8 @@ for ( $i = 1; $i <= 3; $i++ ) {
 		</div>
 
 		<div class="relative flex items-center justify-center py-6">
-			<div class="relative h-[340px] w-full max-w-md sm:h-[400px]">
+			<?php // isolate: die z-Werte der Bilder/des Zettels gelten nur innerhalb des Stapels und liegen nie über dem Sticky-Header (z-40). ?>
+			<div class="relative isolate h-[340px] w-full max-w-md sm:h-[400px]">
 				<img src="<?php echo esc_url( $images[2] ); ?>" alt="" class="absolute left-0 top-0 z-10 h-48 w-56 rotate-[-10deg] rounded-[2rem] border-2 border-cream object-cover shadow-lg sm:h-56 sm:w-64">
 				<img src="<?php echo esc_url( $images[1] ); ?>" alt="" class="absolute right-0 top-6 z-20 h-48 w-56 rotate-[9deg] rounded-[2rem] border-2 border-cream object-cover shadow-xl sm:h-56 sm:w-64">
 				<img src="<?php echo esc_url( $images[0] ); ?>" alt="" class="absolute bottom-0 left-1/2 z-30 h-48 w-56 -translate-x-1/2 rotate-[-3deg] rounded-[2rem] border-2 border-cream object-cover shadow-2xl sm:h-56 sm:w-64">
