@@ -255,7 +255,8 @@ h1, h2, h3, h4 {
   transition: transform 0.25s ease;
 }
 
-.elfzwo-faq-item[open] .elfzwo-faq-chevron {
+/* .is-open statt [open]: dreht sofort beim Klick, auch beim Zuklappen (dort bleibt [open] bis zum Animationsende gesetzt) */
+.elfzwo-faq-item.is-open .elfzwo-faq-chevron {
   transform: rotate(180deg);
 }
 
