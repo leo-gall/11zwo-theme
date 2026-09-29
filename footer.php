@@ -8,12 +8,12 @@
 					<?php echo elfzwo_icon( 'siren', 'h-6 w-6', 2.4 ); ?>
 				</span>
 				<div>
-					<p class="text-[11px] font-bold uppercase tracking-[0.2em] text-signal-foreground/75">Im Notfall</p>
+					<p class="text-[11px] font-bold uppercase tracking-[0.2em] text-signal-foreground/75">Feuerwehr & Rettungsdienst</p>
 					<p class="font-display text-3xl leading-none">Notruf 112</p>
 				</div>
 			</div>
 			<p class="max-w-md text-sm text-signal-foreground/85">
-				Ein Notruf kostet nichts — außer der Sekunde, die ihr euch nehmt. Wählt bei Feuer, Unfall oder Verletzung sofort die 112.
+				Die Feuerwehr Greifenberg überwacht eingehende Nachrichten nicht permanent. Wählen Sie im Notfall sofort die 112 für Feuerwehr und Rettungsdienst.
 			</p>
 		</div>
 	</div>
