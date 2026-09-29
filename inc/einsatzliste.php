@@ -89,12 +89,14 @@ function elfzwo_einsatzliste_render( $post_id, array $data ) {
 				<a
 					href="<?php echo elfzwo_einsatzliste_year_link( $post_id, $y, 1 ); ?>"
 					data-year="<?php echo esc_attr( $y ); ?>"
+					<?php if ( $is_selected ) : ?>aria-current="true"<?php endif; ?>
 					class="elfzwo-einsatzliste-year-chip shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors <?php echo $is_selected ? 'bg-signal/20 text-signal' : 'bg-secondary text-muted-foreground hover:bg-border'; ?>"
 				><?php echo $y_label; ?></a>
 			<?php endforeach; ?>
 		</div>
 		<div class="elfzwo-einsatzliste-years-edge elfzwo-einsatzliste-years-edge--right" data-dir="1" aria-hidden="true"></div>
 	</div>
+	<div class="elfzwo-einsatzliste-body flex flex-1 flex-col transition-opacity">
 	<h3 class="mt-3 font-display text-2xl">Letzte Einsätze</h3>
 
 	<div class="mt-6 flex-1">
@@ -163,6 +165,7 @@ function elfzwo_einsatzliste_render( $post_id, array $data ) {
 		<?php else : ?>
 			<span class="grid h-8 w-8 place-items-center rounded-full text-muted-foreground opacity-30" aria-hidden="true"><?php echo elfzwo_icon( 'chevron-right', 'h-4 w-4' ); ?></span>
 		<?php endif; ?>
+	</div>
 	</div>
 	<?php
 	return ob_get_clean();

@@ -296,14 +296,6 @@ body.admin-bar header.sticky {
   display: none;
 }
 
-/* Native, Compositor-gestützte Scroll-Animation NUR während assets/js/einsatzliste.js
-   sie per Klasse gezielt anschaltet (Jahreswechsel/Edge-Klick) -- ohne diese
-   Beschränkung würde JEDE Scroll-Änderung animiert, auch die Positions-
-   Wiederherstellung bei reiner Pagination, wo gar keine Bewegung sichtbar sein soll. */
-.elfzwo-einsatzliste-years.is-animating {
-  scroll-behavior: smooth;
-}
-
 /* Unsichtbare Klick-Zonen an den Rändern der Jahres-Chip-Leiste: kein Pfeil-Icon,
    kein optischer Verlauf (der sah über den abgerundeten Pillen unsauber/
    verwaschen aus) -- rein funktionale Hitbox, ein Klick scrollt die Leiste
