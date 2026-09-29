@@ -568,38 +568,12 @@ function elfzwo_ensure_einsatz_nummer( $post_id, $post ) {
 add_action( 'save_post', 'elfzwo_ensure_einsatz_nummer', 20, 2 );
 
 /**
- * Einsätze haben keinen frei wählbaren Titel: er (und daraus die URL) wird
- * aus dem gewählten Einsatzstichwort + Datum/Uhrzeit gebildet.
- */
-/** Nächste freie Einsatz-Nr. innerhalb eines Jahres (höchste vergebene Nummer + 1). */
-function elfzwo_einsatznummer_next_for_year( $jahr, $exclude_post_id = 0 ) {
-	$posts = get_posts(
-		array(
-			'post_type'      => 'einsatz',
-			'posts_per_page' => -1,
-			'post_status'    => 'any',
-			'exclude'        => array( $exclude_post_id ),
-		)
-	);
-	$max = 0;
-	foreach ( $posts as $p ) {
-		$datum = elfzwo_meta( $p->ID, 'datum', '' );
-		if ( ! $datum || $jahr !== substr( $datum, 0, 4 ) ) {
-			continue;
-		}
-		$nummer = (int) elfzwo_meta( $p->ID, 'einsatznummer', 0 );
-		if ( $nummer > $max ) {
-			$max = $nummer;
-		}
-	}
-	return $max + 1;
-}
-
-/**
- * Einsätze haben keinen frei wählbaren Titel: er (und daraus die URL)
- * wird aus dem gewählten Einsatzstichwort + Jahr/Einsatz-Nr. gebildet.
- * Die Einsatz-Nr. wird, falls nicht manuell gesetzt, automatisch als
- * nächste freie Nummer im jeweiligen Jahr vergeben.
+ * Einsätze haben keinen frei wählbaren Titel: er wird aus dem gewählten
+ * Einsatzstichwort gebildet. Die Einsatz-Nr. vergibt
+ * elfzwo_einsatz_renumber_year() (inc/einsatz-nummern.php) chronologisch.
+ * Der Slug wird nur einmal vergeben und bleibt danach stabil, damit alte
+ * Links nach einem Neu-Nummerieren weiter zum selben Einsatz führen; die
+ * öffentliche URL ist ohnehin /einsatz/{jahr}/{nr}/.
  */
 function elfzwo_autogenerate_einsatz_title( $post_id ) {
 	static $running = false;
@@ -613,38 +587,22 @@ function elfzwo_autogenerate_einsatz_title( $post_id ) {
 	}
 	$stichwort_name = $terms[0]->name;
 
-	$datum = elfzwo_meta( $post_id, 'datum', '' );
-	$ts    = $datum ? strtotime( $datum ) : false;
-	$jahr  = $ts ? gmdate( 'Y', $ts ) : gmdate( 'Y' );
-
-	$nummer = (int) elfzwo_meta( $post_id, 'einsatznummer', 0 );
-	if ( ! $nummer ) {
-		$nummer = elfzwo_einsatznummer_next_for_year( $jahr, $post_id );
-		update_post_meta( $post_id, '_elfzwo_einsatznummer', $nummer );
+	$post   = get_post( $post_id );
+	$update = array();
+	if ( $post->post_title !== $stichwort_name ) {
+		$update['post_title'] = $stichwort_name;
 	}
-
-	// Sortierschlüssel für die Backend-Liste: neuestes Jahr + höchste
-	// Einsatz-Nr. zuerst -- verlässlicher als das native post_date, das bei
-	// nachträglich/gebündelt erfassten Einsätzen nur den Zeitpunkt der
-	// Dateneingabe zeigt, nicht den tatsächlichen Einsatzzeitpunkt.
-	update_post_meta( $post_id, '_elfzwo_sort_key', sprintf( '%04d%05d', (int) $jahr, $nummer ) );
-
-	$title = $stichwort_name;
-	$slug  = sanitize_title( $stichwort_name . '-' . $jahr . '-' . str_pad( $nummer, 2, '0', STR_PAD_LEFT ) );
-
-	$post = get_post( $post_id );
-	if ( $post->post_title === $title && $post->post_name === $slug ) {
+	if ( ! get_post_meta( $post_id, '_elfzwo_slug_fixed', true ) ) {
+		$nummer = (int) elfzwo_meta( $post_id, 'einsatznummer', 0 );
+		$update['post_name'] = sanitize_title( $stichwort_name . '-' . elfzwo_einsatz_jahr( $post_id ) . '-' . str_pad( $nummer, 2, '0', STR_PAD_LEFT ) );
+		update_post_meta( $post_id, '_elfzwo_slug_fixed', 1 );
+	}
+	if ( ! $update ) {
 		return;
 	}
 
 	$running = true;
-	wp_update_post(
-		array(
-			'ID'         => $post_id,
-			'post_title' => $title,
-			'post_name'  => $slug,
-		)
-	);
+	wp_update_post( array( 'ID' => $post_id ) + $update );
 	$running = false;
 }
 

@@ -250,13 +250,12 @@ add_action( 'admin_head-edit-tags.php', 'elfzwo_simplify_taxonomy_admin_fields' 
 add_action( 'admin_head-term.php', 'elfzwo_simplify_taxonomy_admin_fields' );
 
 /**
- * Backend-Liste der Einsätze standardmäßig nach Einsatz-ID (Jahr + Nummer,
- * neuestes zuerst) statt nach dem nativen post_date sortieren -- post_date
- * zeigt nur, wann der Beitrag im CMS angelegt/bearbeitet wurde, nicht den
- * tatsächlichen Einsatzzeitpunkt (v. a. bei nachträglich/gebündelt erfassten
- * Einsätzen völlig andere Reihenfolge). Der Sortierschlüssel wird in
- * elfzwo_autogenerate_einsatz_title() (inc/meta-boxes.php) gepflegt. Greift nur,
- * wenn niemand explizit auf eine Spalte geklickt hat.
+ * Backend-Liste der Einsätze nach Einsatz-ID (Jahr + Nummer, neuestes
+ * zuerst) statt nach dem nativen post_date sortieren -- post_date zeigt nur,
+ * wann der Beitrag im CMS angelegt wurde, nicht den Einsatzzeitpunkt. Der
+ * Sortierschlüssel wird in elfzwo_einsatz_renumber_year()
+ * (inc/einsatz-nummern.php) gepflegt. Gilt als Standard und beim Klick auf
+ * die Spalte "Einsatz-ID".
  */
 function elfzwo_einsatz_admin_default_order( $query ) {
 	if ( ! is_admin() || ! $query->is_main_query() ) {
@@ -265,11 +264,12 @@ function elfzwo_einsatz_admin_default_order( $query ) {
 	if ( 'einsatz' !== $query->get( 'post_type' ) ) {
 		return;
 	}
-	if ( $query->get( 'orderby' ) ) {
+	$orderby = $query->get( 'orderby' );
+	if ( $orderby && 'einsatz_id' !== $orderby ) {
 		return;
 	}
 	$query->set( 'orderby', 'meta_value' );
 	$query->set( 'meta_key', '_elfzwo_sort_key' );
-	$query->set( 'order', 'DESC' );
+	$query->set( 'order', $orderby ? ( 'asc' === strtolower( (string) $query->get( 'order' ) ) ? 'ASC' : 'DESC' ) : 'DESC' );
 }
 add_action( 'pre_get_posts', 'elfzwo_einsatz_admin_default_order' );

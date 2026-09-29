@@ -92,6 +92,7 @@ require get_template_directory() . '/inc/helpers.php';
 require get_template_directory() . '/inc/person-wappen.php';
 require get_template_directory() . '/inc/post-types.php';
 require get_template_directory() . '/inc/meta-boxes.php';
+require get_template_directory() . '/inc/einsatz-nummern.php';
 require get_template_directory() . '/inc/settings.php';
 require get_template_directory() . '/inc/nina.php';
 require get_template_directory() . '/inc/einsatzliste.php';
