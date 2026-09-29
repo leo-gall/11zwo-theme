@@ -18,7 +18,7 @@ $width_classes = array(
 $width_class = $width_classes[ $attributes['width'] ?? '3xl' ] ?? 'max-w-3xl';
 ?>
 <section class="mx-auto <?php echo esc_attr( $width_class ); ?> px-5 pt-14 pb-10 md:px-8 md:pt-20">
-	<?php if ( $kicker ) : ?><p class="font-hand text-2xl text-ember"><?php echo esc_html( $kicker ); ?></p><?php endif; ?>
+	<?php if ( $kicker ) : ?><p class="font-hand text-2xl text-primary"><?php echo esc_html( $kicker ); ?></p><?php endif; ?>
 	<h1 class="mt-1 font-display text-5xl leading-[1.02] md:text-6xl"><?php echo esc_html( $title ); ?></h1>
 	<?php if ( $description ) : ?><p class="mt-5 max-w-2xl text-lg text-muted-foreground"><?php echo esc_html( $description ); ?></p><?php endif; ?>
 	<?php if ( $cta1_text || $cta2_text ) : ?>
