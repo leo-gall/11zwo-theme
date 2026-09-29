@@ -13,8 +13,8 @@ $image_url   = $image_id ? wp_get_attachment_image_url( $image_id, 'large' ) : (
 ?>
 <section class="relative mx-auto grid max-w-7xl gap-10 px-5 pt-14 pb-10 md:grid-cols-[1.1fr_1fr] md:px-8 md:pt-20">
 	<div class="flex flex-col justify-center">
-		<?php if ( $badge ) : ?><span class="w-fit rounded-full bg-signal/20 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-signal"><?php echo esc_html( $badge ); ?></span><?php endif; ?>
-		<h1 class="mt-4 font-display text-5xl leading-[1.02] md:text-6xl">
+		<?php if ( $badge ) : ?><p class="font-hand text-2xl text-primary"><?php echo esc_html( $badge ); ?></p><?php endif; ?>
+		<h1 class="mt-1 font-display text-5xl leading-[1.02] md:text-6xl">
 			<?php echo esc_html( $line1 ); ?>
 			<?php if ( $highlight ) : ?> <span class="text-signal"><?php echo esc_html( $highlight ); ?></span><?php endif; ?>
 			<?php echo $line2 ? ' ' . esc_html( $line2 ) : ''; ?>

@@ -20,7 +20,7 @@
 			return el(
 				'div', {},
 				el( InspectorControls, {}, el( PanelBody, { title: 'Jugendfeuerwehr-Hero' },
-					el( TextControl, { label: 'Badge', value: a.badge, onChange: set( 'badge' ) } ),
+					el( TextControl, { label: 'Vorspann (Tag)', value: a.badge, onChange: set( 'badge' ) } ),
 					el( TextControl, { label: 'Titel Zeile 1', value: a.titleLine1, onChange: set( 'titleLine1' ) } ),
 					el( TextControl, { label: 'Titel Highlight', value: a.titleHighlight, onChange: set( 'titleHighlight' ) } ),
 					el( TextControl, { label: 'Titel Rest', value: a.titleLine2, onChange: set( 'titleLine2' ) } ),
