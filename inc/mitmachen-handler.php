@@ -138,3 +138,58 @@ function elfzwo_handle_mitmachen_submit() {
 }
 add_action( 'admin_post_elfzwo_mitmachen', 'elfzwo_handle_mitmachen_submit' );
 add_action( 'admin_post_nopriv_elfzwo_mitmachen', 'elfzwo_handle_mitmachen_submit' );
+
+/**
+ * Der Mach-mit-Block bringt seinen Kopfbereich (Kicker, Titel,
+ * Beschreibung) inzwischen selbst mit. Ein direkt davor stehender
+ * "Einfacher Hero" wird deshalb einmalig entfernt; seine Texte werden in
+ * den Mach-mit-Block übernommen, damit nichts doppelt erscheint.
+ */
+function elfzwo_migrate_mitmachen_hero() {
+	if ( get_option( 'elfzwo_mitmachen_hero_migrated' ) ) {
+		return;
+	}
+	$pages = get_posts(
+		array(
+			'post_type'   => 'page',
+			'post_status' => 'any',
+			'numberposts' => -1,
+			's'           => 'wp:elfzwo/mitmachen-form',
+		)
+	);
+	foreach ( $pages as $page ) {
+		$blocks  = parse_blocks( $page->post_content );
+		$changed = false;
+		foreach ( $blocks as $i => $block ) {
+			if ( 'elfzwo/mitmachen-form' !== $block['blockName'] ) {
+				continue;
+			}
+			// Leere Freiraum-Blöcke zwischen Hero und Formular überspringen.
+			$j = $i - 1;
+			while ( $j >= 0 && null === $blocks[ $j ]['blockName'] && '' === trim( $blocks[ $j ]['innerHTML'] ) ) {
+				$j--;
+			}
+			if ( $j < 0 || 'elfzwo/simple-hero' !== $blocks[ $j ]['blockName'] ) {
+				continue;
+			}
+			foreach ( array( 'kicker', 'title', 'description' ) as $key ) {
+				if ( isset( $blocks[ $j ]['attrs'][ $key ] ) && ! isset( $block['attrs'][ $key ] ) ) {
+					$blocks[ $i ]['attrs'][ $key ] = $blocks[ $j ]['attrs'][ $key ];
+				}
+			}
+			array_splice( $blocks, $j, $i - $j );
+			$changed = true;
+			break;
+		}
+		if ( $changed ) {
+			wp_update_post(
+				array(
+					'ID'           => $page->ID,
+					'post_content' => wp_slash( serialize_blocks( $blocks ) ),
+				)
+			);
+		}
+	}
+	update_option( 'elfzwo_mitmachen_hero_migrated', 1 );
+}
+add_action( 'init', 'elfzwo_migrate_mitmachen_hero', 30 );
