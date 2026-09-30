@@ -56,8 +56,8 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 		<?php elfzwo_render_nav_group( $elfzwo_nav_items, 'justify-center' ); ?>
 
 		<div class="flex items-center gap-2 lg:justify-self-end">
-			<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="hidden items-center gap-2 rounded-full bg-ember px-5 py-2.5 text-sm font-semibold text-ember-foreground transition-colors hover:bg-ember/90 sm:inline-flex">
-				Mach mit! <span aria-hidden="true">→</span>
+			<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary elfzwo-btn-sm hidden sm:inline-flex">
+				Mach mit! <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
 			</a>
 			<button id="mobile-toggle" type="button" class="relative grid h-11 w-11 place-items-center rounded-lg border border-border bg-card transition-colors hover:bg-secondary lg:hidden" aria-label="Menü" aria-expanded="false">
 				<span id="menu-icon-open"><?php echo elfzwo_icon( 'menu', 'h-5 w-5' ); ?></span>
@@ -86,7 +86,7 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 				endif;
 			endforeach;
 			?>
-			<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-ember px-5 py-3 text-sm font-semibold text-ember-foreground">Mach mit! →</a>
+			<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary mt-2">Mach mit! <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?></a>
 		</div>
 	</div>
 </header>

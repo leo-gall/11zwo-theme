@@ -32,12 +32,12 @@ for ( $i = 1; $i <= 3; $i++ ) {
 			<?php if ( $description ) : ?><p class="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground"><?php echo esc_html( $description ); ?></p><?php endif; ?>
 			<div class="mt-8 flex flex-wrap items-center gap-3">
 				<?php if ( $cta1 ) : ?>
-					<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="group flex w-full items-center justify-center gap-3 rounded-full bg-signal px-7 py-4 text-base font-semibold text-signal-foreground transition-colors hover:bg-signal/90 sm:inline-flex sm:w-auto">
-						<?php echo esc_html( $cta1 ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 transition group-hover:translate-x-1' ); ?>
+					<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary w-full sm:w-auto">
+						<?php echo esc_html( $cta1 ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
 					</a>
 				<?php endif; ?>
 				<?php if ( $cta2 ) : ?>
-					<a href="<?php echo esc_url( $cta2_url ?: '#' ); ?>" class="flex w-full items-center justify-center gap-3 rounded-full border border-ink px-7 py-3.5 text-base font-semibold text-ink transition hover:bg-ink hover:text-background sm:inline-flex sm:w-auto">
+					<a href="<?php echo esc_url( $cta2_url ?: '#' ); ?>" class="elfzwo-btn elfzwo-btn-secondary w-full sm:w-auto">
 						<?php echo esc_html( $cta2 ); ?>
 					</a>
 				<?php endif; ?>

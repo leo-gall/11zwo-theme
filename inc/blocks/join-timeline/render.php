@@ -18,12 +18,12 @@ $steps   = $attributes['steps'] ?? array();
 				?>
 				<div class="relative">
 					<?php if ( $is_cta_slot ) : ?>
-						<a href="<?php echo esc_url( $button_url ); ?>" class="flex h-14 w-full items-center justify-center gap-2 rounded-full bg-signal text-base font-semibold text-signal-foreground transition-colors hover:bg-signal/90 md:hidden">
-							<?php echo esc_html( $button_text ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4' ); ?>
+						<a href="<?php echo esc_url( $button_url ); ?>" class="elfzwo-btn elfzwo-btn-primary w-full md:hidden">
+							<?php echo esc_html( $button_text ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
 						</a>
 						<div class="hidden md:block">
-							<a href="<?php echo esc_url( $button_url ); ?>" class="relative z-10 inline-flex h-12 items-center gap-2 rounded-full bg-signal px-5 text-sm font-semibold text-signal-foreground transition-colors hover:bg-signal/90">
-								<?php echo esc_html( $button_text ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4' ); ?>
+							<a href="<?php echo esc_url( $button_url ); ?>" class="elfzwo-btn elfzwo-btn-primary elfzwo-btn-sm relative z-10 h-12">
+								<?php echo esc_html( $button_text ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
 							</a>
 							<?php if ( $title ) : ?><h3 class="mt-5 font-display text-xl"><?php echo esc_html( $title ); ?></h3><?php endif; ?>
 							<?php if ( $body ) : ?><p class="mt-2 text-sm text-muted-foreground"><?php echo esc_html( $body ); ?></p><?php endif; ?>

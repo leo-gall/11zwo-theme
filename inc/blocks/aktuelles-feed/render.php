@@ -11,7 +11,7 @@ $feed_query = elfzwo_aktuelles_feed_query( $feed_page );
 
 	<?php if ( $feed_query->max_num_pages > $feed_page ) : ?>
 		<div class="elfzwo-aktuelles-feed-more mt-12 flex justify-center">
-			<button type="button" class="inline-flex items-center gap-2 rounded-full border border-ink px-6 py-3 text-sm font-semibold transition-colors hover:bg-secondary" data-next-page="<?php echo esc_attr( $feed_page + 1 ); ?>">Mehr anzeigen</button>
+			<button type="button" class="elfzwo-btn elfzwo-btn-secondary" data-next-page="<?php echo esc_attr( $feed_page + 1 ); ?>">Mehr anzeigen</button>
 		</div>
 	<?php endif; ?>
 </section>

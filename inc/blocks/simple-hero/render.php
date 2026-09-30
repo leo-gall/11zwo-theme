@@ -24,12 +24,12 @@ $width_class = $width_classes[ $attributes['width'] ?? '3xl' ] ?? 'max-w-3xl';
 	<?php if ( $cta1_text || $cta2_text ) : ?>
 		<div class="mt-8 flex flex-wrap items-center gap-3">
 			<?php if ( $cta1_text ) : ?>
-				<a href="<?php echo esc_url( $cta1_url ?: '#' ); ?>" class="group inline-flex items-center gap-3 rounded-full bg-signal px-7 py-4 text-base font-semibold text-signal-foreground transition-colors hover:bg-signal/90">
-					<?php echo esc_html( $cta1_text ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 transition group-hover:translate-x-1' ); ?>
+				<a href="<?php echo esc_url( $cta1_url ?: '#' ); ?>" class="elfzwo-btn elfzwo-btn-primary">
+					<?php echo esc_html( $cta1_text ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
 				</a>
 			<?php endif; ?>
 			<?php if ( $cta2_text ) : ?>
-				<a href="<?php echo esc_url( $cta2_url ?: '#' ); ?>" class="inline-flex items-center gap-3 rounded-full border border-ink px-7 py-3.5 text-base font-semibold text-ink transition hover:bg-ink hover:text-background">
+				<a href="<?php echo esc_url( $cta2_url ?: '#' ); ?>" class="elfzwo-btn elfzwo-btn-secondary">
 					<?php echo esc_html( $cta2_text ); ?>
 				</a>
 			<?php endif; ?>

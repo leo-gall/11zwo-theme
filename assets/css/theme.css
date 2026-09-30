@@ -78,6 +78,78 @@ h1, h2, h3, h4 {
   grid-area: 1 / 1;
 }
 
+/* Buttons: primary nur für die Haupt-CTA im Hero und in der Navigation,
+   überall sonst secondary. Beide haben einen 2px-Rand, damit sie nebeneinander
+   gleich hoch sind. Keine Tailwind-Utilities für Farbe/Padding/Schrift auf
+   denselben Elementen setzen -- die CDN-Utilities laden später und gewinnen. */
+.elfzwo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.elfzwo-btn:focus-visible {
+  outline: 3px solid color-mix(in oklch, var(--signal) 40%, transparent);
+  outline-offset: 2px;
+}
+
+.elfzwo-btn:active {
+  transform: translateY(1px);
+}
+
+.elfzwo-btn .icon {
+  transition: transform 0.15s ease;
+}
+
+.elfzwo-btn:hover .elfzwo-btn-arrow {
+  transform: translateX(3px);
+}
+
+.elfzwo-btn-sm {
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.elfzwo-btn-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+}
+
+.elfzwo-btn-primary {
+  background-color: var(--signal);
+  color: var(--signal-foreground);
+  box-shadow: 0 10px 24px -12px color-mix(in oklch, var(--signal) 80%, transparent);
+}
+
+.elfzwo-btn-primary:hover {
+  background-color: color-mix(in oklch, var(--signal) 82%, black);
+  box-shadow: 0 14px 28px -12px color-mix(in oklch, var(--signal) 90%, transparent);
+}
+
+.elfzwo-btn-secondary {
+  border-color: color-mix(in srgb, var(--signal) 35%, transparent);
+  background-color: var(--card);
+  color: var(--signal);
+}
+
+.elfzwo-btn-secondary:hover {
+  border-color: var(--signal);
+  background-color: color-mix(in srgb, var(--signal) 6%, var(--card));
+}
+
 /* Long-form content (the_content) — Tailwind's CDN build ships without the
    Typography plugin, so ".prose" needs its own rules here. */
 .prose {

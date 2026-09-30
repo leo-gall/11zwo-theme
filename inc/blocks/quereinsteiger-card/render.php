@@ -22,8 +22,8 @@ $image_url = $image_id ? wp_get_attachment_image_url( $image_id, 'large' ) : ( $
 			<?php if ( $text ) : ?><p class="mt-2 max-w-sm text-sm text-white/80"><?php echo esc_html( $text ); ?></p><?php endif; ?>
 		</div>
 		<?php if ( $cta_text ) : ?>
-			<a href="<?php echo esc_url( $cta_url ); ?>" aria-label="<?php echo esc_attr( $cta_text ); ?>" title="<?php echo esc_attr( $cta_text ); ?>" class="group grid h-11 w-11 shrink-0 place-items-center rounded-full bg-signal text-signal-foreground transition-colors hover:bg-signal/90">
-				<?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 transition group-hover:translate-x-0.5' ); ?>
+			<a href="<?php echo esc_url( $cta_url ); ?>" aria-label="<?php echo esc_attr( $cta_text ); ?>" title="<?php echo esc_attr( $cta_text ); ?>" class="elfzwo-btn elfzwo-btn-secondary elfzwo-btn-icon shrink-0">
+				<?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
 			</a>
 		<?php endif; ?>
 	</figcaption>

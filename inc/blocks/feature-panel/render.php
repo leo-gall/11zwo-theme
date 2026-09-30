@@ -30,8 +30,8 @@ $bullets     = $attributes['bulletPoints'] ?? array();
 				<?php endif; ?>
 				<?php if ( $cta_text ) : ?>
 					<div class="mt-9">
-						<a href="<?php echo esc_url( $cta_url ); ?>" class="group inline-flex items-center gap-3 rounded-full bg-signal px-7 py-4 text-base font-semibold text-signal-foreground transition-colors hover:bg-signal/90">
-							<?php echo esc_html( $cta_text ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 transition group-hover:translate-x-1' ); ?>
+						<a href="<?php echo esc_url( $cta_url ); ?>" class="elfzwo-btn elfzwo-btn-secondary">
+							<?php echo esc_html( $cta_text ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
 						</a>
 					</div>
 				<?php endif; ?>

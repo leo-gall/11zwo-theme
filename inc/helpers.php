@@ -130,3 +130,38 @@ function elfzwo_get_menu_tree( $location ) {
 	}
 	return $tree;
 }
+
+/**
+ * Der "Werde Teil des Teams"-Button unter den Ansprechpartnern (HTML-Block
+ * auf Mannschaft und Jugendfeuerwehr) war ein voller roter Button. Primary
+ * ist nur noch für Hero und Navigation da, deshalb wird er einmalig auf den
+ * Secondary-Button umgestellt.
+ */
+function elfzwo_migrate_team_button() {
+	if ( get_option( 'elfzwo_team_button_migrated' ) ) {
+		return;
+	}
+	$old   = 'class="flex items-center justify-center gap-3 rounded-full bg-signal px-7 py-4 text-base font-semibold text-signal-foreground transition-colors hover:bg-signal/90"';
+	$new   = 'class="elfzwo-btn elfzwo-btn-secondary w-full"';
+	$pages = get_posts(
+		array(
+			'post_type'   => 'page',
+			'post_status' => 'any',
+			'numberposts' => -1,
+			's'           => 'Werde Teil des Teams',
+		)
+	);
+	foreach ( $pages as $page ) {
+		if ( false === strpos( $page->post_content, $old ) ) {
+			continue;
+		}
+		wp_update_post(
+			array(
+				'ID'           => $page->ID,
+				'post_content' => wp_slash( str_replace( $old, $new, $page->post_content ) ),
+			)
+		);
+	}
+	update_option( 'elfzwo_team_button_migrated', 1 );
+}
+add_action( 'init', 'elfzwo_migrate_team_button', 30 );

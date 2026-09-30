@@ -53,7 +53,7 @@ $person   = $personen[0] ?? null;
 				<span class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-ember text-ember-foreground"><?php echo elfzwo_icon( 'sparkles', 'h-8 w-8' ); ?></span>
 				<h2 class="mt-5 font-display text-3xl">Angekommen!</h2>
 				<p class="mx-auto mt-3 max-w-md text-muted-foreground">Wir melden uns in den nächsten Tagen.</p>
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="mt-6 inline-flex items-center gap-2 rounded-full border border-ink px-6 py-3 text-sm font-semibold transition hover:bg-ink hover:text-background">Zur Startseite</a>
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="elfzwo-btn elfzwo-btn-secondary mt-6">Zur Startseite</a>
 			</div>
 		<?php else : ?>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="p-5 sm:p-8">
@@ -91,8 +91,8 @@ $person   = $personen[0] ?? null;
 					</label>
 				</div>
 
-				<button type="submit" class="group mt-6 flex w-full items-center justify-center gap-3 rounded-full bg-signal px-7 py-4 text-base font-semibold text-signal-foreground transition-colors hover:bg-signal/90">
-					Ich bin dabei! <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 transition group-hover:translate-x-1' ); ?>
+				<button type="submit" class="elfzwo-btn elfzwo-btn-primary mt-6 w-full">
+					Ich bin dabei! <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
 				</button>
 				<p class="mt-3 text-center text-xs text-muted-foreground">Infos zum Umgang mit deinen Daten findest du in unserer <a href="<?php echo esc_url( $datenschutz_url ); ?>" class="underline underline-offset-2 hover:text-signal">Datenschutzerklärung</a>.</p>
 			</form>
