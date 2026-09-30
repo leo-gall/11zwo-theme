@@ -141,15 +141,24 @@ function elfzwo_register_taxonomies() {
 				'name'          => 'Einsatzstichwörter',
 				'singular_name' => 'Einsatzstichwort',
 				'all_items'     => 'Alle Einsatzstichwörter',
-				'edit_item'     => 'Einsatzstichwort bearbeiten',
-				'add_new_item'  => 'Neues Einsatzstichwort',
 				'parent_item'   => 'Übergeordnete Gruppe',
 			),
-			'public'            => true,
-			'show_in_rest'      => true,
-			'hierarchical'      => true,
-			'show_admin_column' => true,
-			'rewrite'           => array( 'slug' => 'einsatzstichwort' ),
+			'public'             => true,
+			'show_in_rest'       => true,
+			'hierarchical'       => true,
+			'show_admin_column'  => true,
+			'show_in_quick_edit' => false,
+			// Zuweisung nur über das eigene Stichwort-Feld im Einsatzformular.
+			'meta_box_cb'        => false,
+			// Die Begriffe stehen fest im Code (inc/einsatzstichwoerter.php) und
+			// lassen sich im Backend weder anlegen, umbenennen noch löschen.
+			'capabilities'       => array(
+				'manage_terms' => 'do_not_allow',
+				'edit_terms'   => 'do_not_allow',
+				'delete_terms' => 'do_not_allow',
+				'assign_terms' => 'edit_posts',
+			),
+			'rewrite'            => array( 'slug' => 'einsatzstichwort' ),
 		)
 	);
 
@@ -224,7 +233,6 @@ add_action( 'add_meta_boxes', 'elfzwo_remove_native_einsatzort_metabox' );
 function elfzwo_simplify_taxonomy_admin_fields() {
 	$hidden_fields = array(
 		'download_kategorie' => array( 'slug', 'description' ),
-		'einsatzstichwort'    => array( 'description' ),
 		'einsatzort'          => array( 'slug', 'description' ),
 	);
 

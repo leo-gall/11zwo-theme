@@ -532,6 +532,9 @@ function elfzwo_save_meta_boxes( $post_id, $post ) {
 
 				if ( 'taxonomy_select' === $field['type'] ) {
 					$term_id = (int) $raw;
+					if ( 'einsatzstichwort' === $field['taxonomy'] && $term_id && ! elfzwo_einsatzstichwort_is_valid_term( $term_id ) ) {
+						continue;
+					}
 					wp_set_object_terms( $post_id, $term_id ? array( $term_id ) : array(), $field['taxonomy'], false );
 					continue;
 				}
@@ -787,7 +790,7 @@ function elfzwo_media_field_assets( $hook ) {
 }
 add_action( 'admin_enqueue_scripts', 'elfzwo_media_field_assets' );
 
-/** Such-Combobox für taxonomy_select-Felder (z.B. die 398 Einsatzstichwörter). */
+/** Such-Combobox für taxonomy_select-Felder (z.B. die Einsatzstichwörter). */
 function elfzwo_combobox_assets( $hook ) {
 	if ( ! in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
 		return;
