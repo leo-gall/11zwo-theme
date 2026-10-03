@@ -39,13 +39,13 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 				<h2 class="mt-2 font-display text-4xl md:text-5xl"><?php the_title(); ?></h2>
 				<?php if ( get_the_content() ) : ?><div class="mt-4 text-lg text-muted-foreground"><?php the_content(); ?></div><?php endif; ?>
 				<?php if ( $specs ) : ?>
-					<dl class="mt-6 grid grid-cols-2 gap-3">
+					<dl class="mt-6 grid gap-3 sm:grid-cols-2">
 						<?php foreach ( $specs as $s ) : ?>
-							<div class="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
+							<div class="flex min-w-0 items-center gap-3 rounded-2xl border border-border bg-card p-4 <?php echo mb_strlen( $s['value'] ) > 28 ? 'sm:col-span-2' : ''; ?>">
 								<span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-signal/25 text-signal"><?php echo elfzwo_icon( $s['icon'], 'h-5 w-5', 2.2 ); ?></span>
 								<div class="min-w-0">
-									<dt class="text-[11px] uppercase tracking-widest text-muted-foreground"><?php echo esc_html( $s['label'] ); ?></dt>
-									<dd class="font-display text-lg leading-tight"><?php echo esc_html( $s['value'] ); ?></dd>
+									<dt class="text-[11px] uppercase tracking-widest text-muted-foreground [overflow-wrap:anywhere]"><?php echo esc_html( $s['label'] ); ?></dt>
+									<dd class="font-display text-lg leading-tight hyphens-auto [overflow-wrap:anywhere]"><?php echo esc_html( $s['value'] ); ?></dd>
 								</div>
 							</div>
 						<?php endforeach; ?>

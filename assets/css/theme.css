@@ -339,6 +339,23 @@ h1, h2, h3, h4 {
   transform: rotate(180deg);
 }
 
+/* Mobile-Menü: liegt als Overlay unter dem Header (absolute), damit der
+   Seiteninhalt beim Öffnen nicht nach unten rutscht. Ein-/Ausblenden bleibt
+   bei der "hidden"-Klasse (siehe nav.js); die Animation läuft beim Wechsel
+   von display:none automatisch und fehlt im Zweifel einfach. */
+@keyframes elfzwo-mobile-menu-in {
+  from { opacity: 0; transform: translateY(-0.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.elfzwo-mobile-menu {
+  animation: elfzwo-mobile-menu-in 0.2s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elfzwo-mobile-menu { animation: none; }
+}
+
 /* Sticky Header: unter statt hinter der fixierten WP-Adminleiste einordnen (nur für eingeloggte Redakteure sichtbar) */
 body.admin-bar header.sticky {
   top: 32px;

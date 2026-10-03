@@ -17,6 +17,12 @@
       if (iconOpen) iconOpen.classList.toggle("hidden", isOpen);
       if (iconClose) iconClose.classList.toggle("hidden", !isOpen);
     });
+
+    // Das Menü liegt als Overlay über dem Inhalt — ein Klick daneben schließt es.
+    document.addEventListener("click", function (e) {
+      if (menu.classList.contains("hidden") || menu.contains(e.target) || toggle.contains(e.target)) return;
+      toggle.click();
+    });
   }
 
   document.querySelectorAll(".nav-dropdown").forEach(function (dropdown) {

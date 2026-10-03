@@ -66,7 +66,7 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 		</div>
 	</div>
 
-	<div id="mobile-menu" class="hidden border-t border-border/60 bg-background lg:hidden">
+	<div id="mobile-menu" class="elfzwo-mobile-menu absolute inset-x-0 top-full hidden max-h-[calc(100dvh-5rem)] overflow-y-auto border-y border-border/60 bg-background shadow-xl lg:hidden">
 		<div class="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-4">
 			<?php foreach ( $elfzwo_nav_items as $elfzwo_mnode ) :
 				$elfzwo_mitem = $elfzwo_mnode['item'];

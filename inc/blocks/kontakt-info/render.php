@@ -80,7 +80,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 							<?php if ( ! empty( $person['telefon'] ) || ! empty( $person['email'] ) ) : ?>
 								<div class="mt-3 flex flex-wrap gap-2">
 									<?php if ( ! empty( $person['telefon'] ) ) : ?>
-										<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $person['telefon'] ) ); ?>" class="elfzwo-btn elfzwo-btn-secondary elfzwo-btn-sm"><?php echo elfzwo_icon( 'phone', 'h-4 w-4' ); ?> <?php echo esc_html( $person['telefon'] ); ?></a>
+										<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $person['telefon'] ) ); ?>" class="elfzwo-btn elfzwo-btn-secondary elfzwo-btn-sm whitespace-nowrap"><?php echo elfzwo_icon( 'phone', 'h-4 w-4 shrink-0' ); ?> <?php echo esc_html( $person['telefon'] ); ?></a>
 									<?php endif; ?>
 									<?php if ( ! empty( $person['email'] ) ) : ?>
 										<a href="mailto:<?php echo esc_attr( $person['email'] ); ?>" class="elfzwo-btn elfzwo-btn-secondary elfzwo-btn-sm max-w-full"><?php echo elfzwo_icon( 'mail', 'h-4 w-4 shrink-0' ); ?> <span class="truncate"><?php echo esc_html( $person['email'] ); ?></span></a>
