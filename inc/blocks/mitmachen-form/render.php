@@ -10,7 +10,7 @@ $steps       = array_values( array_filter( $attributes['steps'] ?? array(), func
 } ) );
 $datenschutz_id  = (int) ( $attributes['datenschutzPageId'] ?? 0 );
 $datenschutz_url = $datenschutz_id ? get_permalink( $datenschutz_id ) : '';
-$datenschutz_url = $datenschutz_url ?: home_url( '/datenschutzerklarung/' );
+$datenschutz_url = $datenschutz_url ?: home_url( '/datenschutzerklaerung/' );
 $post_id = get_the_ID();
 $status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET['mitmachen'] ) ) : '';
 
