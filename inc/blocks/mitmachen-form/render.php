@@ -13,11 +13,6 @@ $datenschutz_url = $datenschutz_id ? get_permalink( $datenschutz_id ) : '';
 $datenschutz_url = $datenschutz_url ?: home_url( '/datenschutzerklaerung/' );
 $post_id = get_the_ID();
 $status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET['mitmachen'] ) ) : '';
-
-$personen = array_values( array_filter( elfzwo_footer_personen(), function ( $person ) {
-	return ! empty( $person['name'] ) && ! empty( $person['telefon'] );
-} ) );
-$person   = $personen[0] ?? null;
 ?>
 <section class="mx-auto max-w-2xl px-5 pt-10 pb-16 md:pt-16 lg:pb-20">
 
@@ -98,12 +93,5 @@ $person   = $personen[0] ?? null;
 			</form>
 		<?php endif; ?>
 	</div>
-
-	<?php if ( $person ) : ?>
-		<p class="mt-5 text-center text-sm text-muted-foreground">
-			Lieber anrufen? <?php echo esc_html( $person['name'] ); ?>:
-			<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $person['telefon'] ) ); ?>" class="font-semibold text-signal underline-offset-4 hover:underline"><?php echo esc_html( $person['telefon'] ); ?></a>
-		</p>
-	<?php endif; ?>
 
 </section>
