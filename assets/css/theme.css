@@ -4,7 +4,7 @@
   --foreground: oklch(0.22 0.035 265);
   --card: oklch(0.99 0.006 260);
   --card-foreground: oklch(0.22 0.035 265);
-  --primary: #9d2626;
+  --primary: #d05561;
   --primary-foreground: oklch(0.98 0.01 85);
   --secondary: oklch(0.93 0.015 260);
   --secondary-foreground: oklch(0.22 0.035 265);
@@ -12,11 +12,11 @@
   --muted-foreground: oklch(0.48 0.03 265);
   --border: oklch(0.88 0.015 260);
 
-  --ember: #ca363e;
+  --ember: #d76f79;
   --ember-foreground: oklch(0.98 0.01 85);
-  --signal: #9d2626;
+  --signal: #d05561;
   --signal-foreground: oklch(0.98 0.01 85);
-  --wood: #923f3f;
+  --wood: #a82e3a;
   --wood-foreground: oklch(0.98 0.01 85);
   --cream: oklch(0.96 0.01 260);
   --ink: #1a1a1a;

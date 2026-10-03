@@ -40,16 +40,16 @@ window.elfzwoBlocks = ( function () {
 	// Werte 1:1 aus assets/js/tailwind-config.js übernommen (oklch-Farben in
 	// den entsprechenden Hex-Wert umgerechnet).
 	var ACCENT_PALETTE = [
-		{ key: 'signal', label: 'Signalrot', color: '#9d2626', bgOpacity: 30 },
-		{ key: 'ember', label: 'Ember-Orange', color: '#ca363e', bgOpacity: 40 },
-		{ key: 'wood', label: 'Holzbraun', color: '#923f3f', bgOpacity: 35 },
+		{ key: 'signal', label: 'Signalrot', color: '#d05561', bgOpacity: 30 },
+		{ key: 'ember', label: 'Ember-Orange', color: '#d76f79', bgOpacity: 40 },
+		{ key: 'wood', label: 'Holzbraun', color: '#a82e3a', bgOpacity: 35 },
 		{ key: 'ink', label: 'Tinte (Schwarz)', color: '#1a1a1a', bgOpacity: 20 },
 		{ key: 'cream', label: 'Creme (fast Weiß)', color: '#eef2f9', bgOpacity: null },
 		{ key: 'sky', label: 'Himmelblau', color: '#aec5ec', bgOpacity: 40 },
-		{ key: 'leaf', label: 'Weinrot', color: '#832626', bgOpacity: 40 },
+		{ key: 'leaf', label: 'Weinrot', color: '#8c2731', bgOpacity: 40 },
 	];
 
-	// "primary" ist im Theme exakt dieselbe Farbe wie "signal" (#9d2626) --
+	// "primary" ist im Theme exakt dieselbe Farbe wie "signal" (#d05561) --
 	// kein eigener Kreis, sondern ein Alias, damit bereits gespeicherte
 	// bg-primary/text-primary-Werte trotzdem als "Signalrot" erkannt werden.
 	var ACCENT_ALIASES = { primary: 'signal' };
