@@ -18,7 +18,8 @@
 				"type": "object",
 				"properties": {
 					"zeit": { "type": "string" },
-					"was": { "type": "string" }
+					"was": { "type": "string" },
+					"downloadId": { "type": "integer" }
 				}
 			}
 		}

@@ -14,10 +14,22 @@ $termine = $attributes['termine'] ?? array();
 			<?php foreach ( $termine as $termin ) :
 				$zeit = $termin['zeit'] ?? '';
 				$was  = $termin['was'] ?? '';
+
+				$download_id  = (int) ( $termin['downloadId'] ?? 0 );
+				$download_url = '';
+				if ( $download_id && 'publish' === get_post_status( $download_id ) && 'download' === get_post_type( $download_id ) ) {
+					$datei_id     = elfzwo_meta( $download_id, 'datei_id', '' );
+					$download_url = $datei_id ? wp_get_attachment_url( $datei_id ) : '';
+				}
 				?>
 				<div class="rounded-2xl border border-border bg-background p-6">
 					<div class="font-display text-2xl text-signal"><?php echo esc_html( $zeit ); ?></div>
 					<p class="mt-3 text-base text-muted-foreground"><?php echo esc_html( $was ); ?></p>
+					<?php if ( $download_url ) : ?>
+						<a href="<?php echo esc_url( $download_url ); ?>" download class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-signal hover:underline">
+							<?php echo elfzwo_icon( 'download', 'h-4 w-4' ); ?> <?php echo esc_html( get_the_title( $download_id ) ); ?>
+						</a>
+					<?php endif; ?>
 				</div>
 			<?php endforeach; ?>
 		</div>

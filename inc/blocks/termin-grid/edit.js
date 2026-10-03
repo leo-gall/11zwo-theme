@@ -4,12 +4,21 @@
 	var InspectorControls = wp.blockEditor.InspectorControls;
 	var PanelBody = wp.components.PanelBody;
 	var TextControl = wp.components.TextControl;
+	var SelectControl = wp.components.SelectControl;
 	var Button = wp.components.Button;
 
 	wp.blocks.registerBlockType( 'elfzwo/termin-grid', {
 		edit: function ( props ) {
 			var a = props.attributes;
 			var termine = a.termine || [];
+			var downloads = wp.data.useSelect( function ( select ) {
+				return select( 'core' ).getEntityRecords( 'postType', 'download', { per_page: -1, status: 'publish', orderby: 'title', order: 'asc' } );
+			}, [] );
+			var downloadOptions = [ { value: '0', label: downloads ? '— kein Download —' : 'Downloads werden geladen …' } ].concat(
+				( downloads || [] ).map( function ( download ) {
+					return { value: String( download.id ), label: download.title.rendered || '(ohne Titel)' };
+				} )
+			);
 
 			function set( key ) {
 				return function ( v ) {
@@ -58,6 +67,7 @@
 								{ key: idx, style: { marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #ddd' } },
 								el( TextControl, { label: 'Zeit', value: termin.zeit, onChange: function ( v ) { updateTermin( idx, 'zeit', v ); } } ),
 								el( TextControl, { label: 'Was', value: termin.was, onChange: function ( v ) { updateTermin( idx, 'was', v ); } } ),
+								el( SelectControl, { label: 'Download (optional)', value: String( termin.downloadId || 0 ), options: downloadOptions, onChange: function ( v ) { updateTermin( idx, 'downloadId', parseInt( v, 10 ) || 0 ); } } ),
 								el( Button, { variant: 'link', onClick: function () { moveTermin( idx, -1 ); }, disabled: idx === 0 }, '↑ Hoch' ),
 								el( Button, { variant: 'link', onClick: function () { moveTermin( idx, 1 ); }, disabled: idx === termine.length - 1 }, '↓ Runter' ),
 								el( Button, { variant: 'link', isDestructive: true, onClick: function () { removeTermin( idx ); } }, 'Entfernen' )
