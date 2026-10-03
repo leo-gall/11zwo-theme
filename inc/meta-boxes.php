@@ -93,7 +93,6 @@ function elfzwo_meta_box_schemas() {
 				'title'  => 'Aktuelles — Zusatzangaben',
 				'fields' => array(
 					array( 'key' => 'einsatz_bezug', 'label' => 'Zugehöriger Einsatz (optional)', 'type' => 'post_select', 'post_type' => 'einsatz' ),
-					array( 'key' => 'bilder', 'label' => 'Weitere Bilder (werden zusammen mit dem Beitragsbild als Carousel angezeigt)', 'type' => 'media_gallery' ),
 				),
 			),
 		),
@@ -381,25 +380,6 @@ function elfzwo_render_meta_field( $field, $value ) {
 			);
 			break;
 
-		case 'media_gallery':
-			$gallery_ids = $value ? array_filter( array_map( 'intval', explode( ',', $value ) ) ) : array();
-			?>
-			<div class="elfzwo-gallery-field">
-				<input type="hidden" class="elfzwo-gallery-input" id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( implode( ',', $gallery_ids ) ); ?>" />
-				<div class="elfzwo-gallery-preview">
-					<?php foreach ( $gallery_ids as $gallery_id ) : ?>
-						<div class="elfzwo-gallery-item" data-id="<?php echo esc_attr( $gallery_id ); ?>">
-							<?php echo wp_get_attachment_image( $gallery_id, 'thumbnail' ); ?>
-							<button type="button" class="elfzwo-gallery-item-remove" title="Entfernen">&times;</button>
-						</div>
-					<?php endforeach; ?>
-				</div>
-				<button type="button" class="button elfzwo-gallery-select">Bilder auswählen</button>
-				<p class="description">Reihenfolge der Auswahl bestimmt die Reihenfolge im Carousel.</p>
-			</div>
-			<?php
-			break;
-
 		default:
 			printf(
 				'<input type="text" id="%1$s" name="%2$s" value="%3$s" class="large-text" placeholder="%4$s" />',
@@ -497,11 +477,6 @@ function elfzwo_save_meta_boxes( $post_id, $post ) {
 				}
 				if ( 'post_multiselect' === $field['type'] ) {
 					$ids = isset( $posted[ $key ] ) && is_array( $posted[ $key ] ) ? array_map( 'intval', $posted[ $key ] ) : array();
-					update_post_meta( $post_id, $meta_key, implode( ',', $ids ) );
-					continue;
-				}
-				if ( 'media_gallery' === $field['type'] ) {
-					$ids = isset( $posted[ $key ] ) ? array_filter( array_map( 'intval', explode( ',', $posted[ $key ] ) ) ) : array();
 					update_post_meta( $post_id, $meta_key, implode( ',', $ids ) );
 					continue;
 				}
@@ -751,40 +726,6 @@ function elfzwo_media_field_assets( $hook ) {
 				$(this).hide();
 			});
 
-			function galleryIds(wrap){
-				var val = wrap.find('.elfzwo-gallery-input').val();
-				return val ? val.split(',').filter(Boolean) : [];
-			}
-			function galleryItemHtml(id, url){
-				return '<div class=\"elfzwo-gallery-item\" data-id=\"'+ id +'\"><img src=\"'+ url +'\" /><button type=\"button\" class=\"elfzwo-gallery-item-remove\" title=\"Entfernen\">&times;</button></div>';
-			}
-			$(document).on('click', '.elfzwo-gallery-select', function(e){
-				e.preventDefault();
-				var wrap = $(this).closest('.elfzwo-gallery-field');
-				var frame = wp.media({ title: 'Bilder auswählen', multiple: true, library: { type: 'image' } });
-				frame.on('select', function(){
-					var selection = frame.state().get('selection').toJSON();
-					var ids = galleryIds(wrap);
-					selection.forEach(function(att){
-						if (ids.indexOf(String(att.id)) === -1) {
-							ids.push(String(att.id));
-							var thumbUrl = att.sizes && att.sizes.thumbnail ? att.sizes.thumbnail.url : att.url;
-							wrap.find('.elfzwo-gallery-preview').append(galleryItemHtml(att.id, thumbUrl));
-						}
-					});
-					wrap.find('.elfzwo-gallery-input').val(ids.join(','));
-				});
-				frame.open();
-			});
-			$(document).on('click', '.elfzwo-gallery-item-remove', function(e){
-				e.preventDefault();
-				var item = $(this).closest('.elfzwo-gallery-item');
-				var wrap = item.closest('.elfzwo-gallery-field');
-				var removeId = String(item.data('id'));
-				var ids = galleryIds(wrap).filter(function(id){ return id !== removeId; });
-				wrap.find('.elfzwo-gallery-input').val(ids.join(','));
-				item.remove();
-			});
 		});"
 	);
 }

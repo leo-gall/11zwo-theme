@@ -332,23 +332,6 @@ h1, h2, h3, h4 {
   transform: rotate(180deg);
 }
 
-/* Beitrags-Bildercarousel: per JS (Pointer Events) gezogen, Track per transform verschoben */
-.elfzwo-carousel-track {
-  cursor: grab;
-  will-change: transform;
-}
-
-.elfzwo-carousel-track.elfzwo-carousel-dragging {
-  cursor: grabbing;
-}
-
-/* !important nötig: die Tailwind-CDN-Utility "bg-white/40" auf demselben Element
-   hat dieselbe Selektor-Spezifität und lädt zeitlich später, würde die Aktiv-Farbe
-   also sonst wieder überschreiben — dadurch war kein Punkt als aktiv erkennbar. */
-.elfzwo-carousel-dot-active {
-  background-color: #fff !important;
-}
-
 /* Sticky Header: unter statt hinter der fixierten WP-Adminleiste einordnen (nur für eingeloggte Redakteure sichtbar) */
 body.admin-bar header.sticky {
   top: 32px;

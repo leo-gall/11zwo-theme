@@ -33,12 +33,12 @@ function elfzwo_render_aktuelles_feed_cards( $query ) {
 	while ( $query->have_posts() ) :
 		$query->the_post();
 		$kategorie_line = elfzwo_post_category_line( get_the_ID() );
-		$image          = elfzwo_post_cover_image_url( get_the_ID(), 'large', get_template_directory_uri() . '/assets/images/news-2.jpg' );
+		$image          = elfzwo_post_cover_image_url( get_the_ID(), 'large' );
 		?>
 		<article class="group flex flex-col">
 			<a href="<?php the_permalink(); ?>">
-				<img src="<?php echo esc_url( $image ); ?>" alt="<?php the_title_attribute(); ?>" width="1200" height="800" loading="lazy" class="aspect-[4/3] w-full rounded-[1rem] object-cover">
-				<?php if ( $kategorie_line ) : ?><p class="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-signal"><?php echo esc_html( $kategorie_line ); ?></p><?php endif; ?>
+				<?php if ( $image ) : ?><img src="<?php echo esc_url( $image ); ?>" alt="<?php the_title_attribute(); ?>" width="1200" height="800" loading="lazy" class="mb-5 aspect-[4/3] w-full rounded-[1rem] object-cover"><?php endif; ?>
+				<?php if ( $kategorie_line ) : ?><p class="text-xs font-semibold uppercase tracking-[0.18em] text-signal"><?php echo esc_html( $kategorie_line ); ?></p><?php endif; ?>
 				<h3 class="mt-2 font-display text-3xl leading-tight"><?php the_title(); ?></h3>
 				<p class="mt-3 text-muted-foreground"><?php echo esc_html( elfzwo_excerpt( get_the_ID(), 55 ) ); ?></p>
 				<p class="mt-3 text-xs uppercase tracking-widest text-muted-foreground"><?php echo esc_html( get_the_date() ); ?></p>

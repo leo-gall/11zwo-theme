@@ -77,10 +77,6 @@ function elfzwo_enqueue_assets() {
 		wp_enqueue_script( 'elfzwo-faq-accordion', get_template_directory_uri() . '/assets/js/faq-accordion.js', array(), filemtime( get_template_directory() . '/assets/js/faq-accordion.js' ), true );
 	}
 
-	if ( is_singular( 'post' ) && count( elfzwo_post_all_image_ids( get_queried_object_id() ) ) > 2 ) {
-		wp_enqueue_script( 'elfzwo-post-carousel', get_template_directory_uri() . '/assets/js/post-carousel.js', array(), filemtime( get_template_directory() . '/assets/js/post-carousel.js' ), true );
-	}
-
 	if ( has_block( 'elfzwo/section-heading' ) ) {
 		wp_enqueue_script( 'elfzwo-nina-warnungen', get_template_directory_uri() . '/assets/js/nina-warnungen.js', array(), filemtime( get_template_directory() . '/assets/js/nina-warnungen.js' ), true );
 	}

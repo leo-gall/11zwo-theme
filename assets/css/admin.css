@@ -80,43 +80,6 @@
 	width: 100%;
 }
 
-.elfzwo-gallery-preview {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 8px;
-	margin-bottom: 8px;
-}
-
-.elfzwo-gallery-item {
-	position: relative;
-	width: 80px;
-	height: 80px;
-}
-
-.elfzwo-gallery-item img {
-	width: 80px;
-	height: 80px;
-	object-fit: cover;
-	border-radius: 4px;
-	border: 1px solid #dcdcde;
-}
-
-.elfzwo-gallery-item-remove {
-	position: absolute;
-	top: -6px;
-	right: -6px;
-	width: 20px;
-	height: 20px;
-	line-height: 18px;
-	border-radius: 50%;
-	border: 1px solid #dcdcde;
-	background: #fff;
-	color: #d63638;
-	font-size: 14px;
-	cursor: pointer;
-	padding: 0;
-}
-
 /* Footer-Boxen unter "Design → Menüs" (schmale Spalte). */
 .elfzwo-footer-box label {
 	display: block;

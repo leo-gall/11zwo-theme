@@ -44,37 +44,9 @@ function elfzwo_post_category_line( $post_id ) {
 	return implode( ' · ', wp_list_pluck( $categories, 'name' ) );
 }
 
-/** Zusätzliche Bilder eines Beitrags ("bilder"-Galerie-Feld) als Attachment-ID-Array. */
-function elfzwo_post_gallery_ids( $post_id ) {
-	$ids = array_filter( array_map( 'intval', explode( ',', elfzwo_meta( $post_id, 'bilder', '' ) ) ) );
-	return array_values( $ids );
-}
-
-/**
- * Alle Bilder eines Beitrags für das Carousel: Beitragsbild (falls gesetzt)
- * zuerst — dient als Vorschaubild in Listen —, danach die weiteren
- * Galerie-Bilder, doppelte IDs entfernt.
- */
-function elfzwo_post_all_image_ids( $post_id ) {
-	$ids = array();
-	if ( has_post_thumbnail( $post_id ) ) {
-		$ids[] = (int) get_post_thumbnail_id( $post_id );
-	}
-	foreach ( elfzwo_post_gallery_ids( $post_id ) as $gallery_id ) {
-		if ( ! in_array( $gallery_id, $ids, true ) ) {
-			$ids[] = $gallery_id;
-		}
-	}
-	return $ids;
-}
-
-/** Erstes verfügbares Bild eines Beitrags (Beitragsbild oder erstes Galerie-Bild) als URL, mit Platzhalter-Fallback. */
-function elfzwo_post_cover_image_url( $post_id, $size = 'large', $placeholder = '' ) {
-	$ids = elfzwo_post_all_image_ids( $post_id );
-	if ( $ids ) {
-		return wp_get_attachment_image_url( $ids[0], $size );
-	}
-	return $placeholder;
+/** Beitragsbild eines Beitrags als URL, oder leerer String, wenn keins gesetzt ist. */
+function elfzwo_post_cover_image_url( $post_id, $size = 'large' ) {
+	return has_post_thumbnail( $post_id ) ? (string) get_the_post_thumbnail_url( $post_id, $size ) : '';
 }
 
 function elfzwo_initials( $name ) {
@@ -165,3 +137,70 @@ function elfzwo_migrate_team_button() {
 	update_option( 'elfzwo_team_button_migrated', 1 );
 }
 add_action( 'init', 'elfzwo_migrate_team_button', 30 );
+
+/**
+ * Das frühere Feld "Weitere Bilder" (Carousel) gibt es nicht mehr. Läuft
+ * einmalig nach dem Update (auch auf dem Produktivserver, beim ersten
+ * Seitenaufruf): Hat ein Beitrag kein Beitragsbild, wird das erste Galerie-Bild
+ * zum Beitragsbild; die übrigen Bilder werden wie über "Dateien hinzufügen"
+ * ans Ende des Beitragstexts gehängt. Danach wird das alte Feld gelöscht.
+ */
+function elfzwo_migrate_post_gallery() {
+	if ( get_option( 'elfzwo_post_gallery_migrated' ) ) {
+		return;
+	}
+	if ( get_transient( 'elfzwo_post_gallery_migration_lock' ) ) {
+		return;
+	}
+	set_transient( 'elfzwo_post_gallery_migration_lock', 1, 5 * MINUTE_IN_SECONDS );
+
+	$posts = get_posts(
+		array(
+			'post_type'        => 'post',
+			'post_status'      => 'any',
+			'numberposts'      => -1,
+			'meta_key'         => '_elfzwo_bilder',
+			'suppress_filters' => true,
+		)
+	);
+	foreach ( $posts as $post ) {
+		$ids = array_values( array_filter( array_map( 'intval', explode( ',', (string) get_post_meta( $post->ID, '_elfzwo_bilder', true ) ) ) ) );
+		$ids = array_values( array_filter( $ids, 'wp_attachment_is_image' ) );
+
+		$thumbnail_id = (int) get_post_thumbnail_id( $post->ID );
+		if ( ! $thumbnail_id && $ids ) {
+			$thumbnail_id = array_shift( $ids );
+			set_post_thumbnail( $post->ID, $thumbnail_id );
+		}
+
+		$images = '';
+		foreach ( $ids as $id ) {
+			$src = wp_get_attachment_image_src( $id, 'large' );
+			if ( $id === $thumbnail_id || ! $src || false !== strpos( $post->post_content, 'wp-image-' . $id . '"' ) ) {
+				continue;
+			}
+			$alt     = get_post_meta( $id, '_wp_attachment_image_alt', true );
+			$images .= sprintf(
+				"\n\n" . '<img class="alignnone size-large wp-image-%1$d" src="%2$s" alt="%3$s" width="%4$d" height="%5$d" />',
+				$id,
+				esc_url( $src[0] ),
+				esc_attr( $alt ),
+				(int) $src[1],
+				(int) $src[2]
+			);
+		}
+		if ( $images ) {
+			wp_update_post(
+				array(
+					'ID'           => $post->ID,
+					'post_content' => wp_slash( rtrim( $post->post_content ) . $images ),
+				)
+			);
+		}
+		delete_post_meta( $post->ID, '_elfzwo_bilder' );
+	}
+
+	update_option( 'elfzwo_post_gallery_migrated', 1 );
+	delete_transient( 'elfzwo_post_gallery_migration_lock' );
+}
+add_action( 'init', 'elfzwo_migrate_post_gallery', 30 );
