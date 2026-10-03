@@ -62,3 +62,9 @@ function elfzwo_beitrag_mce_content_style( $init ) {
 	return $init;
 }
 add_filter( 'tiny_mce_before_init', 'elfzwo_beitrag_mce_content_style' );
+
+/** Beiträge haben keine Schlagwörter (Seitenleiste, Menüpunkt und Listenspalte entfallen). */
+function elfzwo_beitrag_ohne_schlagwoerter() {
+	unregister_taxonomy_for_object_type( 'post_tag', 'post' );
+}
+add_action( 'init', 'elfzwo_beitrag_ohne_schlagwoerter' );

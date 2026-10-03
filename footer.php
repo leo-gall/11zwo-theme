@@ -117,7 +117,7 @@
 
 	<div class="border-t border-border">
 		<div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-6 text-xs text-muted-foreground md:px-8">
-			<span>© <?php echo esc_html( gmdate( 'Y' ) ); ?> Freiwillige Feuerwehr Greifenberg e.V. · Gemeinnützig · Ehrenamtlich</span>
+			<span>© <?php echo esc_html( gmdate( 'Y' ) ); ?> Freiwillige Feuerwehr Greifenberg e.V.</span>
 			<span class="flex items-center gap-4">
 				<a href="<?php echo esc_url( home_url( '/impressum/' ) ); ?>" class="transition-colors hover:text-signal">Impressum</a>
 				<a href="<?php echo esc_url( home_url( '/datenschutzerklaerung/' ) ); ?>" class="transition-colors hover:text-signal">Datenschutz</a>
