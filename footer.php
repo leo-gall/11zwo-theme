@@ -22,7 +22,7 @@
 		<!-- Brand -->
 		<div>
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="group flex items-center gap-3">
-				<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" alt="Freiwillige Feuerwehr Greifenberg" class="h-[102px] w-auto transition-transform duration-200 group-hover:scale-105">
+				<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" alt="Freiwillige Feuerwehr Greifenberg" class="h-16 w-auto transition-transform duration-200 group-hover:scale-105">
 				<span class="flex flex-col leading-tight">
 					<span class="font-display text-lg font-semibold text-foreground">Feuerwehr Greifenberg</span>
 					<span class="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Seit <?php echo esc_html( elfzwo_option( 'elfzwo_gegruendet', '1899' ) ); ?></span>
