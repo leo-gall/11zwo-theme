@@ -88,6 +88,7 @@ require get_template_directory() . '/inc/helpers.php';
 require get_template_directory() . '/inc/person-wappen.php';
 require get_template_directory() . '/inc/post-types.php';
 require get_template_directory() . '/inc/meta-boxes.php';
+require get_template_directory() . '/inc/beitrag-editor.php';
 require get_template_directory() . '/inc/einsatzstichwoerter.php';
 require get_template_directory() . '/inc/kategorien.php';
 require get_template_directory() . '/inc/einsatz-nummern.php';

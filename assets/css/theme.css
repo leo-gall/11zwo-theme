@@ -220,6 +220,13 @@ h1, h2, h3, h4 {
   font-weight: 700;
 }
 
+.prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 1rem;
+}
+
 .prose hr {
   margin: 2em 0;
   border-color: var(--border);
