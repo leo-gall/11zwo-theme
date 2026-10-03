@@ -62,7 +62,7 @@ $person   = $personen[0] ?? null;
 				<?php wp_nonce_field( 'elfzwo_mitmachen', 'elfzwo_mitmachen_nonce' ); ?>
 
 				<?php if ( 'error' === $status ) : ?>
-					<p class="mb-6 flex items-center gap-2 rounded-[1rem] border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive"><?php echo elfzwo_icon( 'triangle-alert', 'h-4 w-4 shrink-0' ); ?> Bitte fülle Name und Kontakt aus.</p>
+					<p class="mb-6 flex items-center gap-2 rounded-[1rem] border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive"><?php echo elfzwo_icon( 'triangle-alert', 'h-4 w-4 shrink-0' ); ?> Bitte gib deinen Namen und eine gültige E-Mail-Adresse an.</p>
 				<?php endif; ?>
 
 				<fieldset>
@@ -86,8 +86,8 @@ $person   = $personen[0] ?? null;
 						<input required name="name" autocomplete="name" placeholder="Max Muster" class="mt-1.5 w-full rounded-[1rem] border-2 border-border bg-background px-4 py-3 text-base outline-none transition focus:border-signal">
 					</label>
 					<label class="block">
-						<span class="text-sm font-semibold">E-Mail oder Handynummer</span>
-						<input required name="kontakt" placeholder="max@example.de oder 0170 …" class="mt-1.5 w-full rounded-[1rem] border-2 border-border bg-background px-4 py-3 text-base outline-none transition focus:border-signal">
+						<span class="text-sm font-semibold">Deine E-Mail-Adresse</span>
+						<input required type="email" name="kontakt" autocomplete="email" placeholder="max@example.de" class="mt-1.5 w-full rounded-[1rem] border-2 border-border bg-background px-4 py-3 text-base outline-none transition focus:border-signal">
 					</label>
 				</div>
 

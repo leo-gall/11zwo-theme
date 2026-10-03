@@ -121,17 +121,18 @@ function elfzwo_handle_mitmachen_submit() {
 
 	$interesse = isset( $_POST['interesse'] ) ? sanitize_text_field( wp_unslash( $_POST['interesse'] ) ) : '';
 	$name      = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
-	$kontakt   = isset( $_POST['kontakt'] ) ? sanitize_text_field( wp_unslash( $_POST['kontakt'] ) ) : '';
+	// Nur noch E-Mail-Adressen (keine Telefonnummern) als Kontaktweg.
+	$kontakt   = isset( $_POST['kontakt'] ) ? sanitize_email( wp_unslash( $_POST['kontakt'] ) ) : '';
 	$page_id   = isset( $_POST['redirect_id'] ) ? absint( $_POST['redirect_id'] ) : 0;
 
-	if ( '' === $name || '' === $kontakt ) {
+	if ( '' === $name || ! is_email( $kontakt ) ) {
 		wp_safe_redirect( add_query_arg( 'mitmachen', 'error', get_permalink( $page_id ) ) );
 		exit;
 	}
 
 	$config = elfzwo_mitmachen_config( $page_id, $interesse );
 	$mail   = elfzwo_mitmachen_mail_inhalt( $config, $name, $kontakt, $interesse );
-	wp_mail( elfzwo_mitmachen_empfaenger( $config['empfaenger'] ), $mail['betreff'], $mail['text'] );
+	wp_mail( elfzwo_mitmachen_empfaenger( $config['empfaenger'] ), $mail['betreff'], $mail['text'], array( 'Reply-To: ' . $kontakt ) );
 
 	wp_safe_redirect( add_query_arg( 'mitmachen', 'success', get_permalink( $page_id ) ) );
 	exit;
