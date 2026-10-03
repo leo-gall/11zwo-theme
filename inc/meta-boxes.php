@@ -93,7 +93,7 @@ function elfzwo_meta_box_schemas() {
 				'id'     => 'elfzwo_post_details',
 				'title'  => 'Aktuelles — Zusatzangaben',
 				'fields' => array(
-					array( 'key' => 'kategorien', 'label' => 'Kategorien', 'type' => 'taxonomy_checkboxes', 'taxonomy' => 'category' ),
+					array( 'key' => 'kategorie', 'label' => 'Kategorie', 'type' => 'taxonomy_select', 'taxonomy' => 'category' ),
 				),
 			),
 		),
@@ -147,9 +147,6 @@ function elfzwo_render_meta_box( $post, $box ) {
 		if ( 'taxonomy_select' === $field['type'] ) {
 			$current = wp_get_object_terms( $post->ID, $field['taxonomy'], array( 'fields' => 'ids' ) );
 			$value   = $current && ! is_wp_error( $current ) ? (string) $current[0] : '';
-		} elseif ( 'taxonomy_checkboxes' === $field['type'] ) {
-			$current = wp_get_object_terms( $post->ID, $field['taxonomy'], array( 'fields' => 'ids' ) );
-			$value   = is_wp_error( $current ) ? array() : array_map( 'intval', $current );
 		} else {
 			$value = get_post_meta( $post->ID, '_elfzwo_' . $field['key'], true );
 		}
@@ -247,23 +244,12 @@ function elfzwo_render_meta_field( $field, $value ) {
 			echo '</select>';
 			break;
 
-		case 'taxonomy_checkboxes':
-			// Feste Kategorien (inc/kategorien.php) in Listenreihenfolge.
-			foreach ( elfzwo_kategorien_terms( $field['taxonomy'] ) as $term ) {
-				printf(
-					'<label style="display:inline-block;margin:0 18px 6px 0;"><input type="checkbox" name="%1$s[]" value="%2$d" %3$s /> %4$s</label>',
-					esc_attr( $name ),
-					(int) $term->term_id,
-					checked( in_array( (int) $term->term_id, (array) $value, true ), true, false ),
-					esc_html( $term->name )
-				);
-			}
-			break;
-
 		case 'taxonomy_select':
-			if ( ! is_taxonomy_hierarchical( $field['taxonomy'] ) ) {
+			$fixed = in_array( $field['taxonomy'], elfzwo_kategorien_taxonomies(), true );
+			if ( $fixed || ! is_taxonomy_hierarchical( $field['taxonomy'] ) ) {
 				// Flache Taxonomie (z. B. Einsatzort): einfaches <select>, im Backend per Taxonomie-Verwaltung erweiterbar.
-				$terms = get_terms( array( 'taxonomy' => $field['taxonomy'], 'hide_empty' => false, 'orderby' => 'name' ) );
+				// Feste Kategorien (inc/kategorien.php) in Listenreihenfolge.
+				$terms = $fixed ? elfzwo_kategorien_terms( $field['taxonomy'] ) : get_terms( array( 'taxonomy' => $field['taxonomy'], 'hide_empty' => false, 'orderby' => 'name' ) );
 				printf( '<select id="%1$s" name="%2$s">', esc_attr( $id ), esc_attr( $name ) );
 				echo '<option value="">— keine Auswahl —</option>';
 				foreach ( $terms as $term ) {
@@ -497,22 +483,6 @@ function elfzwo_save_meta_boxes( $post_id, $post ) {
 					update_post_meta( $post_id, $meta_key, implode( ',', $ids ) );
 					continue;
 				}
-				if ( 'taxonomy_checkboxes' === $field['type'] ) {
-					$ids = isset( $posted[ $key ] ) && is_array( $posted[ $key ] ) ? array_map( 'intval', $posted[ $key ] ) : array();
-					$ids = array_values(
-						array_filter(
-							$ids,
-							function ( $term_id ) use ( $field ) {
-								return elfzwo_kategorie_is_valid_term( $term_id, $field['taxonomy'] );
-							}
-						)
-					);
-					if ( 'category' === $field['taxonomy'] && ! $ids ) {
-						$ids = array( (int) get_option( 'default_category' ) );
-					}
-					wp_set_object_terms( $post_id, $ids, $field['taxonomy'], false );
-					continue;
-				}
 				if ( 'repeater' === $field['type'] ) {
 					$rows = array();
 					if ( isset( $posted[ $key ] ) && is_array( $posted[ $key ] ) ) {
@@ -545,6 +515,9 @@ function elfzwo_save_meta_boxes( $post_id, $post ) {
 					}
 					if ( in_array( $field['taxonomy'], elfzwo_kategorien_taxonomies(), true ) && $term_id && ! elfzwo_kategorie_is_valid_term( $term_id, $field['taxonomy'] ) ) {
 						continue;
+					}
+					if ( 'category' === $field['taxonomy'] && ! $term_id ) {
+						$term_id = (int) get_option( 'default_category' );
 					}
 					wp_set_object_terms( $post_id, $term_id ? array( $term_id ) : array(), $field['taxonomy'], false );
 					continue;
