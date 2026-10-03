@@ -12,9 +12,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/** Feste Kategorien in Anzeigereihenfolge; die erste ist die Standard-Kategorie. */
-function elfzwo_kategorien() {
+/** Feste Kategorien je Taxonomie in Anzeigereihenfolge; die erste ist die Standard-Kategorie. */
+function elfzwo_kategorien( $taxonomy ) {
+	if ( 'download_kategorie' === $taxonomy ) {
+		return array( 'Allgemein', 'Aktive Mannschaft', 'Bürgerinformationen', 'Jugend', 'Verein' );
+	}
 	return array( 'Allgemein', 'Bürgerinformationen', 'Einsatzbericht', 'Jugendfeuerwehr', 'Kinderfeuerwehr', 'Verein' );
+}
+
+/** Alte Begriffe, die beim Abgleich in eine bestimmte neue Kategorie wandern (sonst "Allgemein"). */
+function elfzwo_kategorien_umzug( $taxonomy ) {
+	if ( 'download_kategorie' === $taxonomy ) {
+		return array(
+			'Jugendfeuerwehr' => 'Jugend',
+			'Kinderfeuerwehr' => 'Jugend',
+			'Einsatzbericht'  => 'Aktive Mannschaft',
+		);
+	}
+	return array();
 }
 
 /** Taxonomien, für die die feste Liste gilt. */
@@ -41,7 +56,7 @@ add_filter( 'register_taxonomy_args', 'elfzwo_kategorien_taxonomy_args', 10, 2 )
 /** Begriffe der festen Liste einer Taxonomie in Listenreihenfolge (Name => WP_Term). */
 function elfzwo_kategorien_terms( $taxonomy ) {
 	$terms = array();
-	foreach ( elfzwo_kategorien() as $name ) {
+	foreach ( elfzwo_kategorien( $taxonomy ) as $name ) {
 		$term = get_term_by( 'name', $name, $taxonomy );
 		if ( $term ) {
 			$terms[ $name ] = $term;
@@ -52,16 +67,20 @@ function elfzwo_kategorien_terms( $taxonomy ) {
 
 function elfzwo_kategorie_is_valid_term( $term_id, $taxonomy ) {
 	$term = get_term( (int) $term_id, $taxonomy );
-	return $term && ! is_wp_error( $term ) && in_array( wp_specialchars_decode( $term->name, ENT_QUOTES ), elfzwo_kategorien(), true );
+	return $term && ! is_wp_error( $term ) && in_array( wp_specialchars_decode( $term->name, ENT_QUOTES ), elfzwo_kategorien( $taxonomy ), true );
 }
 
 /**
  * Legt fehlende Kategorien an; Beiträge/Downloads in Kategorien, die nicht
- * (mehr) in der Liste stehen, wandern nach "Allgemein", die alten Begriffe
- * werden gelöscht.
+ * (mehr) in der Liste stehen, wandern laut elfzwo_kategorien_umzug() bzw.
+ * nach "Allgemein", die alten Begriffe werden gelöscht.
  */
 function elfzwo_sync_kategorien() {
-	$version = md5( wp_json_encode( array( elfzwo_kategorien(), elfzwo_kategorien_taxonomies() ) ) );
+	$all = array();
+	foreach ( elfzwo_kategorien_taxonomies() as $taxonomy ) {
+		$all[ $taxonomy ] = array( elfzwo_kategorien( $taxonomy ), elfzwo_kategorien_umzug( $taxonomy ) );
+	}
+	$version = md5( wp_json_encode( $all ) );
 	if ( get_option( 'elfzwo_kategorien_version' ) === $version ) {
 		return;
 	}
@@ -70,9 +89,10 @@ function elfzwo_sync_kategorien() {
 	}
 	set_transient( 'elfzwo_kategorien_sync_lock', 1, 5 * MINUTE_IN_SECONDS );
 
-	$wanted = elfzwo_kategorien();
 	foreach ( elfzwo_kategorien_taxonomies() as $taxonomy ) {
-		$ids = array();
+		$wanted = elfzwo_kategorien( $taxonomy );
+		$umzug  = elfzwo_kategorien_umzug( $taxonomy );
+		$ids    = array();
 		foreach ( $wanted as $name ) {
 			$term = get_term_by( 'name', $name, $taxonomy );
 			if ( ! $term ) {
@@ -97,9 +117,11 @@ function elfzwo_sync_kategorien() {
 			if ( in_array( (int) $term->term_id, $ids, true ) ) {
 				continue;
 			}
-			$objects = get_objects_in_term( $term->term_id, $taxonomy );
+			$name      = wp_specialchars_decode( $term->name, ENT_QUOTES );
+			$target_id = isset( $umzug[ $name ], $ids[ $umzug[ $name ] ] ) ? $ids[ $umzug[ $name ] ] : $fallback_id;
+			$objects   = get_objects_in_term( $term->term_id, $taxonomy );
 			foreach ( is_wp_error( $objects ) ? array() : $objects as $object_id ) {
-				wp_add_object_terms( (int) $object_id, $fallback_id, $taxonomy );
+				wp_add_object_terms( (int) $object_id, $target_id, $taxonomy );
 			}
 			wp_delete_term( $term->term_id, $taxonomy );
 		}

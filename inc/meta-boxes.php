@@ -94,7 +94,6 @@ function elfzwo_meta_box_schemas() {
 				'title'  => 'Aktuelles — Zusatzangaben',
 				'fields' => array(
 					array( 'key' => 'kategorien', 'label' => 'Kategorien', 'type' => 'taxonomy_checkboxes', 'taxonomy' => 'category' ),
-					array( 'key' => 'einsatz_bezug', 'label' => 'Zugehöriger Einsatz (optional)', 'type' => 'post_select', 'post_type' => 'einsatz' ),
 				),
 			),
 		),

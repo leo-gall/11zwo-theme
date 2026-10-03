@@ -204,3 +204,16 @@ function elfzwo_migrate_post_gallery() {
 	delete_transient( 'elfzwo_post_gallery_migration_lock' );
 }
 add_action( 'init', 'elfzwo_migrate_post_gallery', 30 );
+
+/**
+ * Beiträge lassen sich keinem Einsatz mehr zuordnen. Läuft einmalig nach dem
+ * Update (auch auf dem Produktivserver) und löscht die alten Zuordnungen.
+ */
+function elfzwo_migrate_drop_einsatz_bezug() {
+	if ( get_option( 'elfzwo_einsatz_bezug_dropped' ) ) {
+		return;
+	}
+	delete_post_meta_by_key( '_elfzwo_einsatz_bezug' );
+	update_option( 'elfzwo_einsatz_bezug_dropped', 1 );
+}
+add_action( 'init', 'elfzwo_migrate_drop_einsatz_bezug', 30 );

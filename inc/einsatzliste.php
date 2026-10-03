@@ -120,8 +120,7 @@ function elfzwo_einsatzliste_render( $post_id, array $data ) {
 					$month = $ts ? $months_short[ (int) gmdate( 'n', $ts ) - 1 ] : '';
 					$ort   = elfzwo_einsatzort_name( $e->ID );
 
-					$linked_post = elfzwo_einsatz_linked_post( $e->ID );
-					$target_url  = $linked_post ? get_permalink( $linked_post ) : get_permalink( $e );
+					$target_url = get_permalink( $e );
 					?>
 					<tr class="cursor-pointer border-b border-border last:border-0 hover:bg-secondary" onclick="window.location='<?php echo esc_url( $target_url ); ?>'">
 						<td class="py-3 align-top">

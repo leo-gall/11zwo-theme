@@ -1,28 +1,11 @@
 <?php
 /**
  * Wiederverwendbare "Einsatzdaten"-Card (Fakten-Grid, Fahrzeuge, weitere
- * Einsatzkräfte) — wird sowohl auf der Einsatz-Detailseite als auch, wenn
- * ein Beitrag auf einen Einsatz verweist, im Beitrag selbst gezeigt.
+ * Einsatzkräfte) für die Einsatz-Detailseite.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-}
-
-/**
- * Ermittelt den Beitrag (Aktuelles), der auf diesen Einsatz verweist —
- * also die Umkehrung des "Zugehöriger Einsatz"-Feldes bei Beiträgen.
- */
-function elfzwo_einsatz_linked_post( $einsatz_id ) {
-	$posts = get_posts(
-		array(
-			'post_type'      => 'post',
-			'posts_per_page' => 1,
-			'meta_key'       => '_elfzwo_einsatz_bezug',
-			'meta_value'     => $einsatz_id,
-		)
-	);
-	return $posts ? $posts[0] : null;
 }
 
 /**
