@@ -49,7 +49,7 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 			<img
 				src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>"
 				alt="Freiwillige Feuerwehr Greifenberg"
-				class="h-14 w-auto transition-transform duration-200 group-hover:scale-105 md:h-16"
+				class="h-[90px] w-auto transition-transform duration-200 group-hover:scale-105 md:h-[102px]"
 			>
 		</a>
 
