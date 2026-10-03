@@ -84,7 +84,7 @@
 					<span><?php echo esc_html( elfzwo_option( 'elfzwo_geraetehaus_zeiten', 'Sa 11:00 – 12:30 Uhr' ) ); ?><br><span class="text-muted-foreground"><?php echo esc_html( elfzwo_option( 'elfzwo_geraetehaus_zeiten_2', 'Kameraden vor Ort' ) ); ?></span></span>
 				</li>
 				<li class="flex gap-3">
-					<span class="flex h-4 shrink-0 items-center"><?php echo elfzwo_icon( 'mail', 'h-4 w-4 text-signal' ); ?></span>
+					<span class="flex h-4 shrink-0 items-center -my-px"><?php echo elfzwo_icon( 'mail', 'h-4 w-4 text-signal' ); ?></span>
 					<?php $kontakt_email = elfzwo_option( 'elfzwo_kontakt_email', 'feuerwehr@greifenberg-ammersee.de' ); ?>
 					<a href="mailto:<?php echo esc_attr( $kontakt_email ); ?>" class="break-words text-xs transition-colors hover:text-signal"><?php echo elfzwo_wbr_email( $kontakt_email ); // phpcs:ignore -- bereits escaped ?></a>
 				</li>
@@ -107,7 +107,7 @@
 							<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $tel ) ); ?>" class="mt-1.5 flex items-center gap-2 text-xs text-foreground/80 transition-colors hover:text-signal"><?php echo elfzwo_icon( 'phone', 'h-3.5 w-3.5 shrink-0 text-signal' ); ?> <?php echo esc_html( $tel ); ?></a>
 						<?php endif; ?>
 						<?php if ( $email ) : ?>
-							<a href="mailto:<?php echo esc_attr( $email ); ?>" class="mt-1.5 flex items-start gap-2 break-words text-xs text-foreground/80 transition-colors hover:text-signal"><span class="flex h-4 shrink-0 items-center"><?php echo elfzwo_icon( 'mail', 'h-3.5 w-3.5 text-signal' ); ?></span> <span><?php echo elfzwo_wbr_email( $email ); // phpcs:ignore -- bereits escaped ?></span></a>
+							<a href="mailto:<?php echo esc_attr( $email ); ?>" class="mt-1.5 flex items-start gap-2 break-words text-xs text-foreground/80 transition-colors hover:text-signal"><span class="flex h-4 shrink-0 items-center -my-px"><?php echo elfzwo_icon( 'mail', 'h-3.5 w-3.5 text-signal' ); ?></span> <span><?php echo elfzwo_wbr_email( $email ); // phpcs:ignore -- bereits escaped ?></span></a>
 						<?php endif; ?>
 					</div>
 				<?php endforeach; ?>
