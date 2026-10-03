@@ -26,7 +26,7 @@ $termine = $attributes['termine'] ?? array();
 					<div class="font-display text-2xl text-signal"><?php echo esc_html( $zeit ); ?></div>
 					<p class="mt-3 text-base text-muted-foreground"><?php echo esc_html( $was ); ?></p>
 					<?php if ( $download_url ) : ?>
-						<a href="<?php echo esc_url( $download_url ); ?>" download class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-signal hover:underline">
+						<a href="<?php echo esc_url( $download_url ); ?>" download class="elfzwo-btn elfzwo-btn-secondary elfzwo-btn-sm mt-4">
 							<?php echo elfzwo_icon( 'download', 'h-4 w-4' ); ?> <?php echo esc_html( get_the_title( $download_id ) ); ?>
 						</a>
 					<?php endif; ?>

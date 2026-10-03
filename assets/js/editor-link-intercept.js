@@ -20,6 +20,9 @@
 			var a = e.target.closest && e.target.closest( 'a[href]' );
 			if ( ! a ) { return; }
 
+			// Datei-Downloads (z. B. im Termin-Block) ganz normal herunterladen.
+			if ( a.hasAttribute( 'download' ) ) { return; }
+
 			var href = a.getAttribute( 'href' );
 			if ( ! href || '#' === href.charAt( 0 ) || href.indexOf( 'mailto:' ) === 0 || href.indexOf( 'tel:' ) === 0 ) {
 				return;

@@ -232,7 +232,6 @@ add_action( 'add_meta_boxes', 'elfzwo_remove_native_einsatzort_metabox' );
  */
 function elfzwo_simplify_taxonomy_admin_fields() {
 	$hidden_fields = array(
-		'download_kategorie' => array( 'slug', 'description' ),
 		'einsatzort'          => array( 'slug', 'description' ),
 	);
 
