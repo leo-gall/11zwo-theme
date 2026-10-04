@@ -34,7 +34,7 @@ if ( 'neuigkeiten' === $teil ) :
 			<?php foreach ( array_filter( array_merge( array( $aufmacher ), $beitraege ) ) as $beitrag ) :
 				$bild = elfzwo_post_cover_image_url( $beitrag->ID, 'medium_large' );
 				?>
-				<a href="<?php echo esc_url( get_permalink( $beitrag ) ); ?>" class="group flex flex-col overflow-hidden rounded-md border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
+				<a href="<?php echo esc_url( get_permalink( $beitrag ) ); ?>" class="group flex flex-col overflow-hidden rounded-md bg-ash transition-colors hover:bg-haze">
 					<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover"><?php endif; ?>
 					<div class="flex flex-1 flex-col p-5">
 						<h3 class="font-display text-lg font-semibold leading-snug group-hover:text-signal"><?php echo esc_html( get_the_title( $beitrag ) ); ?></h3>
@@ -129,7 +129,7 @@ endif;
 			<?php endif; ?>
 		</div>
 
-		<aside class="rounded-md border border-border bg-card p-6">
+		<aside class="rounded-md bg-ash p-6">
 			<div class="flex items-end justify-between gap-4">
 				<div>
 					<p class="elfzwo-kicker">Einsätze</p>

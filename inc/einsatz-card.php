@@ -56,7 +56,7 @@ function elfzwo_render_einsatzdaten_card( $post_id, $show_content = true ) {
 
 	ob_start();
 	?>
-	<div class="mt-10 rounded-lg border border-border bg-card p-6 md:p-8">
+	<div class="mt-10 rounded-lg bg-ash p-6 md:p-8">
 		<h2 class="font-display text-xl">Einsatzdaten</h2>
 		<?php if ( $show_content ) : ?>
 			<?php
@@ -69,7 +69,7 @@ function elfzwo_render_einsatzdaten_card( $post_id, $show_content = true ) {
 
 		<dl class="mt-5 grid gap-3 sm:grid-cols-2">
 			<?php foreach ( $facts as $f ) : ?>
-				<div class="flex items-center gap-3 rounded-2xl border border-border p-4">
+				<div class="flex items-center gap-3 rounded-2xl bg-card p-4">
 					<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( $f['icon'], 'h-5 w-5', 2.2 ); ?></span>
 					<div class="min-w-0">
 						<dt class="text-xs text-smoke"><?php echo esc_html( $f['label'] ); ?></dt>

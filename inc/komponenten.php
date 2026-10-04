@@ -167,7 +167,7 @@ function elfzwo_render_ansprechpartner_karte( $person ) {
 	}
 	ob_start();
 	?>
-	<div class="flex h-full items-start gap-5 rounded-2xl border border-border bg-card p-6">
+	<div class="flex h-full items-start gap-5 rounded-2xl bg-ash p-6">
 		<div class="shrink-0"><?php echo elfzwo_person_wappen_svg( $name, $rolle, 56 ); // phpcs:ignore -- bereits escaped ?></div>
 		<div class="min-w-0">
 			<p class="font-display text-xl font-bold leading-tight"><?php echo esc_html( $name ); ?></p>

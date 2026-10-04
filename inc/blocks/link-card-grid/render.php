@@ -12,7 +12,7 @@ $cards = $attributes['cards'] ?? array();
 			$icon   = $card['icon'] ?? '';
 			$accent = $card['accent'] ?? 'bg-wood/35';
 			?>
-			<a href="<?php echo esc_url( $url ); ?>" class="group flex flex-col rounded-lg border border-border bg-card p-8 transition-colors hover:border-signal">
+			<a href="<?php echo esc_url( $url ); ?>" class="group flex flex-col rounded-lg bg-ash p-8 transition-colors hover:bg-haze">
 				<div class="flex items-center justify-between">
 					<span class="text-signal"><?php echo elfzwo_icon( $icon, 'h-7 w-7', 2 ); ?></span>
 					<?php if ( $tag ) : ?><span class="elfzwo-kicker"><?php echo esc_html( $tag ); ?></span><?php endif; ?>

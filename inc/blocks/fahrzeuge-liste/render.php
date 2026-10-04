@@ -68,7 +68,7 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 				<?php if ( $specs ) : ?>
 					<dl class="mt-6 grid gap-3 sm:grid-cols-2">
 						<?php foreach ( $specs as $s ) : ?>
-							<div class="flex min-w-0 items-center gap-3 rounded-2xl border border-border bg-card p-4">
+							<div class="flex min-w-0 items-center gap-3 rounded-2xl bg-ash p-4">
 								<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( $s['icon'], 'h-5 w-5', 2.2 ); ?></span>
 								<div class="min-w-0">
 									<dt class="text-xs text-smoke [overflow-wrap:anywhere]"><?php echo esc_html( $s['label'] ); ?></dt>

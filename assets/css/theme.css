@@ -1,15 +1,15 @@
 :root {
-  --background: oklch(98.531% 0.005 260);
-  --foreground: oklch(0.22 0.035 265);
-  --card: oklch(0.99 0.006 260);
-  --border: oklch(0.88 0.015 260);
+  --background: oklch(98.5% 0.004 60);
+  --foreground: oklch(0.24 0.012 40);
+  --card: oklch(0.993 0.003 60);
+  --border: oklch(0.89 0.01 55);
 
   --signal: #d44c47;
   --signal-foreground: oklch(0.98 0.01 85);
   --wood: #a92c28;
   --ink: #1a1a1a;
-  --cream: oklch(0.96 0.01 260);
-  --smoke: oklch(0.48 0.03 265);
+  --cream: oklch(0.965 0.008 60);
+  --smoke: oklch(0.5 0.015 45);
 }
 
 html {
@@ -289,8 +289,8 @@ h1 {
   height: 1.25rem;
   flex-shrink: 0;
   background-color: var(--signal);
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center / 100%;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center / 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath fill='white' d='M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z'/%3E%3C/svg%3E") no-repeat center / 100%;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath fill='white' d='M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z'/%3E%3C/svg%3E") no-repeat center / 100%;
 }
 
 /* Cream-Box (z. B. "Für Eltern"-Kurzinfo auf der Jugendfeuerwehr-Seite) */

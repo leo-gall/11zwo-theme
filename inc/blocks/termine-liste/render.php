@@ -11,7 +11,7 @@ $kategorien = get_terms( array( 'taxonomy' => 'termin_kategorie', 'hide_empty' =
 ?>
 <section class="mx-auto max-w-7xl px-5 py-8 md:px-8">
 	<?php if ( is_wp_error( $kategorien ) || ! $kategorien ) : ?>
-		<div class="rounded-2xl border border-border bg-card p-8 text-center"><p class="text-smoke">Keine anstehenden Termine vorhanden.</p></div>
+		<div class="rounded-2xl bg-ash p-8 text-center"><p class="text-smoke">Keine anstehenden Termine vorhanden.</p></div>
 	<?php else : ?>
 		<div class="space-y-12">
 			<?php foreach ( $kategorien as $kategorie ) :
@@ -42,7 +42,7 @@ $kategorien = get_terms( array( 'taxonomy' => 'termin_kategorie', 'hide_empty' =
 							$ts    = $datum ? strtotime( $datum ) : false;
 							$image = has_post_thumbnail( $tid ) ? get_the_post_thumbnail_url( $tid, 'large' ) : '';
 							?>
-							<article class="overflow-hidden rounded-2xl border border-border bg-card transition-all hover:shadow-lg">
+							<article class="overflow-hidden rounded-2xl bg-ash transition-colors hover:bg-haze">
 								<div class="grid gap-4 p-6 md:grid-cols-[1fr_300px] md:gap-6">
 									<div>
 										<h3 class="font-display text-2xl leading-tight"><?php echo esc_html( $termin->post_title ); ?></h3>

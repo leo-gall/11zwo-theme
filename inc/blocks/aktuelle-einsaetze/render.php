@@ -14,7 +14,7 @@ $hero_post = $hero_post ? $hero_post[0] : null;
 	<div class="grid gap-10 lg:grid-cols-[1.6fr_1fr]">
 		<article class="min-w-0">
 			<?php if ( ! $hero_post ) : ?>
-				<div class="flex h-[420px] items-center justify-center rounded-lg border border-border text-center text-smoke">Aktuell gibt es keine vorgestellte Meldung.</div>
+				<div class="flex h-[420px] items-center justify-center rounded-lg bg-ash text-center text-smoke">Aktuell gibt es keine vorgestellte Meldung.</div>
 			<?php else :
 				$hero_image     = elfzwo_post_cover_image_url( $hero_post->ID, 'large' );
 				$hero_kategorie = elfzwo_post_category_line( $hero_post->ID );
@@ -33,7 +33,7 @@ $hero_post = $hero_post ? $hero_post[0] : null;
 			<?php endif; ?>
 		</article>
 
-		<aside id="elfzwo-einsatzliste-<?php echo esc_attr( $post_id ); ?>" class="elfzwo-einsatzliste flex min-w-0 flex-col rounded-lg border border-border bg-card p-6 transition-opacity md:p-8" data-post-id="<?php echo esc_attr( $post_id ); ?>">
+		<aside id="elfzwo-einsatzliste-<?php echo esc_attr( $post_id ); ?>" class="elfzwo-einsatzliste flex min-w-0 flex-col rounded-lg bg-ash p-6 transition-opacity md:p-8" data-post-id="<?php echo esc_attr( $post_id ); ?>">
 			<?php echo elfzwo_einsatzliste_render( $post_id, $einsatzliste_data ); // phpcs:ignore -- bereits escaped in elfzwo_einsatzliste_render() ?>
 		</aside>
 	</div>
