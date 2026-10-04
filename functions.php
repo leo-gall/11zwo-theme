@@ -93,6 +93,7 @@ require get_template_directory() . '/inc/einsatzstichwoerter.php';
 require get_template_directory() . '/inc/kategorien.php';
 require get_template_directory() . '/inc/einsatz-nummern.php';
 require get_template_directory() . '/inc/settings.php';
+require get_template_directory() . '/inc/analytics.php';
 require get_template_directory() . '/inc/nina.php';
 require get_template_directory() . '/inc/einsatzliste.php';
 require get_template_directory() . '/inc/aktuelles-feed.php';
