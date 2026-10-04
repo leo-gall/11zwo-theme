@@ -4,7 +4,8 @@ $elfzwo_footer_cta = ! ( is_singular() && has_block( 'elfzwo/mitmachen-form' ) )
 ?>
 <footer class="relative mt-16 text-white/85 md:mt-20">
 	<?php // Geschwungene Oberkante und freigestelltes HLF nach dem Vorbild der Aicher Ambulanz. ?>
-	<svg class="block h-16 w-full text-signal md:h-28" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 90 C 420 20, 980 0, 1440 50 L1440 120 L0 120 Z"/></svg>
+	<?php // -mb-px: überlappt den roten Bereich um 1 px, sonst bleibt je nach Bildschirm eine helle Haarlinie zwischen Welle und Fläche. ?>
+	<svg class="relative -mb-px block h-16 w-full text-signal md:h-28" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 90 C 420 20, 980 0, 1440 50 L1440 120 L0 120 Z"/></svg>
 	<div class="bg-gradient-to-br from-signal via-signal to-wood">
 		<?php if ( $elfzwo_footer_cta ) : ?>
 			<div class="relative mx-auto grid max-w-7xl items-end gap-8 px-5 pb-12 md:grid-cols-[1fr_1fr] md:px-8">
