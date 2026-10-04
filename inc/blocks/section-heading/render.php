@@ -9,12 +9,21 @@ $accent             = $attributes['accent'] ?? 'text-primary';
 $is_nina            = 'nina' === $description_source;
 // Fallback auf die frühere Einstellungs-Option, bis die PLZ im Block gepflegt ist.
 $nina_plz           = ( $attributes['ninaPlz'] ?? '' ) ?: get_option( 'elfzwo_nina_plz', '' );
+if ( elfzwo_kopf_uebernommen( 'elfzwo/section-heading' ) ) {
+	// Überschrift steht schon im Seiten-Jumbotron — nur ggf. die NINA-Warnungen zeigen.
+	if ( $is_nina ) {
+		echo '<section class="mx-auto max-w-7xl px-5 pt-6 md:px-8">' . elfzwo_nina_render_compact( $nina_plz ) . '</section>'; // phpcs:ignore -- bereits escaped
+	} elseif ( $description ) {
+		echo '<section class="mx-auto max-w-7xl px-5 pt-6 md:px-8"><p class="max-w-2xl text-muted-foreground">' . esc_html( $description ) . '</p></section>';
+	}
+	return;
+}
 ?>
 <section class="mx-auto max-w-7xl px-5 pt-10 pb-2 md:px-8">
 	<?php if ( 'split' === $layout ) : ?>
 		<div class="flex flex-wrap items-start justify-between gap-6">
 			<div class="max-w-2xl">
-				<?php if ( $tag ) : ?><p class="font-hand text-2xl <?php echo esc_attr( $accent ); ?>"><?php echo esc_html( $tag ); ?></p><?php endif; ?>
+				<?php if ( $tag ) : ?><p class="elfzwo-kicker"><?php echo esc_html( $tag ); ?></p><?php endif; ?>
 				<h2 class="mt-1 font-display text-4xl md:text-5xl"><?php echo esc_html( $title ); ?></h2>
 			</div>
 			<?php if ( $is_nina ) : ?>
@@ -24,7 +33,7 @@ $nina_plz           = ( $attributes['ninaPlz'] ?? '' ) ?: get_option( 'elfzwo_ni
 			<?php endif; ?>
 		</div>
 	<?php else : ?>
-		<?php if ( $tag ) : ?><p class="font-hand text-2xl <?php echo esc_attr( $accent ); ?>"><?php echo esc_html( $tag ); ?></p><?php endif; ?>
+		<?php if ( $tag ) : ?><p class="elfzwo-kicker"><?php echo esc_html( $tag ); ?></p><?php endif; ?>
 		<h2 class="mt-1 font-display text-4xl md:text-5xl"><?php echo esc_html( $title ); ?></h2>
 		<?php if ( $is_nina ) : ?>
 			<div class="mt-4"><?php echo elfzwo_nina_render_compact( $nina_plz ); // phpcs:ignore -- bereits escaped in elfzwo_nina_render_compact() ?></div>

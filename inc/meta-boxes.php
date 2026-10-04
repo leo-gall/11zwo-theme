@@ -31,6 +31,13 @@ function elfzwo_meta_box_schemas() {
 					array( 'key' => 'besonderheiten', 'label' => 'Besonderheiten', 'type' => 'textarea' ),
 				),
 			),
+			array(
+				'id'     => 'elfzwo_fahrzeug_geraetefaecher',
+				'title'  => 'Gerätefächer',
+				'fields' => array(
+					array( 'key' => 'geraetefaecher', 'label' => 'Klickpunkte auf dem Beitragsbild', 'type' => 'hotspots' ),
+				),
+			),
 		),
 
 		// ------------------------------------------------------------------ Einsatz
@@ -149,6 +156,13 @@ function elfzwo_render_meta_box( $post, $box ) {
 			$value   = $current && ! is_wp_error( $current ) ? (string) $current[0] : '';
 		} else {
 			$value = get_post_meta( $post->ID, '_elfzwo_' . $field['key'], true );
+		}
+		if ( 'hotspots' === $field['type'] ) {
+			// Bild-Editor braucht die volle Breite der Box.
+			echo '<tr><td colspan="2" style="padding-left:0;padding-right:0;">';
+			elfzwo_render_meta_field( $field, $value );
+			echo '</td></tr>';
+			continue;
 		}
 		echo '<tr>';
 		printf( '<th style="width:280px;text-align:left;"><label for="elfzwo_%s">%s</label></th>', esc_attr( $field['key'] ), esc_html( $field['label'] ) );
@@ -366,6 +380,29 @@ function elfzwo_render_meta_field( $field, $value ) {
 			<?php
 			break;
 
+		case 'hotspots':
+			$rows = elfzwo_hotspots_decode( $value );
+			$thumb_id  = get_post_thumbnail_id();
+			$thumb_url = $thumb_id ? wp_get_attachment_image_url( $thumb_id, 'large' ) : '';
+			?>
+			<div class="elfzwo-hotspots" data-name="<?php echo esc_attr( $name ); ?>">
+				<p class="description elfzwo-hotspots-empty" <?php echo $thumb_url ? 'style="display:none"' : ''; ?>>Bitte zuerst ein Beitragsbild festlegen &ndash; die Klickpunkte werden darauf gesetzt.</p>
+				<p class="description elfzwo-hotspots-help" <?php echo $thumb_url ? '' : 'style="display:none"'; ?>>Ins Bild klicken, um einen Klickpunkt zu setzen. Punkte lassen sich per Drag &amp; Drop verschieben.</p>
+				<div class="elfzwo-hotspots-stage" <?php echo $thumb_url ? '' : 'style="display:none"'; ?>>
+					<img src="<?php echo esc_url( $thumb_url ); ?>" alt="" draggable="false">
+				</div>
+				<ol class="elfzwo-hotspots-rows">
+					<?php foreach ( $rows as $i => $row ) : ?>
+						<?php echo elfzwo_render_hotspot_row( $name, $i, $row ); // phpcs:ignore -- bereits escaped ?>
+					<?php endforeach; ?>
+				</ol>
+				<template class="elfzwo-hotspots-template">
+					<?php echo elfzwo_render_hotspot_row( $name, '__INDEX__', array() ); // phpcs:ignore -- bereits escaped ?>
+				</template>
+			</div>
+			<?php
+			break;
+
 		case 'media':
 			$image_html = $value ? wp_get_attachment_image( $value, 'thumbnail' ) : '';
 			printf(
@@ -418,6 +455,51 @@ function elfzwo_render_repeater_row( $name, $index, $subfields, $row, $suggest_k
 	</div>
 	<?php
 	return ob_get_clean();
+}
+
+/**
+ * Eine Zeile eines Klickpunkts (Gerätefach): Position in Prozent des
+ * Beitragsbilds (versteckt, wird per Klick/Drag gesetzt), Foto des Fachs,
+ * Titel und kurze Beschreibung. Das Foto nutzt das normale Media-Feld.
+ */
+function elfzwo_render_hotspot_row( $name, $index, $row ) {
+	$prefix = $name . '[' . $index . ']';
+	$bild   = isset( $row['bild'] ) ? (int) $row['bild'] : 0;
+	ob_start();
+	?>
+	<li class="elfzwo-hotspot-row">
+		<input type="hidden" class="elfzwo-hotspot-x" name="<?php echo esc_attr( $prefix . '[x]' ); ?>" value="<?php echo esc_attr( $row['x'] ?? '' ); ?>">
+		<input type="hidden" class="elfzwo-hotspot-y" name="<?php echo esc_attr( $prefix . '[y]' ); ?>" value="<?php echo esc_attr( $row['y'] ?? '' ); ?>">
+		<div class="elfzwo-media-field">
+			<div class="elfzwo-media-preview"><?php echo $bild ? wp_get_attachment_image( $bild, 'thumbnail' ) : ''; ?></div>
+			<input type="hidden" class="elfzwo-media-input" name="<?php echo esc_attr( $prefix . '[bild]' ); ?>" value="<?php echo esc_attr( $bild ? $bild : '' ); ?>">
+			<button type="button" class="button elfzwo-media-select">Foto des Fachs</button>
+			<button type="button" class="button elfzwo-media-remove" <?php echo $bild ? '' : 'style="display:none"'; ?>>Foto entfernen</button>
+		</div>
+		<div class="elfzwo-hotspot-text">
+			<input type="text" class="large-text elfzwo-hotspot-titel" name="<?php echo esc_attr( $prefix . '[titel]' ); ?>" value="<?php echo esc_attr( $row['titel'] ?? '' ); ?>" placeholder="Titel, z. B. G1 – Atemschutz">
+			<textarea class="large-text" rows="3" name="<?php echo esc_attr( $prefix . '[text]' ); ?>" placeholder="Kurze Beschreibung, was im Fach verlastet ist"><?php echo esc_textarea( $row['text'] ?? '' ); ?></textarea>
+		</div>
+		<button type="button" class="button-link button-link-delete elfzwo-hotspot-remove">Entfernen</button>
+	</li>
+	<?php
+	return ob_get_clean();
+}
+
+/** Liest die gespeicherten Klickpunkte (JSON) als Array; ungültige Einträge fallen weg. */
+function elfzwo_hotspots_decode( $value ) {
+	$rows = $value ? json_decode( $value, true ) : array();
+	if ( ! is_array( $rows ) ) {
+		return array();
+	}
+	return array_values(
+		array_filter(
+			$rows,
+			function ( $row ) {
+				return is_array( $row ) && isset( $row['x'], $row['y'] ) && is_numeric( $row['x'] ) && is_numeric( $row['y'] );
+			}
+		)
+	);
 }
 
 /** Gespeicherte Vorschlagsliste (z. B. schon einmal erfasste Partner-Einsatzkräfte) für Repeater-Comboboxen. */
@@ -481,6 +563,31 @@ function elfzwo_save_meta_boxes( $post_id, $post ) {
 				if ( 'post_multiselect' === $field['type'] ) {
 					$ids = isset( $posted[ $key ] ) && is_array( $posted[ $key ] ) ? array_map( 'intval', $posted[ $key ] ) : array();
 					update_post_meta( $post_id, $meta_key, implode( ',', $ids ) );
+					continue;
+				}
+				if ( 'hotspots' === $field['type'] ) {
+					$rows = array();
+					if ( isset( $posted[ $key ] ) && is_array( $posted[ $key ] ) ) {
+						foreach ( $posted[ $key ] as $row ) {
+							if ( ! is_array( $row ) || ! isset( $row['x'], $row['y'] ) || ! is_numeric( $row['x'] ) || ! is_numeric( $row['y'] ) ) {
+								continue;
+							}
+							$titel = isset( $row['titel'] ) ? sanitize_text_field( $row['titel'] ) : '';
+							$bild  = isset( $row['bild'] ) ? absint( $row['bild'] ) : 0;
+							if ( '' === $titel && ! $bild ) {
+								continue;
+							}
+							$rows[] = array(
+								'x'     => round( min( 100, max( 0, (float) $row['x'] ) ), 2 ),
+								'y'     => round( min( 100, max( 0, (float) $row['y'] ) ), 2 ),
+								'bild'  => $bild,
+								'titel' => $titel,
+								'text'  => isset( $row['text'] ) ? sanitize_textarea_field( $row['text'] ) : '',
+							);
+						}
+					}
+					// wp_slash: update_post_meta() entfernt sonst die Backslashes im JSON (\n, \").
+					update_post_meta( $post_id, $meta_key, wp_slash( wp_json_encode( $rows, JSON_UNESCAPED_UNICODE ) ) );
 					continue;
 				}
 				if ( 'repeater' === $field['type'] ) {
@@ -748,5 +855,6 @@ function elfzwo_combobox_assets( $hook ) {
 	wp_enqueue_style( 'elfzwo-admin', get_template_directory_uri() . '/assets/css/admin.css', array(), filemtime( get_template_directory() . '/assets/css/admin.css' ) );
 	wp_enqueue_script( 'elfzwo-admin-combobox', get_template_directory_uri() . '/assets/js/admin-combobox.js', array(), filemtime( get_template_directory() . '/assets/js/admin-combobox.js' ), true );
 	wp_enqueue_script( 'elfzwo-admin-repeater', get_template_directory_uri() . '/assets/js/admin-repeater.js', array(), filemtime( get_template_directory() . '/assets/js/admin-repeater.js' ), true );
+	wp_enqueue_script( 'elfzwo-admin-hotspots', get_template_directory_uri() . '/assets/js/admin-hotspots.js', array(), filemtime( get_template_directory() . '/assets/js/admin-hotspots.js' ), true );
 }
 add_action( 'admin_enqueue_scripts', 'elfzwo_combobox_assets' );

@@ -37,7 +37,7 @@ $kategorien = get_terms( array( 'taxonomy' => 'download_kategorie', 'hide_empty'
 					?>
 					<div class="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 sm:flex-row sm:items-center sm:justify-between">
 						<div class="flex min-w-0 items-start gap-4">
-							<span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-signal/25 text-signal"><?php echo elfzwo_icon( $is_zip ? 'file-archive' : 'file-text', 'h-5 w-5', 2.2 ); ?></span>
+							<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( $is_zip ? 'file-archive' : 'file-text', 'h-5 w-5', 2.2 ); ?></span>
 							<div class="min-w-0">
 								<h3 class="font-display text-lg leading-tight"><?php the_title(); ?></h3>
 								<?php if ( $beschreibung ) : ?><p class="mt-1 text-sm text-muted-foreground"><?php echo esc_html( $beschreibung ); ?></p><?php endif; ?>

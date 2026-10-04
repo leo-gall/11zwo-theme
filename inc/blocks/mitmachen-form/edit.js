@@ -8,10 +8,32 @@
 	var SelectControl = wp.components.SelectControl;
 	var Button = wp.components.Button;
 
+	var GRUPPEN = [
+		{ value: 'aktive', label: 'Aktive' },
+		{ value: 'jugend', label: 'Jugend/Kinder' },
+		{ value: 'verein', label: 'Verein' },
+	];
+
+	/** Wie elfzwo_mitmachen_gruppe_von() in PHP: ältere Einträge ohne Gruppe anhand des Labels einordnen. */
+	function gruppeVon(item) {
+		if (item.gruppe) {
+			return item.gruppe;
+		}
+		var label = (item.label || '').toLowerCase();
+		if (label.indexOf('jugend') !== -1 || label.indexOf('kinder') !== -1) {
+			return 'jugend';
+		}
+		if (label.indexOf('förder') !== -1 || label.indexOf('verein') !== -1) {
+			return 'verein';
+		}
+		return 'aktive';
+	}
+
 	wp.blocks.registerBlockType('elfzwo/mitmachen-form', {
 		edit: function (props) {
 			var a = props.attributes;
 			var interests = a.interests || [];
+			var mail = a.mail || {};
 			var pages = wp.data.useSelect(function (select) {
 				return select('core').getEntityRecords('postType', 'page', { per_page: -1, status: 'publish', orderby: 'title', order: 'asc' });
 			}, []);
@@ -31,7 +53,7 @@
 				props.setAttributes({ interests: next });
 			}
 			function addItem() {
-				props.setAttributes({ interests: interests.concat([{ label: '', hint: '' }]) });
+				props.setAttributes({ interests: interests.concat([{ label: '', hint: '', gruppe: 'aktive' }]) });
 			}
 			function set(key) {
 				return function (v) {
@@ -54,6 +76,12 @@
 			}
 			function addStep() {
 				props.setAttributes({ steps: steps.concat([{ title: '', text: '' }]) });
+			}
+			function updateMail(gruppe, key, value) {
+				var next = Object.assign({}, mail);
+				next[gruppe] = Object.assign({}, next[gruppe]);
+				next[gruppe][key] = value;
+				props.setAttributes({ mail: next });
 			}
 
 			return el(
@@ -107,21 +135,46 @@
 								{ key: idx, style: { marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #ddd' } },
 								el(TextControl, { label: 'Label ' + (idx + 1), value: item.label, onChange: function (v) { updateItem(idx, 'label', v); } }),
 								el(TextControl, { label: 'Hinweis', value: item.hint, onChange: function (v) { updateItem(idx, 'hint', v); } }),
+								el(SelectControl, {
+									label: 'Anfrage geht an',
+									value: gruppeVon(item),
+									options: GRUPPEN,
+									onChange: function (v) { updateItem(idx, 'gruppe', v); },
+								}),
 								el(Button, { variant: 'link', isDestructive: true, onClick: function () { removeItem(idx); } }, 'Entfernen')
 							);
 						}),
 						el(Button, { variant: 'secondary', onClick: addItem }, 'Option hinzufügen')
 					),
-					el(
-						PanelBody,
-						{ title: 'Benachrichtigung', initialOpen: true },
-						el(TextControl, {
-							label: 'Benachrichtigungs-E-Mail',
-							help: 'Bekommt bei jeder neuen Anfrage eine Mail. Mehrere Adressen mit Komma trennen. Leer = Admin-E-Mail der Website. Alle Anfragen stehen zusätzlich im Backend unter „Mitmachen-Anfragen“.',
-							value: a.notifyEmail || '',
-							onChange: set('notifyEmail'),
-						})
-					)
+					GRUPPEN.map(function (g) {
+						var m = mail[g.value] || {};
+						return el(
+							PanelBody,
+							{ key: g.value, title: 'E-Mail: ' + g.label, initialOpen: false },
+							el(TextareaControl, {
+								label: 'Empfänger',
+								help: 'Eine E-Mail-Adresse pro Zeile. Leer = Admin-E-Mail der Website.',
+								value: m.empfaenger || '',
+								rows: 3,
+								onChange: function (v) { updateMail(g.value, 'empfaenger', v); },
+							}),
+							el(TextControl, {
+								label: 'Betreff',
+								help: 'Platzhalter: {name}',
+								placeholder: 'Neue Mach-mit-Anfrage von {name}',
+								value: m.betreff || '',
+								onChange: function (v) { updateMail(g.value, 'betreff', v); },
+							}),
+							el(TextareaControl, {
+								label: 'Text',
+								help: 'Platzhalter: {name}, {kontakt}, {interesse}',
+								placeholder: 'Name: {name}\nKontakt: {kontakt}\nInteresse: {interesse}',
+								value: m.text || '',
+								rows: 5,
+								onChange: function (v) { updateMail(g.value, 'text', v); },
+							})
+						);
+					})
 				),
 				el(ServerSideRender, { block: 'elfzwo/mitmachen-form', attributes: a })
 			);

@@ -1,5 +1,5 @@
 :root {
-  --radius: 1.25rem;
+  --radius: 1rem;
   --background: oklch(98.531% 0.005 260);
   --foreground: oklch(0.22 0.035 265);
   --card: oklch(0.99 0.006 260);
@@ -29,17 +29,37 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  font-family: "Titillium Web", ui-sans-serif, system-ui, sans-serif;
   overflow-x: clip;
 }
 
-h1, h2, h3, h4 {
-  font-family: "Nunito", ui-rounded, ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: -0.02em;
+h1, h2, h3, h4, .font-display {
+  font-family: "Titillium Web", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-weight: 900;
+}
+
+/* Kleine Zeile über Überschriften, rot unterstrichen (statt Handschrift). */
+.elfzwo-kicker {
+  display: block;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  color: var(--signal);
+}
+
+/* Rot-weiße Warnstreifen als Trenner, wie auf Einsatzfahrzeugen. */
+.elfzwo-warnstreifen {
+  height: 6px;
+  background: repeating-linear-gradient(-45deg, var(--signal) 0 10px, #fff 10px 20px);
 }
 
 .font-hand {
-  font-family: "Caveat", cursive;
+  font-family: "Titillium Web", ui-sans-serif, system-ui, sans-serif;
 }
 
 .icon {
@@ -88,10 +108,10 @@ h1, h2, h3, h4 {
   justify-content: center;
   gap: 0.625rem;
   border: 2px solid transparent;
-  border-radius: 9999px;
-  padding: 0.875rem 1.75rem;
+  border-radius: 0.625rem;
+  padding: 0.75rem 1.5rem;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.5rem;
   text-decoration: none;
   cursor: pointer;
@@ -131,6 +151,27 @@ h1, h2, h3, h4 {
   box-shadow: 0 14px 28px -12px color-mix(in oklch, var(--signal) 90%, transparent);
 }
 
+/* Weiße Buttons auf rotem Grund (Startseiten-Hero). */
+.elfzwo-btn-light {
+  background-color: #fff;
+  color: var(--signal);
+}
+
+.elfzwo-btn-light:hover {
+  background-color: var(--cream);
+}
+
+/* Weißer Kontur-Button auf rotem oder dunklem Grund. */
+.elfzwo-btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.85);
+  color: #fff;
+}
+
+.elfzwo-btn-outline-light:hover {
+  background-color: #fff;
+  color: var(--ink);
+}
+
 .elfzwo-btn-secondary {
   border-color: color-mix(in srgb, var(--signal) 35%, transparent);
   background-color: var(--card);
@@ -154,7 +195,7 @@ h1, h2, h3, h4 {
 }
 
 .prose h2, .prose h3, .prose h4 {
-  font-family: "Nunito", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  font-family: "Titillium Web", ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.02em;
   font-weight: 800;
   color: var(--foreground);
@@ -245,35 +286,33 @@ h1, h2, h3, h4 {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  border-radius: 1rem;
-  background-color: color-mix(in oklch, var(--primary) 10%, transparent);
-  padding: 0.75rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+  padding: 0.625rem 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
 }
 
 .elfzwo-feature-list li::before {
   content: "";
   display: inline-block;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
   flex-shrink: 0;
-  border-radius: 9999px;
-  background-color: var(--primary);
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center / 60%;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center / 60%;
+  background-color: var(--signal);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center / 100%;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") no-repeat center / 100%;
 }
 
 /* Cream-Box (z. B. "Für Eltern"-Kurzinfo auf der Jugendfeuerwehr-Seite) */
 .elfzwo-cream-box {
-  border-radius: 1.5rem;
+  border-radius: 1.25rem;
   background-color: var(--cream);
   padding: 1.5rem;
 }
 
 .elfzwo-cream-box .wp-block-heading {
-  font-family: "Caveat", cursive;
-  font-size: 1.5rem;
+  font-family: "Titillium Web", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--signal);
 }
@@ -304,7 +343,7 @@ h1, h2, h3, h4 {
 }
 
 .elfzwo-termin-content h2 {
-  font-family: "Nunito", ui-rounded, ui-sans-serif, system-ui, sans-serif;
+  font-family: "Titillium Web", ui-sans-serif, system-ui, sans-serif;
   font-size: 1.25rem;
 }
 
@@ -346,6 +385,62 @@ h1, h2, h3, h4 {
 
 @media (prefers-reduced-motion: reduce) {
   .elfzwo-mobile-menu { animation: none; }
+}
+
+/* Mannschaftsfoto im Startseiten-Hero: stark gerundet, aber jede Ecke anders
+   (elliptische Radien), damit die Form gewachsen statt geometrisch wirkt. */
+.elfzwo-hero-blob {
+  border-radius: 38% 22% 30% 46% / 46% 30% 40% 34%;
+}
+
+@media (max-width: 767px) {
+  .elfzwo-hero-blob {
+    border-radius: 28% 16% 22% 34% / 34% 22% 30% 26%;
+  }
+}
+
+/* Weitere "gewachsene" Formen: Foto im freien Bild-Teaser und die roten
+   Aufgaben-Kacheln (eine große, unregelmäßige Ecke wie bei der Aicher Ambulanz). */
+.elfzwo-blob-b {
+  border-radius: 30% 44% 36% 24% / 40% 34% 46% 30%;
+}
+
+.elfzwo-kachel {
+  border-radius: 1.25rem 1.25rem 1.25rem 4.5rem / 1.25rem 1.25rem 1.25rem 3.5rem;
+}
+
+/* Fotos im Bild-Text-Abschnitt (inc/komponenten.php): jede Ecke anders
+   gerundet, wie bei der Aicher Ambulanz. */
+.elfzwo-bildform-a {
+  border-radius: 2.25rem 6.5rem 1rem 4rem / 3rem 5rem 1.25rem 3.25rem;
+}
+
+.elfzwo-bildform-b {
+  border-radius: 4.5rem 1rem 3.25rem 1.5rem / 3.5rem 1.25rem 4rem 1.25rem;
+}
+
+@media (max-width: 767px) {
+  .elfzwo-bildform-a { border-radius: 1.25rem 3.25rem 0.75rem 2rem / 1.5rem 2.75rem 0.75rem 1.75rem; }
+  .elfzwo-bildform-b { border-radius: 2.5rem 0.75rem 1.75rem 1rem; }
+}
+
+/* Laufband mit Neuigkeiten unter der Navigation: der Inhalt steht doppelt
+   im Track, nach der Hälfte beginnt die Animation nahtlos von vorn. */
+@keyframes elfzwo-ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.elfzwo-ticker-track {
+  animation: elfzwo-ticker 60s linear infinite;
+}
+
+.elfzwo-ticker:hover .elfzwo-ticker-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elfzwo-ticker-track { animation: none; }
 }
 
 /* Sticky Header: unter statt hinter der fixierten WP-Adminleiste einordnen (nur für eingeloggte Redakteure sichtbar) */
@@ -418,4 +513,38 @@ body.admin-bar header.sticky {
 
 .elfzwo-einsatzliste-years-edge--right {
   right: 0;
+}
+
+/* Klickpunkte auf den Fahrzeugbildern (Block "Fahrzeuge-Liste"). */
+.fahrzeug-hotspot-puls {
+	animation: fahrzeug-hotspot-puls 2s ease-out infinite;
+}
+
+@keyframes fahrzeug-hotspot-puls {
+	0% { transform: scale(0.8); opacity: 0.9; }
+	80%, 100% { transform: scale(1.6); opacity: 0; }
+}
+
+.fahrzeug-modal[open] {
+	animation: fahrzeug-modal-auf 200ms ease-out;
+}
+
+.fahrzeug-modal[open]::backdrop {
+	animation: fahrzeug-modal-hintergrund 200ms ease-out;
+}
+
+@keyframes fahrzeug-modal-auf {
+	from { opacity: 0; transform: translateY(12px) scale(0.98); }
+}
+
+@keyframes fahrzeug-modal-hintergrund {
+	from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.fahrzeug-hotspot-puls,
+	.fahrzeug-modal[open],
+	.fahrzeug-modal[open]::backdrop {
+		animation: none;
+	}
 }

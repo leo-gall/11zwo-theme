@@ -1,146 +1,42 @@
 <?php
 /**
- * "Mach mit"-Formular: Jede Einsendung wird als "Mitmachen-Anfrage" im
- * Backend gespeichert (eigene Tabellenansicht unter "Mitmachen-Anfragen")
- * und zusätzlich per Benachrichtigungs-Mail gemeldet. Die Empfänger der
- * Benachrichtigung werden im Block "Mach-mit-Formular" gepflegt.
+ * "Mach mit"-Formular: Einsendungen werden nicht im Backend gespeichert,
+ * sondern direkt per E-Mail zugestellt. Empfänger, Betreff und Text werden
+ * im Block "Mach-mit-Formular" je Gruppe (Aktive, Jugend/Kinder, Verein)
+ * gepflegt; jede Auswahlmöglichkeit ist einer Gruppe zugeordnet.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/* --------------------------------------------------------- Speicherung */
-
-function elfzwo_register_mitmachen_anfrage() {
-	register_post_type(
-		'mitmachen_anfrage',
-		array(
-			'labels'              => array(
-				'name'               => 'Mitmachen-Anfragen',
-				'singular_name'      => 'Mitmachen-Anfrage',
-				'menu_name'          => 'Mitmachen-Anfragen',
-				'all_items'          => 'Alle Anfragen',
-				'edit_item'          => 'Anfrage ansehen',
-				'search_items'       => 'Anfragen durchsuchen',
-				'not_found'          => 'Noch keine Anfragen.',
-				'not_found_in_trash' => 'Keine Anfragen im Papierkorb.',
-			),
-			'public'              => false,
-			'publicly_queryable'  => false,
-			'exclude_from_search' => true,
-			'show_ui'             => true,
-			'show_in_menu'        => true,
-			'show_in_nav_menus'   => false,
-			'show_in_rest'        => false,
-			'menu_position'       => 26,
-			'menu_icon'           => 'dashicons-groups',
-			'supports'            => array( 'title' ),
-			'map_meta_cap'        => true,
-			// Anfragen entstehen nur über das Formular, nicht per Hand im Backend.
-			'capabilities'        => array( 'create_posts' => 'do_not_allow' ),
-			'rewrite'             => false,
-		)
-	);
-}
-add_action( 'init', 'elfzwo_register_mitmachen_anfrage' );
-
-function elfzwo_mitmachen_anfrage_columns( $columns ) {
+/** Gruppen, an die eine Mach-mit-Anfrage gehen kann. */
+function elfzwo_mitmachen_gruppen() {
 	return array(
-		'cb'        => $columns['cb'],
-		'title'     => 'Name',
-		'email'     => 'E-Mail',
-		'interesse' => 'Interesse',
-		'seite'     => 'Formular',
-		'mail'      => 'Benachrichtigung',
-		'date'      => 'Eingang',
+		'aktive' => 'Aktive',
+		'jugend' => 'Jugend/Kinder',
+		'verein' => 'Verein',
 	);
 }
-add_filter( 'manage_mitmachen_anfrage_posts_columns', 'elfzwo_mitmachen_anfrage_columns' );
 
-function elfzwo_mitmachen_anfrage_column( $column, $post_id ) {
-	if ( 'email' === $column ) {
-		$email = get_post_meta( $post_id, '_elfzwo_anfrage_email', true );
-		if ( $email ) {
-			printf( '<a href="mailto:%1$s">%2$s</a>', esc_attr( $email ), esc_html( $email ) );
-		}
-	} elseif ( 'interesse' === $column ) {
-		echo esc_html( get_post_meta( $post_id, '_elfzwo_anfrage_interesse', true ) );
-	} elseif ( 'mail' === $column ) {
-		echo elfzwo_mitmachen_mail_status_html( $post_id ); // phpcs:ignore -- bereits escaped
-	} elseif ( 'seite' === $column ) {
-		$page_id = (int) get_post_meta( $post_id, '_elfzwo_anfrage_seite', true );
-		if ( $page_id && get_post( $page_id ) ) {
-			printf( '<a href="%1$s" target="_blank">%2$s</a>', esc_url( get_permalink( $page_id ) ), esc_html( get_the_title( $page_id ) ) );
-		}
+/**
+ * Gruppe einer Auswahlmöglichkeit. Ältere Blöcke ohne Zuordnung werden
+ * anhand des Labels eingeordnet.
+ */
+function elfzwo_mitmachen_gruppe_von( $interest ) {
+	$gruppe = $interest['gruppe'] ?? '';
+	if ( isset( elfzwo_mitmachen_gruppen()[ $gruppe ] ) ) {
+		return $gruppe;
 	}
-}
-add_action( 'manage_mitmachen_anfrage_posts_custom_column', 'elfzwo_mitmachen_anfrage_column', 10, 2 );
-
-function elfzwo_mitmachen_anfrage_sortable( $columns ) {
-	$columns['interesse'] = 'interesse';
-	return $columns;
-}
-add_filter( 'manage_edit-mitmachen_anfrage_sortable_columns', 'elfzwo_mitmachen_anfrage_sortable' );
-
-function elfzwo_mitmachen_anfrage_orderby( $query ) {
-	if ( is_admin() && $query->is_main_query() && 'interesse' === $query->get( 'orderby' ) && 'mitmachen_anfrage' === $query->get( 'post_type' ) ) {
-		$query->set( 'meta_key', '_elfzwo_anfrage_interesse' );
-		$query->set( 'orderby', 'meta_value' );
+	$label = strtolower( $interest['label'] ?? '' );
+	if ( false !== strpos( $label, 'jugend' ) || false !== strpos( $label, 'kinder' ) ) {
+		return 'jugend';
 	}
-}
-add_action( 'pre_get_posts', 'elfzwo_mitmachen_anfrage_orderby' );
-
-/** In der Liste nur "Ansehen" und "Papierkorb" — keine Schnellbearbeitung. */
-function elfzwo_mitmachen_anfrage_row_actions( $actions, $post ) {
-	if ( 'mitmachen_anfrage' === $post->post_type ) {
-		unset( $actions['inline hide-if-no-js'] );
-		if ( isset( $actions['edit'] ) ) {
-			$actions['edit'] = sprintf( '<a href="%s">Ansehen</a>', esc_url( get_edit_post_link( $post->ID ) ) );
-		}
+	if ( false !== strpos( $label, 'förder' ) || false !== strpos( $label, 'verein' ) ) {
+		return 'verein';
 	}
-	return $actions;
+	return 'aktive';
 }
-add_filter( 'post_row_actions', 'elfzwo_mitmachen_anfrage_row_actions', 10, 2 );
-
-/** Detailansicht einer Anfrage (nur lesend). */
-function elfzwo_mitmachen_anfrage_meta_box() {
-	add_meta_box( 'elfzwo_anfrage_details', 'Anfrage', 'elfzwo_render_mitmachen_anfrage_meta_box', 'mitmachen_anfrage', 'normal', 'high' );
-}
-add_action( 'add_meta_boxes_mitmachen_anfrage', 'elfzwo_mitmachen_anfrage_meta_box' );
-
-function elfzwo_render_mitmachen_anfrage_meta_box( $post ) {
-	$email   = get_post_meta( $post->ID, '_elfzwo_anfrage_email', true );
-	$page_id = (int) get_post_meta( $post->ID, '_elfzwo_anfrage_seite', true );
-	$rows    = array(
-		'Name'      => esc_html( $post->post_title ),
-		'E-Mail'    => $email ? sprintf( '<a href="mailto:%1$s">%2$s</a>', esc_attr( $email ), esc_html( $email ) ) : '',
-		'Interesse' => esc_html( get_post_meta( $post->ID, '_elfzwo_anfrage_interesse', true ) ),
-		'Formular'  => $page_id && get_post( $page_id ) ? sprintf( '<a href="%1$s" target="_blank">%2$s</a>', esc_url( get_permalink( $page_id ) ), esc_html( get_the_title( $page_id ) ) ) : '',
-		'Eingang'   => esc_html( get_the_date( 'd.m.Y, H:i', $post ) . ' Uhr' ),
-		'Benachrichtigung' => elfzwo_mitmachen_mail_status_html( $post->ID ),
-	);
-	echo '<table class="form-table"><tbody>';
-	foreach ( $rows as $label => $value ) {
-		printf( '<tr><th style="width:160px;text-align:left;">%1$s</th><td>%2$s</td></tr>', esc_html( $label ), $value ); // phpcs:ignore -- $value ist bereits escaped
-	}
-	echo '</tbody></table>';
-}
-
-/** Ob die Benachrichtigungs-Mail rausging — bei Fehlern mit der Meldung von WordPress/PHPMailer. */
-function elfzwo_mitmachen_mail_status_html( $post_id ) {
-	$status = get_post_meta( $post_id, '_elfzwo_anfrage_mail', true );
-	if ( ! $status ) {
-		return '';
-	}
-	if ( 'gesendet' === $status ) {
-		return '<span style="color:#008a20;">Gesendet</span>';
-	}
-	$fehler = get_post_meta( $post_id, '_elfzwo_anfrage_mail_fehler', true );
-	return '<span style="color:#d63638;">Fehlgeschlagen</span>' . ( $fehler ? '<br><small>' . esc_html( $fehler ) . '</small>' : '' );
-}
-
-/* ------------------------------------------------------ Formular-Versand */
 
 /** Sucht rekursiv alle Mach-mit-Blöcke in einer Liste geparster Blöcke. */
 function elfzwo_mitmachen_find_blocks( $blocks ) {
@@ -157,15 +53,44 @@ function elfzwo_mitmachen_find_blocks( $blocks ) {
 }
 
 /**
- * Benachrichtigungs-Empfänger, direkt aus dem gespeicherten Block der Seite
- * gelesen (nie aus dem abgeschickten Formular), damit sie nicht von außen
- * manipuliert werden können. Leer = Admin-E-Mail der Website.
+ * Mail-Einstellungen der gewählten Gruppe, direkt aus dem gespeicherten
+ * Block der Seite gelesen (nie aus dem abgeschickten Formular), damit die
+ * Empfänger nicht von außen manipuliert werden können.
  */
-function elfzwo_mitmachen_empfaenger( $page_id ) {
+function elfzwo_mitmachen_config( $page_id, $interesse ) {
 	$post   = get_post( $page_id );
 	$blocks = $post ? elfzwo_mitmachen_find_blocks( parse_blocks( $post->post_content ) ) : array();
-	$raw    = $blocks ? ( $blocks[0]['attrs']['notifyEmail'] ?? '' ) : '';
+	$type   = WP_Block_Type_Registry::get_instance()->get_registered( 'elfzwo/mitmachen-form' );
 
+	$gruppe   = 'aktive';
+	$mail     = null;
+	$fallback = null;
+	foreach ( $blocks as $block ) {
+		$attrs = $type ? $type->prepare_attributes_for_render( $block['attrs'] ) : $block['attrs'];
+		foreach ( $attrs['interests'] ?? array() as $interest ) {
+			if ( ( $interest['label'] ?? '' ) === $interesse ) {
+				$gruppe = elfzwo_mitmachen_gruppe_von( $interest );
+				$mail   = $attrs['mail'][ $gruppe ] ?? array();
+				break 2;
+			}
+		}
+		// Unbekannte Auswahl: an die Aktiven des ersten Formulars der Seite.
+		if ( null === $fallback ) {
+			$fallback = $attrs['mail']['aktive'] ?? array();
+		}
+	}
+	$mail = $mail ?? $fallback ?? array();
+
+	return array(
+		'gruppe'     => $gruppe,
+		'empfaenger' => $mail['empfaenger'] ?? '',
+		'betreff'    => $mail['betreff'] ?? '',
+		'text'       => $mail['text'] ?? '',
+	);
+}
+
+/** Empfängerliste aus dem Block; leer gelassen geht die Anfrage an die Admin-E-Mail. */
+function elfzwo_mitmachen_empfaenger( $raw ) {
 	$emails = array();
 	foreach ( preg_split( '/[,;\s]+/', (string) $raw ) as $part ) {
 		$email = trim( $part );
@@ -174,6 +99,19 @@ function elfzwo_mitmachen_empfaenger( $page_id ) {
 		}
 	}
 	return $emails ? $emails : array( get_option( 'admin_email' ) );
+}
+
+function elfzwo_mitmachen_mail_inhalt( $config, $name, $kontakt, $interesse ) {
+	$betreff_vorlage = trim( $config['betreff'] ) ?: 'Neue Mach-mit-Anfrage von {name}';
+	$text_vorlage    = trim( $config['text'] ) ?: "Name: {name}\nKontakt: {kontakt}\nInteresse: {interesse}";
+
+	$suche  = array( '{name}', '{kontakt}', '{interesse}' );
+	$ersatz = array( $name, $kontakt, $interesse );
+
+	return array(
+		'betreff' => str_replace( $suche, $ersatz, $betreff_vorlage ),
+		'text'    => str_replace( $suche, $ersatz, $text_vorlage ),
+	);
 }
 
 function elfzwo_handle_mitmachen_submit() {
@@ -192,127 +130,15 @@ function elfzwo_handle_mitmachen_submit() {
 		exit;
 	}
 
-	$anfrage_id = wp_insert_post(
-		array(
-			'post_type'   => 'mitmachen_anfrage',
-			'post_status' => 'publish',
-			'post_title'  => $name,
-			'meta_input'  => array(
-				'_elfzwo_anfrage_email'     => $kontakt,
-				'_elfzwo_anfrage_interesse' => $interesse,
-				'_elfzwo_anfrage_seite'     => $page_id,
-			),
-		)
-	);
+	$config = elfzwo_mitmachen_config( $page_id, $interesse );
+	$mail   = elfzwo_mitmachen_mail_inhalt( $config, $name, $kontakt, $interesse );
+	wp_mail( elfzwo_mitmachen_empfaenger( $config['empfaenger'] ), $mail['betreff'], $mail['text'], array( 'Reply-To: ' . $kontakt ) );
 
-	$text = sprintf(
-		"Neue Mach-mit-Anfrage über die Website:\n\nName: %1\$s\nE-Mail: %2\$s\nInteresse: %3\$s\n\nAlle Anfragen im Backend: %4\$s",
-		$name,
-		$kontakt,
-		$interesse ?: '–',
-		admin_url( 'edit.php?post_type=mitmachen_anfrage' )
-	);
-	$fehler  = '';
-	$on_fail = function ( $error ) use ( &$fehler ) {
-		$fehler = $error->get_error_message();
-	};
-	add_action( 'wp_mail_failed', $on_fail );
-	$empfaenger = elfzwo_mitmachen_empfaenger( $page_id );
-	$betreff    = 'Neue Mach-mit-Anfrage von ' . $name;
-	$gesendet   = wp_mail( $empfaenger, $betreff, $text, array( 'Reply-To: ' . $kontakt ) );
-	if ( ! $gesendet ) {
-		// Manche Mailserver lehnen eine fremde Antwortadresse ab — dann ohne sie erneut versuchen.
-		$fehler_mit_reply_to = $fehler;
-		$gesendet            = wp_mail( $empfaenger, $betreff, $text );
-		if ( ! $gesendet && $fehler_mit_reply_to && $fehler_mit_reply_to !== $fehler ) {
-			$fehler = $fehler_mit_reply_to . ' / ohne Reply-To: ' . $fehler;
-		}
-	}
-	remove_action( 'wp_mail_failed', $on_fail );
-
-	if ( $anfrage_id && ! is_wp_error( $anfrage_id ) ) {
-		update_post_meta( $anfrage_id, '_elfzwo_anfrage_mail', $gesendet ? 'gesendet' : 'fehlgeschlagen' );
-		if ( ! $gesendet ) {
-			update_post_meta( $anfrage_id, '_elfzwo_anfrage_mail_fehler', $fehler ?: 'wp_mail() hat false zurückgegeben.' );
-		}
-	}
-
-	wp_safe_redirect( add_query_arg( 'mitmachen', $anfrage_id && ! is_wp_error( $anfrage_id ) ? 'success' : 'error', get_permalink( $page_id ) ) );
+	wp_safe_redirect( add_query_arg( 'mitmachen', 'success', get_permalink( $page_id ) ) );
 	exit;
 }
 add_action( 'admin_post_elfzwo_mitmachen', 'elfzwo_handle_mitmachen_submit' );
 add_action( 'admin_post_nopriv_elfzwo_mitmachen', 'elfzwo_handle_mitmachen_submit' );
-
-/**
- * Früher hatte der Block je Gruppe (Aktive, Jugend/Kinder, Verein) eigene
- * Empfänger, Betreff und Text. Läuft einmalig nach dem Update (auch auf dem
- * Produktivserver): alle bisherigen Empfänger werden zur einen
- * Benachrichtigungs-E-Mail zusammengefasst, die alten Einstellungen entfernt.
- */
-function elfzwo_migrate_mitmachen_mail() {
-	if ( get_option( 'elfzwo_mitmachen_mail_migrated' ) ) {
-		return;
-	}
-	$posts = get_posts(
-		array(
-			'post_type'   => array( 'page', 'post', 'wp_block' ),
-			'post_status' => 'any',
-			'numberposts' => -1,
-			's'           => 'wp:elfzwo/mitmachen-form',
-		)
-	);
-	foreach ( $posts as $post ) {
-		$changed = false;
-		$blocks  = elfzwo_migrate_mitmachen_mail_blocks( parse_blocks( $post->post_content ), $changed );
-		if ( $changed ) {
-			wp_update_post(
-				array(
-					'ID'           => $post->ID,
-					'post_content' => wp_slash( serialize_blocks( $blocks ) ),
-				)
-			);
-		}
-	}
-	update_option( 'elfzwo_mitmachen_mail_migrated', 1 );
-}
-add_action( 'init', 'elfzwo_migrate_mitmachen_mail', 31 );
-
-function elfzwo_migrate_mitmachen_mail_blocks( $blocks, &$changed ) {
-	foreach ( $blocks as $i => $block ) {
-		if ( ! empty( $block['innerBlocks'] ) ) {
-			$blocks[ $i ]['innerBlocks'] = elfzwo_migrate_mitmachen_mail_blocks( $block['innerBlocks'], $changed );
-		}
-		if ( 'elfzwo/mitmachen-form' !== $block['blockName'] ) {
-			continue;
-		}
-		$attrs = $blocks[ $i ]['attrs'];
-		if ( isset( $attrs['mail'] ) && is_array( $attrs['mail'] ) ) {
-			$emails = array();
-			foreach ( $attrs['mail'] as $gruppe ) {
-				foreach ( preg_split( '/[,;\s]+/', (string) ( $gruppe['empfaenger'] ?? '' ) ) as $part ) {
-					if ( is_email( trim( $part ) ) ) {
-						$emails[] = trim( $part );
-					}
-				}
-			}
-			if ( $emails && empty( $attrs['notifyEmail'] ) ) {
-				$attrs['notifyEmail'] = implode( ', ', array_unique( $emails ) );
-			}
-			unset( $attrs['mail'] );
-			$changed = true;
-		}
-		if ( ! empty( $attrs['interests'] ) && is_array( $attrs['interests'] ) ) {
-			foreach ( $attrs['interests'] as $k => $interest ) {
-				if ( isset( $interest['gruppe'] ) ) {
-					unset( $attrs['interests'][ $k ]['gruppe'] );
-					$changed = true;
-				}
-			}
-		}
-		$blocks[ $i ]['attrs'] = $attrs;
-	}
-	return $blocks;
-}
 
 /**
  * Der Mach-mit-Block bringt seinen Kopfbereich (Kicker, Titel,
@@ -368,3 +194,60 @@ function elfzwo_migrate_mitmachen_hero() {
 	update_option( 'elfzwo_mitmachen_hero_migrated', 1 );
 }
 add_action( 'init', 'elfzwo_migrate_mitmachen_hero', 30 );
+
+/**
+ * Kurzzeitig gab es statt der Mail-Einstellungen je Gruppe nur eine
+ * Benachrichtigungs-E-Mail (notifyEmail). Wo das schon gespeichert wurde,
+ * wird die Adresse einmalig wieder als Empfänger aller Gruppen eingetragen.
+ */
+function elfzwo_migrate_mitmachen_notify_email() {
+	if ( get_option( 'elfzwo_mitmachen_notify_email_reverted' ) ) {
+		return;
+	}
+	$posts = get_posts(
+		array(
+			'post_type'   => array( 'page', 'post', 'wp_block' ),
+			'post_status' => 'any',
+			'numberposts' => -1,
+			's'           => 'notifyEmail',
+		)
+	);
+	foreach ( $posts as $post ) {
+		$changed = false;
+		$blocks  = elfzwo_mitmachen_notify_email_blocks( parse_blocks( $post->post_content ), $changed );
+		if ( $changed ) {
+			wp_update_post(
+				array(
+					'ID'           => $post->ID,
+					'post_content' => wp_slash( serialize_blocks( $blocks ) ),
+				)
+			);
+		}
+	}
+	update_option( 'elfzwo_mitmachen_notify_email_reverted', 1 );
+}
+add_action( 'init', 'elfzwo_migrate_mitmachen_notify_email', 31 );
+
+function elfzwo_mitmachen_notify_email_blocks( $blocks, &$changed ) {
+	foreach ( $blocks as $i => $block ) {
+		if ( ! empty( $block['innerBlocks'] ) ) {
+			$blocks[ $i ]['innerBlocks'] = elfzwo_mitmachen_notify_email_blocks( $block['innerBlocks'], $changed );
+		}
+		if ( 'elfzwo/mitmachen-form' !== $block['blockName'] || ! array_key_exists( 'notifyEmail', $block['attrs'] ) ) {
+			continue;
+		}
+		$empfaenger = str_replace( ',', "\n", (string) $block['attrs']['notifyEmail'] );
+		if ( empty( $block['attrs']['mail'] ) && '' !== trim( $empfaenger ) ) {
+			foreach ( array_keys( elfzwo_mitmachen_gruppen() ) as $gruppe ) {
+				$blocks[ $i ]['attrs']['mail'][ $gruppe ] = array(
+					'empfaenger' => $empfaenger,
+					'betreff'    => '',
+					'text'       => '',
+				);
+			}
+		}
+		unset( $blocks[ $i ]['attrs']['notifyEmail'] );
+		$changed = true;
+	}
+	return $blocks;
+}

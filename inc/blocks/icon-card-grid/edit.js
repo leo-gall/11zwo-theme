@@ -4,6 +4,7 @@
 	var IconControl = window.elfzwoBlocks.IconControl;
 	var InspectorControls = wp.blockEditor.InspectorControls;
 	var PanelBody = wp.components.PanelBody;
+	var SelectControl = wp.components.SelectControl;
 	var TextControl = wp.components.TextControl;
 	var TextareaControl = wp.components.TextareaControl;
 	var RangeControl = wp.components.RangeControl;
@@ -52,7 +53,8 @@
 					InspectorControls,
 					{},
 					el( PanelBody, { title: 'Raster' },
-						el( RangeControl, { label: 'Spalten', min: 2, max: 4, value: a.columns, onChange: set( 'columns' ) } )
+						el( RangeControl, { label: 'Spalten', min: 2, max: 4, value: a.columns, onChange: set( 'columns' ) } ),
+						el( SelectControl, { label: 'Darstellung', value: a.stil, options: [ { label: 'Karten mit Rahmen', value: '' }, { label: 'Rote Kacheln mit großem Piktogramm', value: 'kacheln' } ], onChange: set( 'stil' ) } )
 					),
 					el( PanelBody, { title: 'Karten', initialOpen: true },
 						cards.map( function ( card, idx ) {

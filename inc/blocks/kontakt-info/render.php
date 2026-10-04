@@ -25,7 +25,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 <section class="mx-auto max-w-5xl px-5 pt-10 pb-16 md:px-8 md:pt-16 lg:pb-20">
 
 	<div class="text-center">
-		<?php if ( $kicker ) : ?><p class="font-hand text-2xl text-primary"><?php echo esc_html( $kicker ); ?></p><?php endif; ?>
+		<?php if ( $kicker ) : ?><p class="elfzwo-kicker"><?php echo esc_html( $kicker ); ?></p><?php endif; ?>
 		<?php if ( $title || $title_hand ) : ?>
 			<h1 class="mt-1 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
 				<?php echo esc_html( $title ); ?>
@@ -37,12 +37,12 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 
 	<div class="mt-8 grid gap-5 md:mt-10 <?php echo $show_geraetehaus && $personen ? 'md:grid-cols-[2fr_3fr]' : 'mx-auto max-w-2xl'; ?>">
 		<?php if ( $show_geraetehaus ) : ?>
-			<div class="rounded-[2rem] border border-border bg-card p-6 md:p-8">
+			<div class="rounded-lg border border-border bg-card p-6 md:p-8">
 				<p class="text-xs font-bold uppercase tracking-[0.18em] text-ember">Gerätehaus</p>
 				<ul class="mt-5 space-y-5">
 					<?php if ( $strasse || $plz_ort ) : ?>
 						<li class="flex gap-4">
-							<span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-signal/15 text-signal"><?php echo elfzwo_icon( 'map-pin', 'h-5 w-5' ); ?></span>
+							<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( 'map-pin', 'h-5 w-5' ); ?></span>
 							<span class="pt-0.5">
 								<span class="block font-semibold"><?php echo esc_html( $strasse ); ?></span>
 								<span class="block text-muted-foreground"><?php echo esc_html( $plz_ort ); ?></span>
@@ -52,7 +52,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 					<?php endif; ?>
 					<?php if ( $zeiten ) : ?>
 						<li class="flex gap-4">
-							<span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-signal/15 text-signal"><?php echo elfzwo_icon( 'clock', 'h-5 w-5' ); ?></span>
+							<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( 'clock', 'h-5 w-5' ); ?></span>
 							<span class="pt-0.5">
 								<span class="block font-semibold"><?php echo esc_html( $zeiten ); ?></span>
 								<?php if ( $zeiten_2 ) : ?><span class="block text-muted-foreground"><?php echo esc_html( $zeiten_2 ); ?></span><?php endif; ?>
@@ -61,7 +61,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 					<?php endif; ?>
 					<?php if ( $email ) : ?>
 						<li class="flex gap-4">
-							<span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-signal/15 text-signal"><?php echo elfzwo_icon( 'mail', 'h-5 w-5' ); ?></span>
+							<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( 'mail', 'h-5 w-5' ); ?></span>
 							<a href="mailto:<?php echo esc_attr( $email ); ?>" class="min-w-0 self-center break-words font-semibold hover:text-signal"><?php echo elfzwo_wbr_email( $email ); // phpcs:ignore -- bereits escaped ?></a>
 						</li>
 					<?php endif; ?>
@@ -70,7 +70,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 		<?php endif; ?>
 
 		<?php if ( $personen ) : ?>
-			<div class="rounded-[2rem] border border-border bg-card p-6 md:p-8">
+			<div class="rounded-lg border border-border bg-card p-6 md:p-8">
 				<p class="text-xs font-bold uppercase tracking-[0.18em] text-ember">Ansprechpartner</p>
 				<div class="mt-5 divide-y divide-border">
 					<?php foreach ( $personen as $person ) : ?>

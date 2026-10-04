@@ -5,6 +5,7 @@
 	var ImagePicker = window.elfzwoBlocks.ImagePicker;
 	var InspectorControls = wp.blockEditor.InspectorControls;
 	var PanelBody = wp.components.PanelBody;
+	var SelectControl = wp.components.SelectControl;
 	var TextControl = wp.components.TextControl;
 	var TextareaControl = wp.components.TextareaControl;
 	var Button = wp.components.Button;
@@ -47,15 +48,14 @@
 			return el(
 				'div', {},
 				el( InspectorControls, {}, el( PanelBody, { title: 'Bild-Teaser' },
+					el( SelectControl, { label: 'Bild-Seite', value: a.imagePosition, options: [ { label: 'Bild links', value: 'left' }, { label: 'Bild rechts', value: 'right' } ], onChange: set( 'imagePosition' ) } ),
 					el( TextControl, { label: 'Tag', value: a.tag, onChange: set( 'tag' ) } ),
 					el( TextControl, { label: 'Titel', value: a.title, onChange: set( 'title' ) } ),
 					el( TextareaControl, { label: 'Beschreibung', value: a.description, onChange: set( 'description' ) } ),
 					el( TextControl, { label: 'CTA-Text', value: a.ctaText, onChange: set( 'ctaText' ) } ),
 					el( TextControl, { label: 'CTA-URL', value: a.ctaUrl, onChange: set( 'ctaUrl' ) } ),
-					el( TextControl, { label: 'Badge-Text', value: a.badge, onChange: set( 'badge' ) } ),
-					el( IconControl, { label: 'Badge-Icon', value: a.badgeIcon, onChange: set( 'badgeIcon' ) } ),
-					el( TextControl, { label: 'Zitat (Sprechblase auf dem Bild)', value: a.zitat, onChange: set( 'zitat' ) } ),
-					el( ImagePicker, { label: 'Bild', imageId: a.imageId, imageUrl: a.imageUrl, onSelect: function ( id, url ) { props.setAttributes( { imageId: id, imageUrl: url } ); }, onRemove: function () { props.setAttributes( { imageId: 0, imageUrl: '' } ); } } )
+					el( ImagePicker, { label: 'Bild', imageId: a.imageId, imageUrl: a.imageUrl, onSelect: function ( id, url ) { props.setAttributes( { imageId: id, imageUrl: url } ); }, onRemove: function () { props.setAttributes( { imageId: 0, imageUrl: '' } ); } } ),
+					el( ImagePicker, { label: 'Zweites Bild (optional, versetzt dahinter)', imageId: a.image2Id, imageUrl: a.image2Url, onSelect: function ( id, url ) { props.setAttributes( { image2Id: id, image2Url: url } ); }, onRemove: function () { props.setAttributes( { image2Id: 0, image2Url: '' } ); } } )
 				) ),
 				el( InspectorControls, {}, el( PanelBody, { title: 'Stichpunkte', initialOpen: true },
 					bullets.map( function ( bullet, idx ) {

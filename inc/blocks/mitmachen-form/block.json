@@ -69,25 +69,45 @@
 			"default": [
 				{
 					"label": "Aktive Feuerwehr",
-					"hint": "Ab 16 Jahren, echte Einsätze"
+					"hint": "Ab 16 Jahren, echte Einsätze",
+					"gruppe": "aktive"
 				},
 				{
 					"label": "Jugendfeuerwehr",
-					"hint": "Für Kids ab 8 Jahren"
+					"hint": "Für Kids ab 8 Jahren",
+					"gruppe": "jugend"
 				},
 				{
 					"label": "Fördermitglied",
-					"hint": "Unterstützen ohne Uniform"
+					"hint": "Unterstützen ohne Uniform",
+					"gruppe": "verein"
 				},
 				{
 					"label": "Erstmal nur schnuppern",
-					"hint": "Kaffee, Halle, Fragen"
+					"hint": "Kaffee, Halle, Fragen",
+					"gruppe": "aktive"
 				}
 			]
 		},
-		"notifyEmail": {
-			"type": "string",
-			"default": ""
+		"mail": {
+			"type": "object",
+			"default": {
+				"aktive": {
+					"empfaenger": "",
+					"betreff": "",
+					"text": ""
+				},
+				"jugend": {
+					"empfaenger": "",
+					"betreff": "",
+					"text": ""
+				},
+				"verein": {
+					"empfaenger": "",
+					"betreff": "",
+					"text": ""
+				}
+			}
 		}
 	},
 	"supports": {

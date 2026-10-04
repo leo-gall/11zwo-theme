@@ -22,7 +22,7 @@
 			return el(
 				'div', {},
 				el( InspectorControls, {}, el( PanelBody, { title: 'Aufruf-Banner' },
-					el( SelectControl, { label: 'Stilvariante', value: a.variant, options: [ { label: 'Signal (Rot)', value: 'signal' }, { label: 'Karte (hell)', value: 'card' } ], onChange: set( 'variant' ) } ),
+					el( SelectControl, { label: 'Stilvariante', value: a.variant, options: [ { label: 'Signal (Rot)', value: 'signal' }, { label: 'Karte (hell)', value: 'card' }, { label: 'Notruf-Band (112 links)', value: 'notruf' } ], onChange: set( 'variant' ) } ),
 					el( TextControl, { label: 'Titel', value: a.title, onChange: set( 'title' ) } ),
 					el( TextareaControl, { label: 'Text', value: a.text, onChange: set( 'text' ) } ),
 					el( TextControl, { label: 'Button-Text', value: a.buttonText, onChange: set( 'buttonText' ) } ),

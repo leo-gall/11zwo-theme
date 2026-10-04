@@ -51,7 +51,9 @@
 					InspectorControls,
 					{},
 					el( PanelBody, { title: 'Timeline' },
-						el( RangeControl, { label: 'Spalten', min: 2, max: 5, value: a.columns, onChange: set( 'columns' ) } )
+						el( TextControl, { label: 'Kicker (optional)', value: a.kicker, onChange: set( 'kicker' ) } ),
+						el( TextControl, { label: 'Überschrift (optional, links neben dem Zeitstrahl)', value: a.titel, onChange: set( 'titel' ) } ),
+						el( TextControl, { label: 'Einleitung (optional)', value: a.intro, onChange: set( 'intro' ) } )
 					),
 					el( PanelBody, { title: 'Schritte', initialOpen: true },
 						steps.map( function ( step, idx ) {

@@ -4,7 +4,7 @@ $ferien  = $attributes['ferienHinweis'] ?? '';
 $termine = $attributes['termine'] ?? array();
 ?>
 <section class="mx-auto max-w-7xl px-5 py-8 md:px-8">
-	<div class="rounded-3xl border border-border bg-card p-6 md:p-8">
+	<div class="rounded-lg border border-border bg-card p-6 md:p-8">
 		<?php if ( $ferien ) : ?>
 			<p class="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
 				<?php echo elfzwo_icon( 'calendar-clock', 'h-4 w-4 shrink-0' ); ?> <?php echo esc_html( $ferien ); ?>

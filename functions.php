@@ -52,7 +52,7 @@ function elfzwo_enqueue_assets() {
 
 	wp_enqueue_style(
 		'elfzwo-google-fonts',
-		'https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Source+Sans+3:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap',
+		'https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap',
 		array(),
 		null
 	);
@@ -77,6 +77,10 @@ function elfzwo_enqueue_assets() {
 		wp_enqueue_script( 'elfzwo-mitmachen-form', get_template_directory_uri() . '/assets/js/mitmachen-form.js', array(), filemtime( get_template_directory() . '/assets/js/mitmachen-form.js' ), true );
 	}
 
+	if ( has_block( 'elfzwo/fahrzeuge-liste' ) ) {
+		wp_enqueue_script( 'elfzwo-fahrzeug-hotspots', get_template_directory_uri() . '/assets/js/fahrzeug-hotspots.js', array(), filemtime( get_template_directory() . '/assets/js/fahrzeug-hotspots.js' ), true );
+	}
+
 	if ( has_block( 'elfzwo/faq' ) ) {
 		wp_enqueue_script( 'elfzwo-faq-accordion', get_template_directory_uri() . '/assets/js/faq-accordion.js', array(), filemtime( get_template_directory() . '/assets/js/faq-accordion.js' ), true );
 	}
@@ -89,6 +93,7 @@ add_action( 'wp_enqueue_scripts', 'elfzwo_enqueue_assets' );
 
 require get_template_directory() . '/inc/icons.php';
 require get_template_directory() . '/inc/helpers.php';
+require get_template_directory() . '/inc/komponenten.php';
 require get_template_directory() . '/inc/person-wappen.php';
 require get_template_directory() . '/inc/post-types.php';
 require get_template_directory() . '/inc/meta-boxes.php';
@@ -104,6 +109,7 @@ require get_template_directory() . '/inc/aktuelles-feed.php';
 require get_template_directory() . '/inc/einsatz-card.php';
 require get_template_directory() . '/inc/nav-walker.php';
 require get_template_directory() . '/inc/mitmachen-handler.php';
+require get_template_directory() . '/inc/startseite.php';
 require get_template_directory() . '/inc/blocks.php';
 require get_template_directory() . '/inc/comments.php';
 

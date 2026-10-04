@@ -11,7 +11,7 @@ $cards = $attributes['cards'] ?? array();
 			?>
 			<div class="rounded-2xl border border-border bg-card p-6">
 				<?php if ( $icon ) : ?>
-					<span class="grid h-11 w-11 place-items-center rounded-xl bg-signal/25 text-signal">
+					<span class="grid h-8 w-8 place-items-center text-signal">
 						<?php echo elfzwo_icon( $icon, 'h-5 w-5', 2.2 ); ?>
 					</span>
 				<?php endif; ?>

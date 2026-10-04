@@ -110,3 +110,104 @@
 	margin-right: 6px;
 	color: #50575e;
 }
+
+/* Klickpunkt-Editor der Gerätefächer (Fahrzeug, Feldtyp "hotspots"). */
+.elfzwo-hotspots-stage {
+	position: relative;
+	display: inline-block;
+	max-width: 100%;
+	margin: 8px 0 16px;
+	cursor: crosshair;
+	user-select: none;
+	touch-action: none;
+}
+
+.elfzwo-hotspots-stage img {
+	display: block;
+	max-width: 100%;
+	max-height: 560px;
+	border-radius: 4px;
+}
+
+.elfzwo-hotspot-marker {
+	position: absolute;
+	width: 28px;
+	height: 28px;
+	margin: 0;
+	padding: 0;
+	transform: translate(-50%, -50%);
+	border: 2px solid #fff;
+	border-radius: 50%;
+	background: #d44c47;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 1;
+	cursor: grab;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+	touch-action: none;
+}
+
+.elfzwo-hotspot-marker.is-active {
+	background: #2271b1;
+	transform: translate(-50%, -50%) scale(1.2);
+}
+
+.elfzwo-hotspot-marker.is-dragging {
+	cursor: grabbing;
+}
+
+.elfzwo-hotspots-rows {
+	margin: 0;
+	list-style: none;
+}
+
+.elfzwo-hotspot-row {
+	display: grid;
+	grid-template-columns: 32px 160px 1fr auto;
+	gap: 12px;
+	align-items: start;
+	padding: 12px;
+	margin-bottom: 8px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	background: #f6f7f7;
+}
+
+.elfzwo-hotspot-row::before {
+	content: attr(data-nummer);
+	display: grid;
+	place-items: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	background: #d44c47;
+	color: #fff;
+	font-weight: 700;
+}
+
+.elfzwo-hotspot-row.is-active {
+	border-color: #2271b1;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+.elfzwo-hotspot-row.is-active::before {
+	background: #2271b1;
+}
+
+.elfzwo-hotspot-row .elfzwo-media-field .button {
+	display: block;
+	margin-bottom: 4px;
+}
+
+.elfzwo-hotspot-text {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+@media (max-width: 782px) {
+	.elfzwo-hotspot-row {
+		grid-template-columns: 32px 1fr;
+	}
+}

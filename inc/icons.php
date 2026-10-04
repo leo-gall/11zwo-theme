@@ -17,6 +17,7 @@ function elfzwo_icon_paths() {
 		'chevron-down' => '<path d="m6 9 6 6 6-6"/>',
 		'menu' => '<path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/>',
 		'x' => '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+		'plus' => '<path d="M5 12h14"/><path d="M12 5v14"/>',
 		'siren' => '<path d="M7 18v-6a5 5 0 1 1 10 0v6"/><path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z"/><path d="M21 12h1"/><path d="M18.5 4.5 18 5"/><path d="M2 12h1"/><path d="M12 2v1"/><path d="m4.929 4.929.707.707"/><path d="M12 12v6"/>',
 		'map-pin' => '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
 		'clock' => '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',

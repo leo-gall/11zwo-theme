@@ -7,6 +7,10 @@ get_header();
 ?>
 
 <main>
+	<?php
+	$elfzwo_titel = is_search() ? 'Suche: ' . get_search_query() : ( is_archive() ? wp_strip_all_tags( get_the_archive_title() ) : ( is_404() ? 'Seite nicht gefunden' : get_bloginfo( 'name' ) ) );
+	echo elfzwo_render_jumbotron( array( 'titel' => $elfzwo_titel ) ); // phpcs:ignore -- bereits escaped
+	?>
 	<section class="mx-auto max-w-4xl px-5 py-16 md:px-8">
 		<?php if ( have_posts() ) : ?>
 			<?php while ( have_posts() ) : the_post(); ?>

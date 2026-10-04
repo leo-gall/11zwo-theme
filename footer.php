@@ -1,127 +1,30 @@
-<?php $footer_persons = elfzwo_footer_personen(); ?>
-<footer class="mt-24 border-t border-border bg-background">
-	<!-- Notruf-Karte -->
-	<div class="mx-auto max-w-7xl px-5 pt-12 md:px-8">
-		<div class="flex flex-wrap items-center justify-between gap-6 rounded-[2rem] bg-signal p-6 text-signal-foreground md:p-8">
-			<div class="flex items-center gap-4">
-				<span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-signal-foreground/30">
-					<?php echo elfzwo_icon( 'siren', 'h-6 w-6', 2.4 ); ?>
-				</span>
-				<div>
-					<p class="text-[11px] font-bold uppercase tracking-[0.2em] text-signal-foreground/75">Feuerwehr & Rettungsdienst</p>
-					<p class="font-display text-3xl leading-none">Notruf 112</p>
+<?php
+// Aufruf zum Mitmachen im Footer — nicht auf der Mitmachen-Seite selbst.
+$elfzwo_footer_cta = ! ( is_singular() && has_block( 'elfzwo/mitmachen-form' ) );
+?>
+<footer class="relative mt-16 text-white/85 md:mt-20">
+	<?php // Geschwungene Oberkante und freigestelltes HLF nach dem Vorbild der Aicher Ambulanz. ?>
+	<svg class="block h-16 w-full text-signal md:h-28" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 90 C 420 20, 980 0, 1440 50 L1440 120 L0 120 Z"/></svg>
+	<div class="bg-gradient-to-br from-signal via-signal to-wood">
+		<?php if ( $elfzwo_footer_cta ) : ?>
+			<div class="relative mx-auto grid max-w-7xl items-end gap-8 px-5 pb-12 md:grid-cols-[1fr_1fr] md:px-8">
+				<div class="pt-2 md:pb-10">
+					<h2 class="font-display text-3xl text-white md:text-5xl">Werde Teil der Mannschaft!</h2>
+					<p class="mt-4 max-w-lg text-lg text-white/90">Ob Quereinsteiger, Jugendliche oder Fördermitglied – wir freuen uns über alle, die mit anpacken.</p>
+					<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-outline-light mt-6">Mach mit</a>
 				</div>
+				<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/footer-hlf.png' ); ?>" alt="Hilfeleistungslöschfahrzeug der Feuerwehr Greifenberg" loading="lazy" width="760" height="590" class="mx-auto -mt-4 w-full max-w-md drop-shadow-2xl md:-mt-44 md:max-w-lg md:justify-self-end">
 			</div>
-			<p class="max-w-md text-sm text-signal-foreground/85">
-				Die Feuerwehr Greifenberg überwacht eingehende Nachrichten nicht permanent. Wählen Sie im Notfall sofort die 112 für Feuerwehr und Rettungsdienst.
-			</p>
-		</div>
-	</div>
-
-	<div class="mx-auto grid max-w-7xl gap-12 px-5 py-16 md:px-8 lg:grid-cols-[1.1fr_0.8fr_1.15fr_1.35fr]">
-		<!-- Brand -->
-		<div>
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="group flex items-center gap-3">
-				<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>" alt="Freiwillige Feuerwehr Greifenberg" class="h-16 w-auto transition-transform duration-200 group-hover:scale-105">
-				<span class="flex flex-col leading-tight">
-					<span class="font-display text-lg font-semibold text-foreground">Feuerwehr Greifenberg</span>
-					<span class="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Seit <?php echo esc_html( elfzwo_option( 'elfzwo_gegruendet', '1899' ) ); ?></span>
-				</span>
-			</a>
-
-			<p class="mt-6 max-w-sm text-sm text-muted-foreground">
-				<?php echo esc_html( elfzwo_option( 'elfzwo_footer_text', 'Nachbarn, die füreinander da sind. 39 Aktive, 19 in der Jugendfeuerwehr — und im Ernstfall rund um die Uhr für Greifenberg, Neugreifenberg, Beuern, Painhofen und die A96 unterwegs.' ) ); ?>
-			</p>
-
-			<p class="mt-6 font-hand text-3xl text-signal"><?php echo esc_html( elfzwo_option( 'elfzwo_footer_claim', 'Nicht ohne dich!' ) ); ?></p>
-		</div>
-
-		<!-- Über uns + Sonstige -->
-		<div>
-			<p class="text-xs font-bold uppercase tracking-[0.18em] text-ember">Über uns</p>
-			<ul class="mt-5 space-y-2.5 text-sm">
-				<?php
-				if ( has_nav_menu( 'footer-ueber-uns' ) ) {
-					wp_nav_menu(
-						array(
-							'theme_location' => 'footer-ueber-uns',
-							'container'      => false,
-							'items_wrap'     => '%3$s',
-							'walker'         => new ELFZWO_Footer_Nav_Walker(),
-						)
-					);
-				}
-				?>
-			</ul>
-
-			<p class="mt-8 text-xs font-bold uppercase tracking-[0.18em] text-ember">Sonstige</p>
-			<ul class="mt-5 space-y-2.5 text-sm">
-				<?php
-				if ( has_nav_menu( 'footer-sonstige' ) ) {
-					wp_nav_menu(
-						array(
-							'theme_location' => 'footer-sonstige',
-							'container'      => false,
-							'items_wrap'     => '%3$s',
-							'walker'         => new ELFZWO_Footer_Nav_Walker(),
-						)
-					);
-				}
-				?>
-			</ul>
-		</div>
-
-		<!-- Kontakt -->
-		<div>
-			<p class="text-xs font-bold uppercase tracking-[0.18em] text-ember">Gerätehaus</p>
-			<ul class="mt-5 space-y-4 text-sm text-foreground/80">
-				<li class="flex gap-3">
-					<span class="flex h-5 shrink-0 items-center"><?php echo elfzwo_icon( 'map-pin', 'h-4 w-4 text-signal' ); ?></span>
-					<span><?php echo esc_html( elfzwo_option( 'elfzwo_geraetehaus_strasse', 'Lindenweg 12' ) ); ?><br><?php echo esc_html( elfzwo_option( 'elfzwo_geraetehaus_plz_ort', '86926 Greifenberg' ) ); ?></span>
-				</li>
-				<li class="flex gap-3">
-					<span class="flex h-5 shrink-0 items-center"><?php echo elfzwo_icon( 'clock', 'h-4 w-4 text-signal' ); ?></span>
-					<span><?php echo esc_html( elfzwo_option( 'elfzwo_geraetehaus_zeiten', 'Sa 11:00 – 12:30 Uhr' ) ); ?><br><span class="text-muted-foreground"><?php echo esc_html( elfzwo_option( 'elfzwo_geraetehaus_zeiten_2', 'Kameraden vor Ort' ) ); ?></span></span>
-				</li>
-				<li class="flex gap-3">
-					<span class="flex h-4 shrink-0 items-center -my-px"><?php echo elfzwo_icon( 'mail', 'h-4 w-4 text-signal' ); ?></span>
-					<?php $kontakt_email = elfzwo_option( 'elfzwo_kontakt_email', 'feuerwehr@greifenberg-ammersee.de' ); ?>
-					<a href="mailto:<?php echo esc_attr( $kontakt_email ); ?>" class="break-words text-xs transition-colors hover:text-signal"><?php echo elfzwo_wbr_email( $kontakt_email ); // phpcs:ignore -- bereits escaped ?></a>
-				</li>
-			</ul>
-		</div>
-
-		<!-- Ansprechpartner -->
-		<div>
-			<p class="text-xs font-bold uppercase tracking-[0.18em] text-ember">Ansprechpartner</p>
-			<div class="mt-5 space-y-5 text-sm">
-				<?php foreach ( $footer_persons as $person ) :
-					$rolle = $person['rolle'];
-					$tel   = $person['telefon'];
-					$email = $person['email'];
-					?>
-					<div>
-						<p class="font-display text-base leading-tight"><?php echo esc_html( $person['name'] ); ?></p>
-						<?php if ( $rolle ) : ?><p class="mt-0.5 text-xs uppercase tracking-widest text-muted-foreground"><?php echo esc_html( $rolle ); ?></p><?php endif; ?>
-						<?php if ( $tel ) : ?>
-							<a href="tel:<?php echo esc_attr( preg_replace( '/[^0-9+]/', '', $tel ) ); ?>" class="mt-1.5 flex items-center gap-2 text-xs text-foreground/80 transition-colors hover:text-signal"><?php echo elfzwo_icon( 'phone', 'h-3.5 w-3.5 shrink-0 text-signal' ); ?> <?php echo esc_html( $tel ); ?></a>
-						<?php endif; ?>
-						<?php if ( $email ) : ?>
-							<a href="mailto:<?php echo esc_attr( $email ); ?>" class="mt-1.5 flex items-start gap-2 break-words text-xs text-foreground/80 transition-colors hover:text-signal"><span class="flex h-4 shrink-0 items-center -my-px"><?php echo elfzwo_icon( 'mail', 'h-3.5 w-3.5 text-signal' ); ?></span> <span><?php echo elfzwo_wbr_email( $email ); // phpcs:ignore -- bereits escaped ?></span></a>
-						<?php endif; ?>
-					</div>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	</div>
-
-	<div class="border-t border-border">
-		<div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-6 text-xs text-muted-foreground md:px-8">
-			<span>© <?php echo esc_html( gmdate( 'Y' ) ); ?> Freiwillige Feuerwehr Greifenberg e.V.</span>
-			<span class="flex items-center gap-4">
-				<a href="<?php echo esc_url( home_url( '/impressum/' ) ); ?>" class="transition-colors hover:text-signal">Impressum</a>
-				<a href="<?php echo esc_url( home_url( '/datenschutzerklaerung/' ) ); ?>" class="transition-colors hover:text-signal">Datenschutz</a>
-				<a href="<?php echo esc_url( home_url( '/rss.xml' ) ); ?>" class="inline-flex items-center gap-1.5 transition-colors hover:text-signal" title="Einsätze und Beiträge als RSS-Feed abonnieren"><?php echo elfzwo_icon( 'rss', 'h-3.5 w-3.5' ); ?> RSS</a>
+		<?php endif; ?>
+		<div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 border-t border-white/20 px-5 py-6 text-sm md:px-8">
+			<span class="flex flex-wrap items-center gap-x-5 gap-y-1">
+				<span>© <?php echo esc_html( gmdate( 'Y' ) ); ?> Freiwillige Feuerwehr Greifenberg e.V.</span>
+				<a href="tel:112" class="inline-flex items-center gap-1.5 font-semibold text-white hover:underline"><?php echo elfzwo_icon( 'phone', 'h-3.5 w-3.5' ); ?> Notruf 112</a>
+			</span>
+			<span class="flex items-center gap-5">
+				<a href="<?php echo esc_url( home_url( '/impressum/' ) ); ?>" class="hover:text-white">Impressum</a>
+				<a href="<?php echo esc_url( home_url( '/datenschutzerklaerung/' ) ); ?>" class="hover:text-white">Datenschutz</a>
+				<a href="<?php echo esc_url( home_url( '/rss.xml' ) ); ?>" class="inline-flex items-center gap-1.5 hover:text-white" title="Einsätze und Beiträge als RSS-Feed abonnieren"><?php echo elfzwo_icon( 'rss', 'h-3.5 w-3.5' ); ?> RSS</a>
 			</span>
 		</div>
 	</div>

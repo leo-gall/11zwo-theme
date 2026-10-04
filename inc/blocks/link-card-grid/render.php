@@ -12,17 +12,15 @@ $cards = $attributes['cards'] ?? array();
 			$icon   = $card['icon'] ?? '';
 			$accent = $card['accent'] ?? 'bg-wood/35';
 			?>
-			<a href="<?php echo esc_url( $url ); ?>" class="group flex flex-col rounded-3xl border border-border bg-card p-8 transition hover:-translate-y-1 hover:shadow-xl">
+			<a href="<?php echo esc_url( $url ); ?>" class="group flex flex-col rounded-lg border border-border bg-card p-8 transition-colors hover:border-signal">
 				<div class="flex items-center justify-between">
-					<span class="grid h-14 w-14 place-items-center rounded-2xl <?php echo esc_attr( $accent ); ?>">
-						<?php echo elfzwo_icon( $icon, 'h-6 w-6', 2.2 ); ?>
-					</span>
-					<span class="text-[11px] uppercase tracking-widest text-muted-foreground"><?php echo esc_html( $tag ); ?></span>
+					<span class="text-signal"><?php echo elfzwo_icon( $icon, 'h-7 w-7', 2 ); ?></span>
+					<?php if ( $tag ) : ?><span class="elfzwo-kicker"><?php echo esc_html( $tag ); ?></span><?php endif; ?>
 				</div>
 				<h3 class="mt-6 font-display text-2xl"><?php echo esc_html( $title ); ?></h3>
 				<p class="mt-2 flex-1 text-muted-foreground"><?php echo esc_html( $body ); ?></p>
 				<span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-signal">
-					Ansehen <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4' ); ?>
+					Ansehen
 				</span>
 			</a>
 		<?php endforeach; ?>

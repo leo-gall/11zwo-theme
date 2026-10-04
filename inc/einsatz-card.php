@@ -56,7 +56,7 @@ function elfzwo_render_einsatzdaten_card( $post_id, $show_content = true ) {
 
 	ob_start();
 	?>
-	<div class="mt-10 rounded-[2rem] border border-border bg-card p-6 md:p-8">
+	<div class="mt-10 rounded-lg border border-border bg-card p-6 md:p-8">
 		<h2 class="font-display text-xl">Einsatzdaten</h2>
 		<?php if ( $show_content ) : ?>
 			<?php
@@ -70,7 +70,7 @@ function elfzwo_render_einsatzdaten_card( $post_id, $show_content = true ) {
 		<dl class="mt-5 grid gap-3 sm:grid-cols-2">
 			<?php foreach ( $facts as $f ) : ?>
 				<div class="flex items-center gap-3 rounded-2xl border border-border p-4">
-					<span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-signal/25 text-signal"><?php echo elfzwo_icon( $f['icon'], 'h-5 w-5', 2.2 ); ?></span>
+					<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( $f['icon'], 'h-5 w-5', 2.2 ); ?></span>
 					<div class="min-w-0">
 						<dt class="text-[11px] uppercase tracking-widest text-muted-foreground"><?php echo esc_html( $f['label'] ); ?></dt>
 						<dd class="font-display text-lg leading-tight"><?php echo esc_html( $f['value'] ); ?></dd>
@@ -85,7 +85,7 @@ function elfzwo_render_einsatzdaten_card( $post_id, $show_content = true ) {
 					<div class="flex flex-wrap items-center gap-2">
 						<span class="inline-flex shrink-0 items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"><?php echo elfzwo_icon( 'truck', 'h-3.5 w-3.5' ); ?> Fahrzeuge</span>
 						<?php foreach ( $fahrzeuge as $f ) : ?>
-							<span class="rounded-full bg-ember/40 px-2.5 py-1 text-xs font-semibold text-wood"><?php echo esc_html( $f ); ?></span>
+							<span class="rounded-full border border-border px-2.5 py-0.5 text-xs font-medium text-foreground/80"><?php echo esc_html( $f ); ?></span>
 						<?php endforeach; ?>
 					</div>
 				<?php endif; ?>
@@ -98,7 +98,7 @@ function elfzwo_render_einsatzdaten_card( $post_id, $show_content = true ) {
 								<?php if ( ! empty( $kraft['url'] ) ) : ?>
 									<a href="<?php echo esc_url( $kraft['url'] ); ?>" target="_blank" rel="noopener noreferrer" class="rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-foreground underline decoration-dotted transition-colors hover:bg-secondary"><?php echo esc_html( $kraft['name'] ); ?></a>
 								<?php else : ?>
-									<span class="rounded-full border border-border px-2.5 py-1 text-xs font-semibold text-foreground"><?php echo esc_html( $kraft['name'] ); ?></span>
+									<span class="rounded border border-border px-2 py-0.5 text-xs font-semibold text-foreground"><?php echo esc_html( $kraft['name'] ); ?></span>
 								<?php endif; ?>
 							<?php endif; ?>
 						<?php endforeach; ?>

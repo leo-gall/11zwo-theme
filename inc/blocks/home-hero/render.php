@@ -11,49 +11,46 @@ $badge     = $attributes['emergencyBadge'] ?? '';
 
 $fallback_images = array(
 	get_template_directory_uri() . '/assets/images/hero-team.jpg',
-	get_template_directory_uri() . '/assets/images/youth.jpg',
+	get_template_directory_uri() . '/assets/images/hero-hintergrund.jpg',
 	get_template_directory_uri() . '/assets/images/truck-1.jpg',
 );
 $images = array();
 for ( $i = 1; $i <= 3; $i++ ) {
 	$id  = (int) ( $attributes[ "image{$i}Id" ] ?? 0 );
-	$url = $id ? wp_get_attachment_image_url( $id, 'large' ) : $attributes[ "image{$i}Url" ] ?? '';
+	$url = $id ? wp_get_attachment_image_url( $id, 1 === $i ? '1536x1536' : 'full' ) : $attributes[ "image{$i}Url" ] ?? '';
 	$images[] = $url ?: $fallback_images[ $i - 1 ];
 }
 ?>
-<section class="relative">
-	<div class="relative mx-auto grid max-w-7xl gap-10 px-5 pt-10 pb-20 md:grid-cols-[1.05fr_1fr] md:px-8 md:pt-16 lg:gap-16 lg:pt-24">
-		<div class="flex flex-col justify-center">
-			<h1 class="mt-6 font-display text-5xl leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
-				<?php echo esc_html( $title1 ); ?><br>
-				<?php echo esc_html( $title2 ); ?><br>
-				<span class="text-signal font-hand text-[1.15em]"><?php echo esc_html( $subtitle ); ?></span>
+<?php // Aufbau nach dem Vorbild der Aicher Ambulanz: Fahrzeugfoto als Hintergrund unter rotem Schleier, Mannschaftsfoto frei geschwungen, unten eine Welle. ?>
+<section class="relative isolate overflow-hidden bg-signal text-white">
+	<img src="<?php echo esc_url( $images[1] ); ?>" alt="" class="absolute inset-0 -z-20 h-full w-full object-cover">
+	<div class="absolute inset-0 -z-10 bg-gradient-to-r from-wood/95 via-signal/90 to-signal/75" aria-hidden="true"></div>
+	<div class="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-28 pt-14 md:grid-cols-[1fr_1.15fr] md:px-8 md:pb-36 md:pt-20">
+		<div>
+			<?php if ( $subtitle ) : ?><p class="text-lg text-white/90"><?php echo esc_html( $subtitle ); ?></p><?php endif; ?>
+			<h1 class="mt-2 font-display text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
+				<?php echo esc_html( $title1 ); ?><?php if ( $title2 ) : ?><br><?php echo esc_html( $title2 ); ?><?php endif; ?>
 			</h1>
-			<?php if ( $description ) : ?><p class="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground"><?php echo esc_html( $description ); ?></p><?php endif; ?>
+			<?php if ( $description ) : ?><p class="mt-5 max-w-xl text-lg leading-relaxed text-white/90"><?php echo esc_html( $description ); ?></p><?php endif; ?>
 			<div class="mt-8 flex flex-wrap items-center gap-3">
 				<?php if ( $cta1 ) : ?>
-					<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary w-full sm:w-auto">
-						<?php echo esc_html( $cta1 ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
+					<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-light w-full sm:w-auto">
+						<?php echo esc_html( $cta1 ); ?>
 					</a>
 				<?php endif; ?>
 				<?php if ( $cta2 ) : ?>
-					<a href="<?php echo esc_url( $cta2_url ?: '#' ); ?>" class="elfzwo-btn elfzwo-btn-secondary w-full sm:w-auto">
+					<a href="<?php echo esc_url( $cta2_url ?: '#' ); ?>" class="elfzwo-btn elfzwo-btn-outline-light w-full sm:w-auto">
 						<?php echo esc_html( $cta2 ); ?>
 					</a>
 				<?php endif; ?>
 			</div>
+			<?php if ( $badge ) : ?>
+				<a href="tel:112" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white">
+					<?php echo elfzwo_icon( 'phone', 'h-4 w-4 shrink-0' ); ?> <?php echo esc_html( $badge ); ?>
+				</a>
+			<?php endif; ?>
 		</div>
-
-		<div class="relative flex items-center justify-center py-6">
-			<?php // isolate: die z-Werte der Bilder/des Zettels gelten nur innerhalb des Stapels und liegen nie über dem Sticky-Header (z-40). ?>
-			<div class="relative isolate h-[340px] w-full max-w-md sm:h-[400px]">
-				<img src="<?php echo esc_url( $images[2] ); ?>" alt="" class="absolute left-0 top-0 z-10 h-48 w-56 rotate-[-10deg] rounded-[2rem] border-2 border-cream object-cover shadow-lg sm:h-56 sm:w-64">
-				<img src="<?php echo esc_url( $images[1] ); ?>" alt="" class="absolute right-0 top-6 z-20 h-48 w-56 rotate-[9deg] rounded-[2rem] border-2 border-cream object-cover shadow-xl sm:h-56 sm:w-64">
-				<img src="<?php echo esc_url( $images[0] ); ?>" alt="" class="absolute bottom-0 left-1/2 z-30 h-48 w-56 -translate-x-1/2 rotate-[-3deg] rounded-[2rem] border-2 border-cream object-cover shadow-2xl sm:h-56 sm:w-64">
-				<?php if ( $badge ) : ?>
-					<div class="absolute -right-2 -top-2 z-40 rotate-6 rounded-2xl bg-cream px-4 py-2 font-hand text-xl text-signal shadow-lg"><?php echo esc_html( $badge ); ?></div>
-				<?php endif; ?>
-			</div>
-		</div>
+		<img src="<?php echo esc_url( $images[0] ); ?>" alt="Mannschaft der Freiwilligen Feuerwehr Greifenberg" class="elfzwo-hero-blob aspect-[16/10] w-full object-cover shadow-xl">
 	</div>
+	<svg class="absolute inset-x-0 bottom-0 h-16 w-full text-background md:h-24" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 70 C 360 120, 900 110, 1440 30 L1440 100 L0 100 Z"/></svg>
 </section>

@@ -64,7 +64,7 @@ function elfzwo_enqueue_block_editor_styling() {
 	wp_enqueue_script( 'elfzwo-tailwind-config', get_template_directory_uri() . '/assets/js/tailwind-config.js', array( 'tailwind-cdn' ), filemtime( get_template_directory() . '/assets/js/tailwind-config.js' ), false );
 	wp_enqueue_style(
 		'elfzwo-google-fonts',
-		'https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Source+Sans+3:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap',
+		'https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap',
 		array(),
 		null
 	);

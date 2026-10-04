@@ -1,42 +1,49 @@
 <?php
+/**
+ * "Warum mitmachen?" als senkrechter Zeitstrahl: Linie mit Punkten, darunter
+ * der Button. Ein Schritt ohne Nummer, aber mit Button-Text ist der Aufruf
+ * am Ende.
+ */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
-$columns = (int) ( $attributes['columns'] ?? 4 );
-$columns = max( 2, min( 5, $columns ) );
-$steps   = $attributes['steps'] ?? array();
+$steps = $attributes['steps'] ?? array();
+$kicker = $attributes['kicker'] ?? '';
+$titel  = $attributes['titel'] ?? '';
+$intro  = $attributes['intro'] ?? '';
+$punkte = array();
+$aufruf = null;
+foreach ( $steps as $step ) {
+	if ( ! empty( $step['buttonText'] ) && empty( $step['number'] ) ) {
+		$aufruf = $step;
+	} elseif ( ! empty( $step['title'] ) ) {
+		$punkte[] = $step;
+	}
+}
 ?>
-<section class="mx-auto max-w-7xl px-5 py-8 md:px-8">
-	<div class="relative">
-		<div class="absolute left-0 right-0 top-6 hidden h-px bg-border md:block"></div>
-		<div class="grid gap-10 md:grid-cols-<?php echo esc_attr( $columns ); ?>">
-			<?php foreach ( $steps as $step ) :
-				$number      = $step['number'] ?? '';
-				$title       = $step['title'] ?? '';
-				$body        = $step['body'] ?? '';
-				$button_text = $step['buttonText'] ?? '';
-				$button_url  = $step['buttonUrl'] ?? '#';
-				$is_cta_slot = $button_text && ! $number;
-				?>
-				<div class="relative">
-					<?php if ( $is_cta_slot ) : ?>
-						<a href="<?php echo esc_url( $button_url ); ?>" class="elfzwo-btn elfzwo-btn-primary w-full md:hidden">
-							<?php echo esc_html( $button_text ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
-						</a>
-						<div class="hidden md:block">
-							<a href="<?php echo esc_url( $button_url ); ?>" class="elfzwo-btn elfzwo-btn-primary elfzwo-btn-sm relative z-10 h-12">
-								<?php echo esc_html( $button_text ); ?> <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
-							</a>
-							<?php if ( $title ) : ?><h3 class="mt-5 font-display text-xl"><?php echo esc_html( $title ); ?></h3><?php endif; ?>
-							<?php if ( $body ) : ?><p class="mt-2 text-sm text-muted-foreground"><?php echo esc_html( $body ); ?></p><?php endif; ?>
-						</div>
-					<?php else : ?>
-						<?php if ( $number ) : ?>
-							<span class="relative z-10 grid h-12 w-12 place-items-center rounded-full bg-signal font-display text-lg text-signal-foreground"><?php echo esc_html( $number ); ?></span>
-						<?php endif; ?>
-						<?php if ( $title ) : ?><h3 class="mt-5 font-display text-xl"><?php echo esc_html( $title ); ?></h3><?php endif; ?>
-						<?php if ( $body ) : ?><p class="mt-2 text-sm text-muted-foreground"><?php echo esc_html( $body ); ?></p><?php endif; ?>
-					<?php endif; ?>
-				</div>
-			<?php endforeach; ?>
+<section class="mx-auto max-w-7xl px-5 py-8 md:px-8 <?php echo $titel ? 'grid gap-10 md:grid-cols-[1fr_1.4fr] md:py-14' : ''; ?>">
+	<?php if ( $titel ) : ?>
+		<div class="md:sticky md:top-28 md:self-start">
+			<?php if ( $kicker ) : ?><p class="elfzwo-kicker"><?php echo esc_html( $kicker ); ?></p><?php endif; ?>
+			<h2 class="mt-1 font-display text-4xl md:text-5xl"><?php echo esc_html( $titel ); ?></h2>
+			<?php if ( $intro ) : ?><p class="mt-4 max-w-md text-muted-foreground"><?php echo esc_html( $intro ); ?></p><?php endif; ?>
+			<?php if ( $aufruf ) : ?>
+				<a href="<?php echo esc_url( $aufruf['buttonUrl'] ?: home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary mt-6"><?php echo esc_html( $aufruf['buttonText'] ); ?></a>
+				<?php $aufruf = null; ?>
+			<?php endif; ?>
 		</div>
-	</div>
+	<?php endif; ?>
+	<ol class="relative max-w-3xl border-l-2 border-signal/30 pl-8">
+		<?php foreach ( $punkte as $step ) : ?>
+			<li class="relative pb-8 last:pb-0">
+				<span class="absolute -left-[2.5625rem] top-1.5 h-4 w-4 rounded-full border-[3px] border-background bg-signal" aria-hidden="true"></span>
+				<h3 class="font-display text-xl"><?php echo esc_html( $step['title'] ); ?></h3>
+				<?php if ( ! empty( $step['body'] ) ) : ?><p class="mt-1.5 text-muted-foreground"><?php echo esc_html( $step['body'] ); ?></p><?php endif; ?>
+			</li>
+		<?php endforeach; ?>
+	</ol>
+	<?php if ( $aufruf ) : ?>
+		<div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 sm:pl-10">
+			<a href="<?php echo esc_url( $aufruf['buttonUrl'] ?: home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary"><?php echo esc_html( $aufruf['buttonText'] ); ?></a>
+			<?php if ( ! empty( $aufruf['title'] ) ) : ?><span class="font-semibold"><?php echo esc_html( $aufruf['title'] ); ?></span><?php endif; ?>
+		</div>
+	<?php endif; ?>
 </section>

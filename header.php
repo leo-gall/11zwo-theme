@@ -11,7 +11,7 @@
 <?php
 if ( ! function_exists( 'elfzwo_render_nav_group' ) ) {
 	function elfzwo_render_nav_group( $nodes, $justify ) {
-		$pill_class = 'rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition-all duration-200 hover:bg-secondary hover:text-foreground';
+		$pill_class = 'px-3.5 py-2 text-[15px] font-medium text-foreground transition-colors duration-200 hover:text-signal';
 		?>
 		<nav class="hidden items-center gap-1 lg:flex <?php echo esc_attr( $justify ); ?>">
 			<?php foreach ( $nodes as $node ) :
@@ -43,8 +43,8 @@ if ( ! function_exists( 'elfzwo_render_nav_group' ) ) {
 $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 ?>
 
-<header class="sticky top-0 z-40 border-b border-border/60 bg-background">
-	<div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-2.5 md:px-8 lg:grid lg:grid-cols-[auto_1fr_auto]">
+<header class="sticky top-0 z-40 bg-white shadow-sm">
+	<div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-2.5 md:px-8">
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="group shrink-0" aria-label="Freiwillige Feuerwehr Greifenberg — Startseite">
 			<img
 				src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.png' ); ?>"
@@ -53,11 +53,10 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 			>
 		</a>
 
-		<?php elfzwo_render_nav_group( $elfzwo_nav_items, 'justify-center' ); ?>
-
-		<div class="flex items-center gap-2 lg:justify-self-end">
+		<div class="flex items-center gap-2">
+			<?php elfzwo_render_nav_group( $elfzwo_nav_items, 'mr-3' ); ?>
 			<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary elfzwo-btn-sm hidden sm:inline-flex">
-				Mach mit! <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
+				Mach mit!
 			</a>
 			<button id="mobile-toggle" type="button" class="relative grid h-11 w-11 place-items-center rounded-lg border border-border bg-card transition-colors hover:bg-secondary lg:hidden" aria-label="Menü" aria-expanded="false">
 				<span id="menu-icon-open"><?php echo elfzwo_icon( 'menu', 'h-5 w-5' ); ?></span>
@@ -66,7 +65,7 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 		</div>
 	</div>
 
-	<div id="mobile-menu" class="elfzwo-mobile-menu absolute inset-x-0 top-full hidden max-h-[calc(100dvh-5rem)] overflow-y-auto border-y border-border/60 bg-background shadow-xl lg:hidden">
+	<div id="mobile-menu" class="elfzwo-mobile-menu absolute inset-x-0 top-full hidden max-h-[calc(100dvh-5rem)] overflow-y-auto border-y border-border/60 bg-background shadow-md lg:hidden">
 		<div class="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-4">
 			<?php foreach ( $elfzwo_nav_items as $elfzwo_mnode ) :
 				$elfzwo_mitem = $elfzwo_mnode['item'];
@@ -86,7 +85,34 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 				endif;
 			endforeach;
 			?>
-			<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary mt-2">Mach mit! <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary mt-2">Mach mit!</a>
 		</div>
 	</div>
 </header>
+
+<?php
+$elfzwo_ticker = get_posts( array( 'post_type' => array( 'post', 'einsatz' ), 'numberposts' => 5, 'post_status' => 'publish' ) );
+if ( $elfzwo_ticker ) :
+	ob_start();
+	foreach ( $elfzwo_ticker as $elfzwo_tp ) {
+		printf(
+			'<a href="%1$s" class="inline-flex items-center gap-2 px-6 hover:underline"><strong class="font-semibold">%2$s:</strong> %3$s</a><span aria-hidden="true">•</span>',
+			esc_url( get_permalink( $elfzwo_tp ) ),
+			'einsatz' === $elfzwo_tp->post_type ? 'Einsatz' : 'Neuigkeit',
+			esc_html( get_the_title( $elfzwo_tp ) . ' (' . get_the_date( 'j. F Y', $elfzwo_tp ) . ')' )
+		);
+	}
+	$elfzwo_ticker_html = ob_get_clean();
+	?>
+	<div class="elfzwo-ticker overflow-hidden bg-signal text-sm text-white">
+		<div class="mx-auto flex max-w-7xl items-center md:px-8">
+			<span class="relative z-10 shrink-0 bg-signal py-2 pl-5 pr-3 font-semibold md:pl-0">Neuigkeiten:</span>
+			<div class="min-w-0 flex-1 overflow-hidden py-2">
+				<div class="elfzwo-ticker-track flex w-max whitespace-nowrap">
+					<div class="flex items-center"><?php echo $elfzwo_ticker_html; // phpcs:ignore -- bereits escaped ?></div>
+					<div class="flex items-center" aria-hidden="true"><?php echo $elfzwo_ticker_html; // phpcs:ignore -- bereits escaped ?></div>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php endif; ?>
