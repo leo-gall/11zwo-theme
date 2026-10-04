@@ -73,6 +73,10 @@ function elfzwo_enqueue_assets() {
 		wp_localize_script( 'elfzwo-aktuelles-feed', 'elfzwoAktuellesFeed', array( 'ajaxUrl' => admin_url( 'admin-ajax.php' ) ) );
 	}
 
+	if ( has_block( 'elfzwo/mitmachen-form' ) ) {
+		wp_enqueue_script( 'elfzwo-mitmachen-form', get_template_directory_uri() . '/assets/js/mitmachen-form.js', array(), filemtime( get_template_directory() . '/assets/js/mitmachen-form.js' ), true );
+	}
+
 	if ( has_block( 'elfzwo/faq' ) ) {
 		wp_enqueue_script( 'elfzwo-faq-accordion', get_template_directory_uri() . '/assets/js/faq-accordion.js', array(), filemtime( get_template_directory() . '/assets/js/faq-accordion.js' ), true );
 	}

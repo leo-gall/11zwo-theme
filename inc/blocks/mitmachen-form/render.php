@@ -51,7 +51,7 @@ $status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET[
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="elfzwo-btn elfzwo-btn-secondary mt-6">Zur Startseite</a>
 			</div>
 		<?php else : ?>
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="p-5 sm:p-8">
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="elfzwo-mitmachen-form p-5 sm:p-8">
 				<input type="hidden" name="action" value="elfzwo_mitmachen">
 				<input type="hidden" name="redirect_id" value="<?php echo esc_attr( $post_id ); ?>">
 				<?php wp_nonce_field( 'elfzwo_mitmachen', 'elfzwo_mitmachen_nonce' ); ?>
@@ -86,8 +86,9 @@ $status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET[
 					</label>
 				</div>
 
-				<button type="submit" class="elfzwo-btn elfzwo-btn-primary mt-6 w-full">
-					Ich bin dabei! <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?>
+				<button type="submit" class="elfzwo-btn elfzwo-btn-primary mt-6 w-full disabled:cursor-wait disabled:opacity-80">
+					<span class="elfzwo-submit-idle inline-flex items-center gap-2">Ich bin dabei! <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 elfzwo-btn-arrow' ); ?></span>
+					<span class="elfzwo-submit-busy hidden items-center gap-2"><span class="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" aria-hidden="true"></span> Wird gesendet …</span>
 				</button>
 				<p class="mt-3 text-center text-xs text-muted-foreground">Infos zum Umgang mit deinen Daten findest du in unserer <a href="<?php echo esc_url( $datenschutz_url ); ?>" class="underline underline-offset-2 hover:text-signal">Datenschutzerklärung</a>.</p>
 			</form>

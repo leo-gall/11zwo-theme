@@ -52,6 +52,7 @@ function elfzwo_mitmachen_anfrage_columns( $columns ) {
 		'email'     => 'E-Mail',
 		'interesse' => 'Interesse',
 		'seite'     => 'Formular',
+		'mail'      => 'Benachrichtigung',
 		'date'      => 'Eingang',
 	);
 }
@@ -65,6 +66,8 @@ function elfzwo_mitmachen_anfrage_column( $column, $post_id ) {
 		}
 	} elseif ( 'interesse' === $column ) {
 		echo esc_html( get_post_meta( $post_id, '_elfzwo_anfrage_interesse', true ) );
+	} elseif ( 'mail' === $column ) {
+		echo elfzwo_mitmachen_mail_status_html( $post_id ); // phpcs:ignore -- bereits escaped
 	} elseif ( 'seite' === $column ) {
 		$page_id = (int) get_post_meta( $post_id, '_elfzwo_anfrage_seite', true );
 		if ( $page_id && get_post( $page_id ) ) {
@@ -115,12 +118,26 @@ function elfzwo_render_mitmachen_anfrage_meta_box( $post ) {
 		'Interesse' => esc_html( get_post_meta( $post->ID, '_elfzwo_anfrage_interesse', true ) ),
 		'Formular'  => $page_id && get_post( $page_id ) ? sprintf( '<a href="%1$s" target="_blank">%2$s</a>', esc_url( get_permalink( $page_id ) ), esc_html( get_the_title( $page_id ) ) ) : '',
 		'Eingang'   => esc_html( get_the_date( 'd.m.Y, H:i', $post ) . ' Uhr' ),
+		'Benachrichtigung' => elfzwo_mitmachen_mail_status_html( $post->ID ),
 	);
 	echo '<table class="form-table"><tbody>';
 	foreach ( $rows as $label => $value ) {
 		printf( '<tr><th style="width:160px;text-align:left;">%1$s</th><td>%2$s</td></tr>', esc_html( $label ), $value ); // phpcs:ignore -- $value ist bereits escaped
 	}
 	echo '</tbody></table>';
+}
+
+/** Ob die Benachrichtigungs-Mail rausging — bei Fehlern mit der Meldung von WordPress/PHPMailer. */
+function elfzwo_mitmachen_mail_status_html( $post_id ) {
+	$status = get_post_meta( $post_id, '_elfzwo_anfrage_mail', true );
+	if ( ! $status ) {
+		return '';
+	}
+	if ( 'gesendet' === $status ) {
+		return '<span style="color:#008a20;">Gesendet</span>';
+	}
+	$fehler = get_post_meta( $post_id, '_elfzwo_anfrage_mail_fehler', true );
+	return '<span style="color:#d63638;">Fehlgeschlagen</span>' . ( $fehler ? '<br><small>' . esc_html( $fehler ) . '</small>' : '' );
 }
 
 /* ------------------------------------------------------ Formular-Versand */
@@ -195,7 +212,30 @@ function elfzwo_handle_mitmachen_submit() {
 		$interesse ?: '–',
 		admin_url( 'edit.php?post_type=mitmachen_anfrage' )
 	);
-	wp_mail( elfzwo_mitmachen_empfaenger( $page_id ), 'Neue Mach-mit-Anfrage von ' . $name, $text, array( 'Reply-To: ' . $kontakt ) );
+	$fehler  = '';
+	$on_fail = function ( $error ) use ( &$fehler ) {
+		$fehler = $error->get_error_message();
+	};
+	add_action( 'wp_mail_failed', $on_fail );
+	$empfaenger = elfzwo_mitmachen_empfaenger( $page_id );
+	$betreff    = 'Neue Mach-mit-Anfrage von ' . $name;
+	$gesendet   = wp_mail( $empfaenger, $betreff, $text, array( 'Reply-To: ' . $kontakt ) );
+	if ( ! $gesendet ) {
+		// Manche Mailserver lehnen eine fremde Antwortadresse ab — dann ohne sie erneut versuchen.
+		$fehler_mit_reply_to = $fehler;
+		$gesendet            = wp_mail( $empfaenger, $betreff, $text );
+		if ( ! $gesendet && $fehler_mit_reply_to && $fehler_mit_reply_to !== $fehler ) {
+			$fehler = $fehler_mit_reply_to . ' / ohne Reply-To: ' . $fehler;
+		}
+	}
+	remove_action( 'wp_mail_failed', $on_fail );
+
+	if ( $anfrage_id && ! is_wp_error( $anfrage_id ) ) {
+		update_post_meta( $anfrage_id, '_elfzwo_anfrage_mail', $gesendet ? 'gesendet' : 'fehlgeschlagen' );
+		if ( ! $gesendet ) {
+			update_post_meta( $anfrage_id, '_elfzwo_anfrage_mail_fehler', $fehler ?: 'wp_mail() hat false zurückgegeben.' );
+		}
+	}
 
 	wp_safe_redirect( add_query_arg( 'mitmachen', $anfrage_id && ! is_wp_error( $anfrage_id ) ? 'success' : 'error', get_permalink( $page_id ) ) );
 	exit;
