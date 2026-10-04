@@ -20,15 +20,10 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 		);
 		$specs = array();
 		foreach ( $spec_fields as $sf ) {
-			$wert = trim( (string) elfzwo_meta( $fid, $sf['key'], '' ) );
-			// Leere Angaben (z. B. "Besatzung" bei Anhängern) gar nicht erst als Kachel zeigen.
-			if ( '' === $wert || in_array( $wert, array( '–', '-', '—' ), true ) ) {
-				continue;
-			}
 			$specs[] = array(
 				'icon'  => $sf['icon'],
 				'label' => $sf['label'],
-				'value' => $wert,
+				'value' => elfzwo_meta( $fid, $sf['key'], '' ) ?: '–',
 			);
 		}
 		$hotspots = elfzwo_hotspots_decode( get_post_meta( $fid, '_elfzwo_geraetefaecher', true ) );
