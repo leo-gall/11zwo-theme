@@ -16,12 +16,12 @@ $btn_class = 'signal' === $variant
 
 if ( 'notruf' === $variant ) {
 	// Band über die volle Breite: links die 112, daneben der Hinweis.
-	echo '<section class="bg-secondary"><div class="mx-auto grid max-w-7xl md:grid-cols-[auto_1fr] md:px-8">'
+	echo '<section class="bg-haze"><div class="mx-auto grid max-w-7xl md:grid-cols-[auto_1fr] md:px-8">'
 		. '<a href="tel:112" class="flex flex-col justify-center bg-signal px-10 py-8 text-signal-foreground"><span class="text-sm font-semibold">Notruf</span><span class="font-display text-6xl font-black leading-none">112</span></a>'
 		. '<div class="flex flex-wrap items-center justify-between gap-6 px-5 py-8 md:px-10">'
 		. '<div>'
 		. ( $title ? '<h2 class="font-display text-2xl md:text-3xl">' . esc_html( $title ) . '</h2>' : '' )
-		. ( $text ? '<p class="mt-2 max-w-2xl text-muted-foreground">' . esc_html( $text ) . '</p>' : '' )
+		. ( $text ? '<p class="mt-2 max-w-2xl text-smoke">' . esc_html( $text ) . '</p>' : '' )
 		. '</div>'
 		. ( $button_text ? '<a href="' . esc_url( $button_url ) . '" class="elfzwo-btn elfzwo-btn-secondary shrink-0">' . esc_html( $button_text ) . '</a>' : '' )
 		. '</div></div></section>'; // phpcs:ignore -- bereits escaped

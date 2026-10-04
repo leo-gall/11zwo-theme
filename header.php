@@ -25,7 +25,7 @@ if ( ! function_exists( 'elfzwo_render_nav_group' ) ) {
 						</button>
 						<div role="menu" class="nav-dropdown-panel absolute left-0 top-full z-50 mt-2 w-64 rounded-2xl border border-border bg-card p-2 shadow-lg">
 							<?php foreach ( $node['children'] as $child ) : ?>
-								<a href="<?php echo esc_url( $child->url ); ?>" role="menuitem" class="block rounded-xl px-3 py-2.5 text-sm text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"><?php echo esc_html( $child->title ); ?></a>
+								<a href="<?php echo esc_url( $child->url ); ?>" role="menuitem" class="block rounded-xl px-3 py-2.5 text-sm text-foreground/80 transition-colors hover:bg-haze hover:text-foreground"><?php echo esc_html( $child->title ); ?></a>
 							<?php endforeach; ?>
 						</div>
 					</div>
@@ -58,7 +58,7 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 			<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary elfzwo-btn-sm hidden sm:inline-flex">
 				Mach mit!
 			</a>
-			<button id="mobile-toggle" type="button" class="relative grid h-11 w-11 place-items-center rounded-lg border border-border bg-card transition-colors hover:bg-secondary lg:hidden" aria-label="Menü" aria-expanded="false">
+			<button id="mobile-toggle" type="button" class="relative grid h-11 w-11 place-items-center rounded-lg border border-border bg-card transition-colors hover:bg-haze lg:hidden" aria-label="Menü" aria-expanded="false">
 				<span id="menu-icon-open"><?php echo elfzwo_icon( 'menu', 'h-5 w-5' ); ?></span>
 				<span id="menu-icon-close" class="hidden"><?php echo elfzwo_icon( 'x', 'h-5 w-5' ); ?></span>
 			</button>
@@ -72,15 +72,15 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 				if ( $elfzwo_mnode['children'] ) :
 					?>
 					<div>
-						<span class="block px-4 pt-3 pb-1 text-xs font-semibold text-muted-foreground"><?php echo esc_html( $elfzwo_mitem->title ); ?></span>
+						<span class="block px-4 pt-3 pb-1 text-xs font-semibold text-smoke"><?php echo esc_html( $elfzwo_mitem->title ); ?></span>
 						<div class="ml-2 flex flex-col gap-0.5 border-l border-border pl-3">
 							<?php foreach ( $elfzwo_mnode['children'] as $elfzwo_mchild ) : ?>
-								<a href="<?php echo esc_url( $elfzwo_mchild->url ); ?>" class="rounded-lg px-3 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-foreground"><?php echo esc_html( $elfzwo_mchild->title ); ?></a>
+								<a href="<?php echo esc_url( $elfzwo_mchild->url ); ?>" class="rounded-lg px-3 py-2 text-sm text-foreground/80 hover:bg-haze hover:text-foreground"><?php echo esc_html( $elfzwo_mchild->title ); ?></a>
 							<?php endforeach; ?>
 						</div>
 					</div>
 				<?php else : ?>
-					<a href="<?php echo esc_url( $elfzwo_mitem->url ); ?>" class="rounded-xl px-4 py-3 text-base font-medium text-foreground/80 hover:bg-secondary"><?php echo esc_html( $elfzwo_mitem->title ); ?></a>
+					<a href="<?php echo esc_url( $elfzwo_mitem->url ); ?>" class="rounded-xl px-4 py-3 text-base font-medium text-foreground/80 hover:bg-haze"><?php echo esc_html( $elfzwo_mitem->title ); ?></a>
 				<?php
 				endif;
 			endforeach;

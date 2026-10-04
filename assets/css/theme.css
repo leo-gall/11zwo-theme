@@ -1,25 +1,15 @@
 :root {
-  --radius: 1rem;
   --background: oklch(98.531% 0.005 260);
   --foreground: oklch(0.22 0.035 265);
   --card: oklch(0.99 0.006 260);
-  --card-foreground: oklch(0.22 0.035 265);
-  --primary: #d44c47;
-  --primary-foreground: oklch(0.98 0.01 85);
-  --secondary: oklch(0.93 0.015 260);
-  --secondary-foreground: oklch(0.22 0.035 265);
-  --muted: oklch(0.94 0.012 260);
-  --muted-foreground: oklch(0.48 0.03 265);
   --border: oklch(0.88 0.015 260);
 
-  --ember: #db6a66;
-  --ember-foreground: oklch(0.98 0.01 85);
   --signal: #d44c47;
   --signal-foreground: oklch(0.98 0.01 85);
   --wood: #a92c28;
-  --wood-foreground: oklch(0.98 0.01 85);
-  --cream: oklch(0.96 0.01 260);
   --ink: #1a1a1a;
+  --cream: oklch(0.96 0.01 260);
+  --smoke: oklch(0.48 0.03 265);
 }
 
 html {
@@ -101,7 +91,7 @@ h1 {
 /* Buttons: primary nur für die Haupt-CTA im Hero und in der Navigation,
    überall sonst secondary. Beide haben einen 2px-Rand, damit sie nebeneinander
    gleich hoch sind. Keine Tailwind-Utilities für Farbe/Padding/Schrift auf
-   denselben Elementen setzen -- die CDN-Utilities laden später und gewinnen. */
+   denselben Elementen setzen -- tailwind.css lädt später und gewinnt. */
 .elfzwo-btn {
   display: inline-flex;
   align-items: center;
@@ -183,8 +173,8 @@ h1 {
   background-color: color-mix(in srgb, var(--signal) 6%, var(--card));
 }
 
-/* Long-form content (the_content) — Tailwind's CDN build ships without the
-   Typography plugin, so ".prose" needs its own rules here. */
+/* Fließtext (the_content). Das Typography-Plugin von Tailwind ist nicht
+   eingebunden, deshalb hat ".prose" hier eigene Regeln. */
 .prose {
   color: var(--foreground);
   line-height: 1.75;
@@ -214,12 +204,12 @@ h1 {
 }
 
 .prose p {
-  color: var(--muted-foreground);
+  color: var(--smoke);
 }
 
 .prose ul, .prose ol {
   padding-left: 1.3em;
-  color: var(--muted-foreground);
+  color: var(--smoke);
 }
 
 .prose ul {
@@ -547,4 +537,14 @@ body.admin-bar header.sticky {
 	.fahrzeug-modal[open]::backdrop {
 		animation: none;
 	}
+}
+
+/* Honeypot im Mach-mit-Formular: für Menschen unsichtbar, für Bots ein ganz
+   normales Feld (deshalb nicht display:none). */
+.elfzwo-hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }

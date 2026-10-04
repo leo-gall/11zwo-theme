@@ -22,7 +22,7 @@ function elfzwo_person_wappen_svg( $name, $role, $width = 100 ) {
 	$role_primary = trim( explode( '·', $role )[0] ?? '' );
 	$role_text    = mb_strtoupper( $role_primary );
 
-	$crest_url = 'https://www.greifenberg-ammersee.de/typo3temp/assets/_processed_/1/d/csm_logo_greifenberg_86fcc29aae.png';
+	$crest_url = get_template_directory_uri() . '/assets/images/wappen-gemeinde-greifenberg.png';
 	$path_id   = 'elfzwo-wappen-path-' . wp_unique_id();
 
 	ob_start();

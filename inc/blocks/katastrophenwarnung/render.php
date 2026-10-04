@@ -5,7 +5,7 @@ $title   = $attributes['title'] ?? '';
 $message = $attributes['message'] ?? '';
 $source  = $attributes['source'] ?? '';
 ?>
-<div class="border-b border-destructive/40 bg-destructive text-destructive-foreground">
+<div class="border-b border-leaf/40 bg-leaf text-signal-foreground">
 	<div class="mx-auto flex max-w-7xl flex-wrap items-start gap-3 px-5 py-4 md:px-8">
 		<?php echo elfzwo_icon( 'triangle-alert', 'h-5 w-5 shrink-0 mt-0.5' ); ?>
 		<div class="min-w-0">

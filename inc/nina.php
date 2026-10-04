@@ -189,15 +189,15 @@ function elfzwo_nina_render_compact( $plz ) {
 
 	if ( ! $plz ) {
 		?>
-		<p class="max-w-md self-end text-sm text-muted-foreground">Für Warnmeldungen bitte im Block eine Postleitzahl hinterlegen.</p>
+		<p class="max-w-md self-end text-sm text-smoke">Für Warnmeldungen bitte im Block eine Postleitzahl hinterlegen.</p>
 		<?php
 		return ob_get_clean();
 	}
 
 	if ( ! $warnings ) {
 		?>
-		<div class="flex max-w-md items-start gap-2 self-end text-sm text-muted-foreground">
-			<?php echo elfzwo_icon( 'shield-check', 'mt-0.5 h-4 w-4 shrink-0 text-primary' ); ?>
+		<div class="flex max-w-md items-start gap-2 self-end text-sm text-smoke">
+			<?php echo elfzwo_icon( 'shield-check', 'mt-0.5 h-4 w-4 shrink-0 text-signal' ); ?>
 			<span>Keine aktuellen Warnungen für <?php echo esc_html( elfzwo_nina_ort_label( $plz ) ); ?></span>
 		</div>
 		<?php
@@ -206,7 +206,7 @@ function elfzwo_nina_render_compact( $plz ) {
 
 	$count = count( $warnings );
 	?>
-	<button type="button" class="elfzwo-nina-toggle flex w-full shrink-0 items-center justify-center gap-2 self-end rounded-full border border-destructive/40 bg-destructive/10 py-1.5 pl-2 pr-3.5 text-sm text-destructive sm:inline-flex sm:w-auto sm:justify-start" aria-haspopup="dialog" aria-controls="elfzwo-nina-modal">
+	<button type="button" class="elfzwo-nina-toggle flex w-full shrink-0 items-center justify-center gap-2 self-end rounded-full border border-leaf/40 bg-leaf/10 py-1.5 pl-2 pr-3.5 text-sm text-leaf sm:inline-flex sm:w-auto sm:justify-start" aria-haspopup="dialog" aria-controls="elfzwo-nina-modal">
 		<?php echo elfzwo_bbk_logo_svg( 'h-6 w-6' ); ?>
 		<span class="font-semibold"><?php echo esc_html( $count ); ?> <?php echo esc_html( 1 === $count ? 'Warnung liegt vor' : 'Warnungen liegen vor' ); ?></span>
 	</button>
@@ -219,7 +219,7 @@ function elfzwo_nina_render_compact( $plz ) {
 					<?php echo elfzwo_bbk_logo_svg( 'h-6 w-6' ); ?>
 					<h3 class="font-display text-lg">Aktuelle Warnmeldungen</h3>
 				</div>
-				<button type="button" class="grid h-8 w-8 shrink-0 place-items-center rounded-full text-muted-foreground hover:bg-secondary" data-nina-close aria-label="Schließen"><?php echo elfzwo_icon( 'x', 'h-4 w-4' ); ?></button>
+				<button type="button" class="grid h-8 w-8 shrink-0 place-items-center rounded-full text-smoke hover:bg-haze" data-nina-close aria-label="Schließen"><?php echo elfzwo_icon( 'x', 'h-4 w-4' ); ?></button>
 			</div>
 			<div class="min-h-0 flex-1 overflow-y-auto p-5">
 				<ul class="space-y-3">
@@ -228,18 +228,18 @@ function elfzwo_nina_render_compact( $plz ) {
 							<?php $tag = $w['url'] ? 'a' : 'div'; ?>
 							<<?php echo $tag; ?>
 								<?php if ( $w['url'] ) : ?>href="<?php echo esc_url( $w['url'] ); ?>" target="_blank" rel="noopener"<?php endif; ?>
-								class="block rounded-xl border border-destructive/40 bg-destructive/10 p-3<?php echo $w['url'] ? ' transition-colors hover:bg-destructive/15' : ''; ?>"
+								class="block rounded-xl border border-leaf/40 bg-leaf/10 p-3<?php echo $w['url'] ? ' transition-colors hover:bg-leaf/15' : ''; ?>"
 							>
 								<div class="flex items-center justify-between gap-2">
-									<span class="text-[11px] font-bold uppercase tracking-widest text-destructive"><?php echo esc_html( $w['level'] ); ?></span>
+									<span class="text-[11px] font-bold uppercase tracking-widest text-leaf"><?php echo esc_html( $w['level'] ); ?></span>
 									<?php if ( $w['sent'] ) : ?>
-										<span class="shrink-0 text-xs text-muted-foreground"><?php echo esc_html( wp_date( 'd.m.Y, H:i \U\h\r', strtotime( $w['sent'] ) ) ); ?></span>
+										<span class="shrink-0 text-xs text-smoke"><?php echo esc_html( wp_date( 'd.m.Y, H:i \U\h\r', strtotime( $w['sent'] ) ) ); ?></span>
 									<?php endif; ?>
 								</div>
 								<p class="mt-1 text-sm font-semibold text-foreground"><?php echo esc_html( $w['title'] ); ?></p>
 								<div class="mt-1 flex items-center justify-between gap-2">
-									<?php if ( $w['source'] ) : ?><p class="text-xs text-muted-foreground">Quelle: <?php echo esc_html( $w['source'] ); ?></p><?php endif; ?>
-									<?php if ( $w['url'] ) : ?><span class="shrink-0 text-xs font-semibold text-destructive">Mehr erfahren &rarr;</span><?php endif; ?>
+									<?php if ( $w['source'] ) : ?><p class="text-xs text-smoke">Quelle: <?php echo esc_html( $w['source'] ); ?></p><?php endif; ?>
+									<?php if ( $w['url'] ) : ?><span class="shrink-0 text-xs font-semibold text-leaf">Mehr erfahren &rarr;</span><?php endif; ?>
 								</div>
 							</<?php echo $tag; ?>>
 						</li>

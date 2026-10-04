@@ -37,8 +37,8 @@ window.elfzwoBlocks = ( function () {
 	// (kein DOM-Kontext) und oklch() nicht zuverlässig unterstützt. Damit
 	// scheitert das Parsen lautlos und alle Kreise fallen auf die
 	// WP-Admin-Standardfarbe (Blau) zurück, statt ihre echte Farbe zu zeigen.
-	// Werte 1:1 aus assets/js/tailwind-config.js übernommen (oklch-Farben in
-	// den entsprechenden Hex-Wert umgerechnet).
+	// Werte 1:1 aus tailwind.config.js übernommen (oklch-Farben in den
+	// entsprechenden Hex-Wert umgerechnet).
 	var ACCENT_PALETTE = [
 		{ key: 'signal', label: 'Signalrot', color: '#d44c47', bgOpacity: 30 },
 		{ key: 'ember', label: 'Ember-Orange', color: '#db6a66', bgOpacity: 40 },
@@ -48,11 +48,6 @@ window.elfzwoBlocks = ( function () {
 		{ key: 'sky', label: 'Himmelblau', color: '#aec5ec', bgOpacity: 40 },
 		{ key: 'leaf', label: 'Weinrot', color: '#8c2521', bgOpacity: 40 },
 	];
-
-	// "primary" ist im Theme exakt dieselbe Farbe wie "signal" (#d44c47) --
-	// kein eigener Kreis, sondern ein Alias, damit bereits gespeicherte
-	// bg-primary/text-primary-Werte trotzdem als "Signalrot" erkannt werden.
-	var ACCENT_ALIASES = { primary: 'signal' };
 
 	function accentEntry( key ) {
 		for ( var i = 0; i < ACCENT_PALETTE.length; i++ ) {
@@ -73,7 +68,7 @@ window.elfzwoBlocks = ( function () {
 		var prefix = 'text' === mode ? 'text-' : 'bg-';
 		if ( value.indexOf( prefix ) !== 0 ) { return null; }
 		var key = value.slice( prefix.length ).split( '/' )[ 0 ];
-		return ACCENT_ALIASES[ key ] || key;
+		return key;
 	}
 
 	/**

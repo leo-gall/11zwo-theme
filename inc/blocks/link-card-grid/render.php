@@ -18,7 +18,7 @@ $cards = $attributes['cards'] ?? array();
 					<?php if ( $tag ) : ?><span class="elfzwo-kicker"><?php echo esc_html( $tag ); ?></span><?php endif; ?>
 				</div>
 				<h3 class="mt-6 font-display text-2xl"><?php echo esc_html( $title ); ?></h3>
-				<p class="mt-2 flex-1 text-muted-foreground"><?php echo esc_html( $body ); ?></p>
+				<p class="mt-2 flex-1 text-smoke"><?php echo esc_html( $body ); ?></p>
 				<span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-signal">
 					Ansehen
 				</span>

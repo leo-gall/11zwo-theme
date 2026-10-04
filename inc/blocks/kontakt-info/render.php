@@ -32,7 +32,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 				<?php if ( $title_hand ) : ?><span class="text-signal"><?php echo esc_html( $title_hand ); ?></span><?php endif; ?>
 			</h1>
 		<?php endif; ?>
-		<?php if ( $description ) : ?><p class="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground"><?php echo esc_html( $description ); ?></p><?php endif; ?>
+		<?php if ( $description ) : ?><p class="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-smoke"><?php echo esc_html( $description ); ?></p><?php endif; ?>
 	</div>
 
 	<div class="mt-8 grid gap-5 md:mt-10 <?php echo $show_geraetehaus && $personen ? 'md:grid-cols-[2fr_3fr]' : 'mx-auto max-w-2xl'; ?>">
@@ -45,7 +45,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 							<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( 'map-pin', 'h-5 w-5' ); ?></span>
 							<span class="pt-0.5">
 								<span class="block font-semibold"><?php echo esc_html( $strasse ); ?></span>
-								<span class="block text-muted-foreground"><?php echo esc_html( $plz_ort ); ?></span>
+								<span class="block text-smoke"><?php echo esc_html( $plz_ort ); ?></span>
 								<?php if ( $maps_url ) : ?><a href="<?php echo esc_url( $maps_url ); ?>" target="_blank" rel="noopener" class="mt-1 inline-block text-sm font-semibold text-signal hover:underline">Route planen</a><?php endif; ?>
 							</span>
 						</li>
@@ -55,7 +55,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 							<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( 'clock', 'h-5 w-5' ); ?></span>
 							<span class="pt-0.5">
 								<span class="block font-semibold"><?php echo esc_html( $zeiten ); ?></span>
-								<?php if ( $zeiten_2 ) : ?><span class="block text-muted-foreground"><?php echo esc_html( $zeiten_2 ); ?></span><?php endif; ?>
+								<?php if ( $zeiten_2 ) : ?><span class="block text-smoke"><?php echo esc_html( $zeiten_2 ); ?></span><?php endif; ?>
 							</span>
 						</li>
 					<?php endif; ?>
@@ -76,7 +76,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 					<?php foreach ( $personen as $person ) : ?>
 						<div class="py-4 first:pt-0 last:pb-0">
 							<p class="font-display text-lg leading-tight"><?php echo esc_html( $person['name'] ); ?></p>
-							<?php if ( ! empty( $person['rolle'] ) ) : ?><p class="mt-0.5 text-xs text-muted-foreground"><?php echo esc_html( $person['rolle'] ); ?></p><?php endif; ?>
+							<?php if ( ! empty( $person['rolle'] ) ) : ?><p class="mt-0.5 text-xs text-smoke"><?php echo esc_html( $person['rolle'] ); ?></p><?php endif; ?>
 							<?php if ( ! empty( $person['telefon'] ) || ! empty( $person['email'] ) ) : ?>
 								<div class="mt-3 flex flex-wrap gap-2">
 									<?php if ( ! empty( $person['telefon'] ) ) : ?>
@@ -95,7 +95,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 	</div>
 
 	<?php if ( ! empty( $attributes['showNotruf'] ) ) : ?>
-		<p class="mt-6 flex items-center justify-center gap-2 text-center text-sm text-muted-foreground">
+		<p class="mt-6 flex items-center justify-center gap-2 text-center text-sm text-smoke">
 			<?php echo elfzwo_icon( 'siren', 'h-4 w-4 shrink-0 text-signal' ); ?>
 			Im Notfall immer direkt die <a href="tel:112" class="font-semibold text-signal hover:underline">112</a> wählen.
 		</p>

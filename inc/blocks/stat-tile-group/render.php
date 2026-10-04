@@ -8,9 +8,9 @@ $tiles   = $attributes['tiles'] ?? array();
 <section class="mx-auto max-w-7xl px-5 py-8 md:px-8">
 	<div class="rounded-lg border border-border bg-card p-8 md:p-10">
 		<?php if ( $intro ) : ?>
-			<p class="max-w-2xl text-muted-foreground"><?php echo esc_html( $intro ); ?></p>
+			<p class="max-w-2xl text-smoke"><?php echo esc_html( $intro ); ?></p>
 		<?php endif; ?>
-		<div class="<?php echo $intro ? 'mt-6' : ''; ?> grid gap-4 sm:grid-cols-3 md:grid-cols-<?php echo esc_attr( $columns ); ?>">
+		<div class="<?php echo $intro ? 'mt-6' : ''; ?> grid gap-4 sm:grid-cols-3 <?php echo esc_attr( array( 2 => 'md:grid-cols-2', 3 => 'md:grid-cols-3', 4 => 'md:grid-cols-4', 5 => 'md:grid-cols-5', 6 => 'md:grid-cols-6' )[ $columns ] ); ?>">
 			<?php foreach ( $tiles as $tile ) :
 				$icon  = $tile['icon'] ?? '';
 				$value = $tile['value'] ?? '';
@@ -23,7 +23,7 @@ $tiles   = $attributes['tiles'] ?? array();
 						</span>
 					<?php endif; ?>
 					<p class="mt-3 text-3xl font-display"><?php echo esc_html( $value ); ?></p>
-					<p class="mt-1 text-sm text-muted-foreground"><?php echo esc_html( $label ); ?></p>
+					<p class="mt-1 text-sm text-smoke"><?php echo esc_html( $label ); ?></p>
 				</div>
 			<?php endforeach; ?>
 		</div>

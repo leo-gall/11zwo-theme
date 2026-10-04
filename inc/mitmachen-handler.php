@@ -20,8 +20,8 @@ function elfzwo_mitmachen_gruppen() {
 }
 
 /**
- * Gruppe einer Auswahlmöglichkeit. Ältere Blöcke ohne Zuordnung werden
- * anhand des Labels eingeordnet.
+ * Gruppe einer Auswahlmöglichkeit. Einträge ohne Zuordnung werden anhand
+ * des Labels eingeordnet.
  */
 function elfzwo_mitmachen_gruppe_von( $interest ) {
 	$gruppe = $interest['gruppe'] ?? '';
@@ -114,16 +114,51 @@ function elfzwo_mitmachen_mail_inhalt( $config, $name, $kontakt, $interesse ) {
 	);
 }
 
+/**
+ * Spamschutz ohne Captcha: ein Feld, das Menschen nicht sehen (Bots füllen es
+ * trotzdem aus), und ein signierter Zeitstempel, damit Einsendungen, die
+ * schneller als ELFZWO_MITMACHEN_MINDESTZEIT nach dem Seitenaufruf kommen,
+ * verworfen werden.
+ */
+define( 'ELFZWO_MITMACHEN_MINDESTZEIT', 3 );
+
+function elfzwo_mitmachen_spamschutz_felder() {
+	$zeit = time();
+	?>
+	<div class="elfzwo-hp" aria-hidden="true">
+		<label>Website <input type="text" name="website" value="" tabindex="-1" autocomplete="off"></label>
+	</div>
+	<input type="hidden" name="elfzwo_zeit" value="<?php echo esc_attr( $zeit . '.' . wp_hash( 'elfzwo_mitmachen_' . $zeit ) ); ?>">
+	<?php
+}
+
+function elfzwo_mitmachen_ist_spam() {
+	if ( ! empty( $_POST['website'] ) ) {
+		return true;
+	}
+	$teile = explode( '.', sanitize_text_field( wp_unslash( $_POST['elfzwo_zeit'] ?? '' ) ), 2 );
+	if ( 2 !== count( $teile ) || ! hash_equals( wp_hash( 'elfzwo_mitmachen_' . $teile[0] ), $teile[1] ) ) {
+		return true;
+	}
+	return time() - (int) $teile[0] < ELFZWO_MITMACHEN_MINDESTZEIT;
+}
+
 function elfzwo_handle_mitmachen_submit() {
 	if ( ! isset( $_POST['elfzwo_mitmachen_nonce'] ) || ! wp_verify_nonce( $_POST['elfzwo_mitmachen_nonce'], 'elfzwo_mitmachen' ) ) {
 		wp_die( 'Ungültige Anfrage.' );
 	}
 
+	$page_id = isset( $_POST['redirect_id'] ) ? absint( $_POST['redirect_id'] ) : 0;
+
+	// Bots bekommen dieselbe Erfolgsmeldung, damit sie nicht nachjustieren.
+	if ( elfzwo_mitmachen_ist_spam() ) {
+		wp_safe_redirect( add_query_arg( 'mitmachen', 'success', get_permalink( $page_id ) ) );
+		exit;
+	}
+
 	$interesse = isset( $_POST['interesse'] ) ? sanitize_text_field( wp_unslash( $_POST['interesse'] ) ) : '';
 	$name      = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
-	// Nur noch E-Mail-Adressen (keine Telefonnummern) als Kontaktweg.
 	$kontakt   = isset( $_POST['kontakt'] ) ? sanitize_email( wp_unslash( $_POST['kontakt'] ) ) : '';
-	$page_id   = isset( $_POST['redirect_id'] ) ? absint( $_POST['redirect_id'] ) : 0;
 
 	if ( '' === $name || ! is_email( $kontakt ) ) {
 		wp_safe_redirect( add_query_arg( 'mitmachen', 'error', get_permalink( $page_id ) ) );
@@ -139,115 +174,3 @@ function elfzwo_handle_mitmachen_submit() {
 }
 add_action( 'admin_post_elfzwo_mitmachen', 'elfzwo_handle_mitmachen_submit' );
 add_action( 'admin_post_nopriv_elfzwo_mitmachen', 'elfzwo_handle_mitmachen_submit' );
-
-/**
- * Der Mach-mit-Block bringt seinen Kopfbereich (Kicker, Titel,
- * Beschreibung) inzwischen selbst mit. Ein direkt davor stehender
- * "Einfacher Hero" wird deshalb einmalig entfernt; seine Texte werden in
- * den Mach-mit-Block übernommen, damit nichts doppelt erscheint.
- */
-function elfzwo_migrate_mitmachen_hero() {
-	if ( get_option( 'elfzwo_mitmachen_hero_migrated' ) ) {
-		return;
-	}
-	$pages = get_posts(
-		array(
-			'post_type'   => 'page',
-			'post_status' => 'any',
-			'numberposts' => -1,
-			's'           => 'wp:elfzwo/mitmachen-form',
-		)
-	);
-	foreach ( $pages as $page ) {
-		$blocks  = parse_blocks( $page->post_content );
-		$changed = false;
-		foreach ( $blocks as $i => $block ) {
-			if ( 'elfzwo/mitmachen-form' !== $block['blockName'] ) {
-				continue;
-			}
-			// Leere Freiraum-Blöcke zwischen Hero und Formular überspringen.
-			$j = $i - 1;
-			while ( $j >= 0 && null === $blocks[ $j ]['blockName'] && '' === trim( $blocks[ $j ]['innerHTML'] ) ) {
-				$j--;
-			}
-			if ( $j < 0 || 'elfzwo/simple-hero' !== $blocks[ $j ]['blockName'] ) {
-				continue;
-			}
-			foreach ( array( 'kicker', 'title', 'description' ) as $key ) {
-				if ( isset( $blocks[ $j ]['attrs'][ $key ] ) && ! isset( $block['attrs'][ $key ] ) ) {
-					$blocks[ $i ]['attrs'][ $key ] = $blocks[ $j ]['attrs'][ $key ];
-				}
-			}
-			array_splice( $blocks, $j, $i - $j );
-			$changed = true;
-			break;
-		}
-		if ( $changed ) {
-			wp_update_post(
-				array(
-					'ID'           => $page->ID,
-					'post_content' => wp_slash( serialize_blocks( $blocks ) ),
-				)
-			);
-		}
-	}
-	update_option( 'elfzwo_mitmachen_hero_migrated', 1 );
-}
-add_action( 'init', 'elfzwo_migrate_mitmachen_hero', 30 );
-
-/**
- * Kurzzeitig gab es statt der Mail-Einstellungen je Gruppe nur eine
- * Benachrichtigungs-E-Mail (notifyEmail). Wo das schon gespeichert wurde,
- * wird die Adresse einmalig wieder als Empfänger aller Gruppen eingetragen.
- */
-function elfzwo_migrate_mitmachen_notify_email() {
-	if ( get_option( 'elfzwo_mitmachen_notify_email_reverted' ) ) {
-		return;
-	}
-	$posts = get_posts(
-		array(
-			'post_type'   => array( 'page', 'post', 'wp_block' ),
-			'post_status' => 'any',
-			'numberposts' => -1,
-			's'           => 'notifyEmail',
-		)
-	);
-	foreach ( $posts as $post ) {
-		$changed = false;
-		$blocks  = elfzwo_mitmachen_notify_email_blocks( parse_blocks( $post->post_content ), $changed );
-		if ( $changed ) {
-			wp_update_post(
-				array(
-					'ID'           => $post->ID,
-					'post_content' => wp_slash( serialize_blocks( $blocks ) ),
-				)
-			);
-		}
-	}
-	update_option( 'elfzwo_mitmachen_notify_email_reverted', 1 );
-}
-add_action( 'init', 'elfzwo_migrate_mitmachen_notify_email', 31 );
-
-function elfzwo_mitmachen_notify_email_blocks( $blocks, &$changed ) {
-	foreach ( $blocks as $i => $block ) {
-		if ( ! empty( $block['innerBlocks'] ) ) {
-			$blocks[ $i ]['innerBlocks'] = elfzwo_mitmachen_notify_email_blocks( $block['innerBlocks'], $changed );
-		}
-		if ( 'elfzwo/mitmachen-form' !== $block['blockName'] || ! array_key_exists( 'notifyEmail', $block['attrs'] ) ) {
-			continue;
-		}
-		$empfaenger = str_replace( ',', "\n", (string) $block['attrs']['notifyEmail'] );
-		if ( empty( $block['attrs']['mail'] ) && '' !== trim( $empfaenger ) ) {
-			foreach ( array_keys( elfzwo_mitmachen_gruppen() ) as $gruppe ) {
-				$blocks[ $i ]['attrs']['mail'][ $gruppe ] = array(
-					'empfaenger' => $empfaenger,
-					'betreff'    => '',
-					'text'       => '',
-				);
-			}
-		}
-		unset( $blocks[ $i ]['attrs']['notifyEmail'] );
-		$changed = true;
-	}
-	return $blocks;
-}

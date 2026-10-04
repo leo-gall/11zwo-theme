@@ -5,7 +5,7 @@
  * erweitern, umbenennen noch löschen; zugewiesen wird nur über das eigene
  * Kategorie-Feld im Formular (siehe elfzwo_meta_box_schemas()), nicht über
  * die Seitenleiste. elfzwo_sync_kategorien() gleicht die Begriffe in der
- * Datenbank beim nächsten Seitenaufruf an — auch auf dem Produktivserver.
+ * Datenbank an, sobald sich die Liste ändert.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

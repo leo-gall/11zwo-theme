@@ -22,7 +22,7 @@ get_header();
 				</article>
 			<?php endwhile; ?>
 		<?php else : ?>
-			<p class="text-muted-foreground"><?php esc_html_e( 'Keine Inhalte gefunden.', '11zwo' ); ?></p>
+			<p class="text-smoke"><?php esc_html_e( 'Keine Inhalte gefunden.', '11zwo' ); ?></p>
 		<?php endif; ?>
 	</section>
 </main>

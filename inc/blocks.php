@@ -55,20 +55,12 @@ function elfzwo_register_block_common_assets() {
 add_action( 'init', 'elfzwo_register_block_common_assets' );
 
 /**
- * Tailwind (CDN + Config) und das Theme-CSS auch im Block-Editor laden,
- * damit jede edit.js mit denselben Utility-Klassen wie das Frontend
- * arbeiten kann — ohne das Design in JS neu zu bauen.
+ * Theme-CSS und Tailwind auch im Block-Editor laden, damit jede edit.js mit
+ * denselben Utility-Klassen wie das Frontend arbeiten kann.
  */
 function elfzwo_enqueue_block_editor_styling() {
-	wp_enqueue_script( 'tailwind-cdn', 'https://cdn.tailwindcss.com', array(), null, false );
-	wp_enqueue_script( 'elfzwo-tailwind-config', get_template_directory_uri() . '/assets/js/tailwind-config.js', array( 'tailwind-cdn' ), filemtime( get_template_directory() . '/assets/js/tailwind-config.js' ), false );
-	wp_enqueue_style(
-		'elfzwo-google-fonts',
-		'https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap',
-		array(),
-		null
-	);
 	wp_enqueue_style( 'elfzwo-theme', get_template_directory_uri() . '/assets/css/theme.css', array(), filemtime( get_template_directory() . '/assets/css/theme.css' ) );
+	wp_enqueue_style( 'elfzwo-tailwind', get_template_directory_uri() . '/assets/css/tailwind.css', array( 'elfzwo-theme' ), filemtime( get_template_directory() . '/assets/css/tailwind.css' ) );
 }
 add_action( 'enqueue_block_assets', 'elfzwo_enqueue_block_editor_styling' );
 

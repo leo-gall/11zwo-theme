@@ -24,43 +24,32 @@ function elfzwo_setup() {
 add_action( 'after_setup_theme', 'elfzwo_setup' );
 
 /**
- * Menü-Ort "footer-einsatz" wurde in "footer-sonstige" umbenannt: bestehende
- * Zuordnung (und den Namen des zugeordneten Menüs) einmalig übernehmen.
+ * WordPress-Emoji-Skript abschalten: Es lädt Grafiken von s.w.org und
+ * überträgt damit die IP-Adresse der Besucher an Dritte. Alle Zielbrowser
+ * stellen Emojis selbst dar.
  */
-function elfzwo_migrate_footer_sonstige_location() {
-	$locations = get_theme_mod( 'nav_menu_locations', array() );
-	if ( ! isset( $locations['footer-einsatz'] ) ) {
-		return;
-	}
-	$menu_id = (int) $locations['footer-einsatz'];
-	if ( empty( $locations['footer-sonstige'] ) ) {
-		$locations['footer-sonstige'] = $menu_id;
-	}
-	unset( $locations['footer-einsatz'] );
-	set_theme_mod( 'nav_menu_locations', $locations );
-
-	$menu = wp_get_nav_menu_object( $menu_id );
-	if ( $menu && 'Footer: Einsatz' === $menu->name ) {
-		wp_update_nav_menu_object( $menu_id, array( 'menu-name' => 'Footer: Sonstige' ) );
-	}
+function elfzwo_disable_emojis() {
+	remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+	remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+	remove_action( 'embed_head', 'print_emoji_detection_script' );
+	remove_action( 'wp_enqueue_scripts', 'wp_enqueue_emoji_styles' );
+	remove_action( 'admin_enqueue_scripts', 'wp_enqueue_emoji_styles' );
+	remove_action( 'enqueue_embed_scripts', 'wp_enqueue_emoji_styles' );
+	remove_action( 'wp_print_styles', 'print_emoji_styles' );
+	remove_action( 'admin_print_styles', 'print_emoji_styles' );
+	remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+	remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+	remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+	add_filter( 'emoji_svg_url', '__return_false' );
 }
-add_action( 'after_setup_theme', 'elfzwo_migrate_footer_sonstige_location', 20 );
+add_action( 'init', 'elfzwo_disable_emojis' );
 
 function elfzwo_enqueue_assets() {
-	// Tailwind Play CDN — kein Build-Schritt im Theme vorhanden, siehe README-Hinweis im Repo.
-	wp_enqueue_script( 'tailwind-cdn', 'https://cdn.tailwindcss.com', array(), null, false );
-
-	wp_enqueue_style(
-		'elfzwo-google-fonts',
-		'https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap',
-		array(),
-		null
-	);
-
 	wp_enqueue_style( 'elfzwo-style', get_stylesheet_uri(), array(), filemtime( get_stylesheet_directory() . '/style.css' ) );
 	wp_enqueue_style( 'elfzwo-theme', get_template_directory_uri() . '/assets/css/theme.css', array(), filemtime( get_template_directory() . '/assets/css/theme.css' ) );
+	// Nach theme.css, damit Utility-Klassen die Basis-Styles überschreiben.
+	wp_enqueue_style( 'elfzwo-tailwind', get_template_directory_uri() . '/assets/css/tailwind.css', array( 'elfzwo-theme' ), filemtime( get_template_directory() . '/assets/css/tailwind.css' ) );
 
-	wp_enqueue_script( 'elfzwo-tailwind-config', get_template_directory_uri() . '/assets/js/tailwind-config.js', array( 'tailwind-cdn' ), filemtime( get_template_directory() . '/assets/js/tailwind-config.js' ), false );
 	wp_enqueue_script( 'elfzwo-nav', get_template_directory_uri() . '/assets/js/nav.js', array(), filemtime( get_template_directory() . '/assets/js/nav.js' ), true );
 
 	if ( has_block( 'elfzwo/aktuelle-einsaetze' ) ) {
@@ -109,12 +98,11 @@ require get_template_directory() . '/inc/aktuelles-feed.php';
 require get_template_directory() . '/inc/einsatz-card.php';
 require get_template_directory() . '/inc/nav-walker.php';
 require get_template_directory() . '/inc/mitmachen-handler.php';
-require get_template_directory() . '/inc/startseite.php';
 require get_template_directory() . '/inc/blocks.php';
 require get_template_directory() . '/inc/comments.php';
 
 /**
- * Beim Aktivieren des Themes: Rewrite-Regeln für die neuen Post-Types
+ * Beim Aktivieren des Themes: Rewrite-Regeln für die eigenen Post-Types
  * neu einlesen, damit deren URLs sofort funktionieren.
  */
 function elfzwo_flush_rewrites() {
@@ -124,9 +112,7 @@ function elfzwo_flush_rewrites() {
 }
 add_action( 'after_switch_theme', 'elfzwo_flush_rewrites' );
 
-/**
- * Menüpunkt "Mannschaft"-Icon etc. für die Post-Types im Adminmenü.
- */
+/** Hauptmenü ohne umschließenden Container ausgeben. */
 function elfzwo_wp_nav_menu_args( $args ) {
 	if ( 'primary' === $args['theme_location'] ) {
 		$args['container'] = false;

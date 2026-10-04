@@ -1,37 +1,39 @@
-tailwind.config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./*.php",
+    "./inc/**/*.{php,js,json}",
+    "./assets/js/**/*.js",
+  ],
+  // Klassen, die nicht wörtlich im Code stehen: die Akzentfarben-Palette aus
+  // blocks-common.js (setzt "bg-<farbe>/<deckkraft>" zur Laufzeit zusammen),
+  // Klassen, die im Editor in Block-Attribute ("Tailwind-Klassen") eingetragen
+  // wurden, und "size-full", das WordPress selbst an Bilder hängt.
+  safelist: [
+    { pattern: /^text-(signal|ember|wood|ink|cream|sky|leaf)$/ },
+    "bg-signal/30", "bg-ember/40", "bg-wood/35", "bg-ink/20", "bg-cream", "bg-sky/40", "bg-leaf/40",
+    "lg:grid-cols-[5fr_7fr]", "pb-10", "py-0",
+    "size-full",
+  ],
   theme: {
     extend: {
       colors: {
         background: "oklch(98.531% 0.005 260)",
         foreground: "oklch(0.22 0.035 265)",
         card: "oklch(0.99 0.006 260)",
-        "card-foreground": "oklch(0.22 0.035 265)",
-        popover: "oklch(0.99 0.006 260)",
-        "popover-foreground": "oklch(0.22 0.035 265)",
-        primary: "#d44c47",
-        "primary-foreground": "oklch(0.98 0.01 85)",
-        secondary: "oklch(0.93 0.015 260)",
-        "secondary-foreground": "oklch(0.22 0.035 265)",
-        muted: "oklch(0.94 0.012 260)",
-        "muted-foreground": "oklch(0.48 0.03 265)",
-        accent: "oklch(0.72 0.16 265)",
-        "accent-foreground": "oklch(0.15 0.02 265)",
-        destructive: "#8c2521",
-        "destructive-foreground": "oklch(0.98 0.01 85)",
         border: "oklch(0.88 0.015 260)",
-        input: "oklch(0.9 0.015 260)",
-        ring: "oklch(0.72 0.16 265)",
 
         ember: "#db6a66",
-        "ember-foreground": "oklch(0.98 0.01 85)",
         signal: "#d44c47",
         "signal-foreground": "oklch(0.98 0.01 85)",
         wood: "#a92c28",
-        "wood-foreground": "oklch(0.98 0.01 85)",
         cream: "oklch(0.96 0.01 260)",
         ink: "#1a1a1a",
         sky: "oklch(0.82 0.06 260)",
         leaf: "#8c2521",
+        smoke: "oklch(0.48 0.03 265)",
+        ash: "oklch(0.94 0.012 260)",
+        haze: "oklch(0.93 0.015 260)",
       },
       borderRadius: {
         sm: "0.375rem",

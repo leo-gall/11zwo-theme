@@ -14,7 +14,7 @@
 		{ value: 'verein', label: 'Verein' },
 	];
 
-	/** Wie elfzwo_mitmachen_gruppe_von() in PHP: ältere Einträge ohne Gruppe anhand des Labels einordnen. */
+	/** Wie elfzwo_mitmachen_gruppe_von() in PHP: Einträge ohne Gruppe anhand des Labels einordnen. */
 	function gruppeVon(item) {
 		if (item.gruppe) {
 			return item.gruppe;

@@ -1,6 +1,6 @@
 ( function () {
 	var SELECTED_CLASSES   = [ 'bg-signal/20', 'text-signal' ];
-	var UNSELECTED_CLASSES = [ 'bg-secondary', 'text-muted-foreground', 'hover:bg-border' ];
+	var UNSELECTED_CLASSES = [ 'bg-haze', 'text-smoke', 'hover:bg-border' ];
 
 	var reduceMotion = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
 

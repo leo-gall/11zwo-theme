@@ -6,7 +6,7 @@ $tiles  = $attributes['tiles'] ?? array();
 ?>
 <section class="mx-auto max-w-7xl px-5 py-10 md:px-8">
 	<div class="mb-8 max-w-2xl">
-		<?php if ( $kicker ) : ?><p class="text-xs font-semibold text-muted-foreground"><?php echo esc_html( $kicker ); ?></p><?php endif; ?>
+		<?php if ( $kicker ) : ?><p class="text-xs font-semibold text-smoke"><?php echo esc_html( $kicker ); ?></p><?php endif; ?>
 		<?php if ( $title ) : ?><h2 class="mt-2 font-display text-3xl md:text-4xl"><?php echo esc_html( $title ); ?></h2><?php endif; ?>
 	</div>
 	<div class="grid grid-cols-2 gap-4 md:grid-cols-3">

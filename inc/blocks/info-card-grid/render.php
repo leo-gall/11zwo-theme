@@ -16,7 +16,7 @@ $cards = $attributes['cards'] ?? array();
 					</span>
 				<?php endif; ?>
 				<?php if ( $title ) : ?><h2 class="mt-4 font-display text-lg"><?php echo esc_html( $title ); ?></h2><?php endif; ?>
-				<div class="<?php echo $title ? 'mt-2' : 'mt-4'; ?> text-sm text-muted-foreground"><?php echo wp_kses_post( wpautop( $body ) ); ?></div>
+				<div class="<?php echo $title ? 'mt-2' : 'mt-4'; ?> text-sm text-smoke"><?php echo wp_kses_post( wpautop( $body ) ); ?></div>
 			</div>
 		<?php endforeach; ?>
 	</div>

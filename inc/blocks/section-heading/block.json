@@ -13,7 +13,7 @@
 		"descriptionSource": { "type": "string", "default": "custom" },
 		"ninaPlz": { "type": "string", "default": "" },
 		"layout": { "type": "string", "default": "split" },
-		"accent": { "type": "string", "default": "text-primary" }
+		"accent": { "type": "string", "default": "text-signal" }
 	},
 	"supports": { "html": false },
 	"render": "file:./render.php",

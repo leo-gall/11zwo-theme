@@ -6,7 +6,7 @@ $termine = $attributes['termine'] ?? array();
 <section class="mx-auto max-w-7xl px-5 py-8 md:px-8">
 	<div class="rounded-lg border border-border bg-card p-6 md:p-8">
 		<?php if ( $ferien ) : ?>
-			<p class="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
+			<p class="mb-6 flex items-center gap-2 text-sm text-smoke">
 				<?php echo elfzwo_icon( 'calendar-clock', 'h-4 w-4 shrink-0' ); ?> <?php echo esc_html( $ferien ); ?>
 			</p>
 		<?php endif; ?>
@@ -24,7 +24,7 @@ $termine = $attributes['termine'] ?? array();
 				?>
 				<div class="rounded-2xl border border-border bg-background p-6">
 					<div class="font-display text-2xl text-signal"><?php echo esc_html( $zeit ); ?></div>
-					<p class="mt-3 text-base text-muted-foreground"><?php echo esc_html( $was ); ?></p>
+					<p class="mt-3 text-base text-smoke"><?php echo esc_html( $was ); ?></p>
 					<?php if ( $download_url ) : ?>
 						<a href="<?php echo esc_url( $download_url ); ?>" download class="elfzwo-btn elfzwo-btn-secondary elfzwo-btn-sm mt-4">
 							<?php echo elfzwo_icon( 'download', 'h-4 w-4' ); ?> <?php echo esc_html( get_the_title( $download_id ) ); ?>

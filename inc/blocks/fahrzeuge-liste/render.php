@@ -45,12 +45,12 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 								<?php // Fachfotos sind Hochformat: auf dem Desktop links neben dem Text, mobil darüber. ?>
 								<div class="<?php echo $bild_url ? 'md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]' : ''; ?>">
 									<?php if ( $bild_url ) : ?>
-										<img src="<?php echo esc_url( $bild_url ); ?>" alt="<?php echo esc_attr( $spot['titel'] ); ?>" class="block max-h-[55vh] w-full bg-muted object-contain md:h-full md:max-h-[calc(100dvh-7rem)] md:object-cover">
+										<img src="<?php echo esc_url( $bild_url ); ?>" alt="<?php echo esc_attr( $spot['titel'] ); ?>" class="block max-h-[55vh] w-full bg-ash object-contain md:h-full md:max-h-[calc(100dvh-7rem)] md:object-cover">
 									<?php endif; ?>
 									<div class="p-6 md:self-center md:p-8">
-										<p class="text-xs font-semibold text-muted-foreground"><?php echo esc_html( get_the_title() ); ?></p>
+										<p class="text-xs font-semibold text-smoke"><?php echo esc_html( get_the_title() ); ?></p>
 										<?php if ( $spot['titel'] ) : ?><h3 class="fahrzeug-modal-titel mt-1 font-display text-3xl"><?php echo esc_html( $spot['titel'] ); ?></h3><?php endif; ?>
-										<?php if ( $spot['text'] ) : ?><div class="mt-3 space-y-3 text-muted-foreground"><?php echo wpautop( esc_html( $spot['text'] ) ); ?></div><?php endif; ?>
+										<?php if ( $spot['text'] ) : ?><div class="mt-3 space-y-3 text-smoke"><?php echo wpautop( esc_html( $spot['text'] ) ); ?></div><?php endif; ?>
 									</div>
 								</div>
 							</template>
@@ -58,20 +58,20 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 					</div>
 				</div>
 				<?php if ( $hotspots ) : ?>
-					<p class="mt-6 flex items-center gap-2 text-sm text-muted-foreground"><?php echo elfzwo_icon( 'plus', 'h-4 w-4 text-signal', 3 ); ?> Auf die Punkte klicken, um in die Gerätefächer zu schauen.</p>
+					<p class="mt-6 flex items-center gap-2 text-sm text-smoke"><?php echo elfzwo_icon( 'plus', 'h-4 w-4 text-signal', 3 ); ?> Auf die Punkte klicken, um in die Gerätefächer zu schauen.</p>
 				<?php endif; ?>
 			</div>
 			<div>
-				<?php if ( $tag ) : ?><p class="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground"><?php echo esc_html( $tag ); ?></p><?php endif; ?>
+				<?php if ( $tag ) : ?><p class="text-xs font-semibold uppercase tracking-[0.18em] text-smoke"><?php echo esc_html( $tag ); ?></p><?php endif; ?>
 				<h2 class="mt-2 font-display text-4xl md:text-5xl"><?php the_title(); ?></h2>
-				<?php if ( get_the_content() ) : ?><div class="mt-4 text-lg text-muted-foreground"><?php the_content(); ?></div><?php endif; ?>
+				<?php if ( get_the_content() ) : ?><div class="mt-4 text-lg text-smoke"><?php the_content(); ?></div><?php endif; ?>
 				<?php if ( $specs ) : ?>
 					<dl class="mt-6 grid gap-3 sm:grid-cols-2">
 						<?php foreach ( $specs as $s ) : ?>
 							<div class="flex min-w-0 items-center gap-3 rounded-2xl border border-border bg-card p-4">
 								<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( $s['icon'], 'h-5 w-5', 2.2 ); ?></span>
 								<div class="min-w-0">
-									<dt class="text-xs text-muted-foreground [overflow-wrap:anywhere]"><?php echo esc_html( $s['label'] ); ?></dt>
+									<dt class="text-xs text-smoke [overflow-wrap:anywhere]"><?php echo esc_html( $s['label'] ); ?></dt>
 									<dd class="font-display text-lg leading-tight break-words"><?php echo esc_html( $s['value'] ); ?></dd>
 								</div>
 							</div>
@@ -86,7 +86,7 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 		<div class="fahrzeug-modal-body"></div>
 		<div class="flex items-center justify-between gap-4 border-t border-border px-6 py-4 md:px-8">
 			<button type="button" class="fahrzeug-modal-prev inline-flex whitespace-nowrap items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold hover:text-signal disabled:invisible"><?php echo elfzwo_icon( 'chevron-left', 'h-4 w-4' ); ?> <span class="sm:hidden">Zurück</span><span class="hidden sm:inline">Vorheriges Fach</span></button>
-			<span class="fahrzeug-modal-zaehler whitespace-nowrap text-xs text-muted-foreground"></span>
+			<span class="fahrzeug-modal-zaehler whitespace-nowrap text-xs text-smoke"></span>
 			<button type="button" class="fahrzeug-modal-next inline-flex whitespace-nowrap items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold hover:text-signal disabled:invisible"><span class="sm:hidden">Weiter</span><span class="hidden sm:inline">Nächstes Fach</span> <?php echo elfzwo_icon( 'chevron-right', 'h-4 w-4' ); ?></button>
 		</div>
 		<button type="button" class="fahrzeug-modal-close absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full bg-ink/70 text-white hover:bg-ink" aria-label="Schließen"><?php echo elfzwo_icon( 'x', 'h-5 w-5' ); ?></button>

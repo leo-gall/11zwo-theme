@@ -238,12 +238,12 @@ function elfzwo_einsatz_sortable_columns( $columns ) {
 }
 add_filter( 'manage_edit-einsatz_sortable_columns', 'elfzwo_einsatz_sortable_columns' );
 
-/* ------------------------------------------------------ Auto-Migration */
+/* ----------------------------------------------------- Schema-Abgleich */
 
 /**
- * Läuft einmalig nach dem Update (auch auf dem Produktivserver, beim ersten
- * Seitenaufruf): bestehende Slugs einfrieren, alle Jahre chronologisch neu
- * nummerieren und die Rewrite-Regeln für /einsatz/{jahr}/{nr}/ neu schreiben.
+ * Bringt die Datenbank auf ELFZWO_EINSATZ_SCHEMA: bestehende Slugs
+ * einfrieren, alle Jahre chronologisch neu nummerieren und die
+ * Rewrite-Regeln für /einsatz/{jahr}/{nr}/ neu schreiben.
  */
 function elfzwo_einsatz_migrate() {
 	if ( (int) get_option( 'elfzwo_einsatz_schema', 0 ) >= ELFZWO_EINSATZ_SCHEMA ) {

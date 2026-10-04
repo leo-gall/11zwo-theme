@@ -57,9 +57,8 @@ function elfzwo_sanitize_footer_personen( $value ) {
 }
 
 /**
- * Footer-Ansprechpartner als Liste. Solange die neue Liste noch nie
- * gespeichert wurde, werden die früheren festen Felder (Person 1–3)
- * übernommen, damit der Footer nach dem Update nicht leer ist.
+ * Footer-Ansprechpartner als Liste. Solange die Liste nie gespeichert
+ * wurde, stammen die Einträge aus den Einzelfeldern Person 1–3.
  */
 function elfzwo_footer_personen() {
 	$personen = get_option( 'elfzwo_footer_personen', null );

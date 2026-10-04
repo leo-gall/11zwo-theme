@@ -1,8 +1,8 @@
 <?php
 /**
  * Generisches Seiten-Template. Der komplette Seitenaufbau kommt aus dem
- * Block-Editor (siehe inc/blocks/) — dieses Template liefert nur noch den
- * Rahmen (Header/Footer).
+ * Block-Editor (siehe inc/blocks/), dieses Template liefert nur den Rahmen
+ * (Header/Footer).
  */
 
 get_header();

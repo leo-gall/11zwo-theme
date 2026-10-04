@@ -14,7 +14,7 @@ $hero_post = $hero_post ? $hero_post[0] : null;
 	<div class="grid gap-10 lg:grid-cols-[1.6fr_1fr]">
 		<article class="min-w-0">
 			<?php if ( ! $hero_post ) : ?>
-				<div class="flex h-[420px] items-center justify-center rounded-lg border border-border text-center text-muted-foreground">Aktuell gibt es keine vorgestellte Meldung.</div>
+				<div class="flex h-[420px] items-center justify-center rounded-lg border border-border text-center text-smoke">Aktuell gibt es keine vorgestellte Meldung.</div>
 			<?php else :
 				$hero_image     = elfzwo_post_cover_image_url( $hero_post->ID, 'large' );
 				$hero_kategorie = elfzwo_post_category_line( $hero_post->ID );
@@ -27,8 +27,8 @@ $hero_post = $hero_post ? $hero_post[0] : null;
 					<?php endif; ?>
 					<?php if ( $hero_kategorie ) : ?><p class="text-xs font-semibold text-signal"><?php echo esc_html( $hero_kategorie ); ?></p><?php endif; ?>
 					<h2 class="mt-3 font-display text-4xl leading-tight md:text-5xl"><?php echo esc_html( $hero_post->post_title ); ?></h2>
-					<p class="mt-4 max-w-2xl text-lg text-muted-foreground"><?php echo esc_html( elfzwo_excerpt( $hero_post->ID, 55 ) ); ?></p>
-					<p class="mt-4 text-xs text-muted-foreground"><?php echo esc_html( get_the_date( '', $hero_post ) ); ?></p>
+					<p class="mt-4 max-w-2xl text-lg text-smoke"><?php echo esc_html( elfzwo_excerpt( $hero_post->ID, 55 ) ); ?></p>
+					<p class="mt-4 text-xs text-smoke"><?php echo esc_html( get_the_date( '', $hero_post ) ); ?></p>
 				</a>
 			<?php endif; ?>
 		</article>

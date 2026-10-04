@@ -10,10 +10,10 @@ $items = $attributes['items'] ?? array();
 		<details class="elfzwo-faq-item px-6 py-5">
 			<summary class="flex cursor-pointer items-center justify-between gap-4 font-display text-base">
 				<?php echo esc_html( $question ); ?>
-				<?php echo elfzwo_icon( 'chevron-down', 'elfzwo-faq-chevron h-4 w-4 shrink-0 text-muted-foreground' ); ?>
+				<?php echo elfzwo_icon( 'chevron-down', 'elfzwo-faq-chevron h-4 w-4 shrink-0 text-smoke' ); ?>
 			</summary>
 			<div class="elfzwo-faq-answer">
-				<p class="mt-3 text-sm text-muted-foreground"><?php echo esc_html( $answer ); ?></p>
+				<p class="mt-3 text-sm text-smoke"><?php echo esc_html( $answer ); ?></p>
 			</div>
 		</details>
 	<?php endforeach; ?>

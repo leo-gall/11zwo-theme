@@ -41,7 +41,7 @@ if ( 'neuigkeiten' === $teil ) :
 						<p class="mt-2 flex-1 text-sm font-light text-foreground/75"><?php echo esc_html( elfzwo_excerpt( $beitrag->ID, 18 ) ); ?></p>
 						<span class="mt-4 text-sm font-semibold text-signal">Weiterlesen</span>
 					</div>
-					<div class="border-t border-border px-5 py-2.5 text-xs text-muted-foreground"><?php echo esc_html( get_the_date( 'j. F Y', $beitrag ) ); ?></div>
+					<div class="border-t border-border px-5 py-2.5 text-xs text-smoke"><?php echo esc_html( get_the_date( 'j. F Y', $beitrag ) ); ?></div>
 				</a>
 			<?php endforeach; ?>
 		</div>
@@ -97,7 +97,7 @@ endif;
 			</div>
 
 			<?php if ( ! $aufmacher ) : ?>
-				<p class="mt-6 text-muted-foreground">Noch keine Neuigkeiten.</p>
+				<p class="mt-6 text-smoke">Noch keine Neuigkeiten.</p>
 			<?php else :
 				$bild = elfzwo_post_cover_image_url( $aufmacher->ID, 'large' );
 				?>
@@ -106,8 +106,8 @@ endif;
 					<div class="<?php echo $bild ? '' : 'md:col-span-2'; ?>">
 						<p class="text-sm font-semibold text-signal"><?php echo esc_html( elfzwo_post_category_line( $aufmacher->ID ) ); ?></p>
 						<h3 class="mt-1 font-display text-2xl leading-tight group-hover:underline"><?php echo esc_html( get_the_title( $aufmacher ) ); ?></h3>
-						<p class="mt-2 text-muted-foreground"><?php echo esc_html( elfzwo_excerpt( $aufmacher->ID, 30 ) ); ?></p>
-						<p class="mt-3 text-sm text-muted-foreground"><?php echo esc_html( get_the_date( 'd.m.Y', $aufmacher ) ); ?></p>
+						<p class="mt-2 text-smoke"><?php echo esc_html( elfzwo_excerpt( $aufmacher->ID, 30 ) ); ?></p>
+						<p class="mt-3 text-sm text-smoke"><?php echo esc_html( get_the_date( 'd.m.Y', $aufmacher ) ); ?></p>
 					</div>
 				</a>
 
@@ -120,7 +120,7 @@ endif;
 								<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="h-20 w-24 shrink-0 rounded-md object-cover"><?php endif; ?>
 								<span class="min-w-0">
 									<span class="block font-display text-lg leading-snug group-hover:underline"><?php echo esc_html( get_the_title( $beitrag ) ); ?></span>
-									<span class="mt-1 block text-sm text-muted-foreground"><?php echo esc_html( get_the_date( 'd.m.Y', $beitrag ) ); ?></span>
+									<span class="mt-1 block text-sm text-smoke"><?php echo esc_html( get_the_date( 'd.m.Y', $beitrag ) ); ?></span>
 								</span>
 							</a>
 						<?php endforeach; ?>
@@ -137,7 +137,7 @@ endif;
 				</div>
 			</div>
 			<?php if ( ! $einsaetze ) : ?>
-				<p class="mt-5 text-muted-foreground">Noch keine Einsätze eingetragen.</p>
+				<p class="mt-5 text-smoke">Noch keine Einsätze eingetragen.</p>
 			<?php else : ?>
 				<ul class="mt-5 divide-y divide-border">
 					<?php foreach ( $einsaetze as $einsatz ) :
@@ -150,7 +150,7 @@ endif;
 								<span class="w-12 shrink-0 pt-0.5 text-sm font-bold text-signal"><?php echo $ts ? esc_html( date_i18n( 'd.m.', $ts ) ) : '–'; ?></span>
 								<span class="min-w-0">
 									<span class="block truncate font-semibold group-hover:underline"><?php echo esc_html( get_the_title( $einsatz ) ); ?></span>
-									<?php if ( $ort ) : ?><span class="block truncate text-sm text-muted-foreground"><?php echo esc_html( $ort ); ?></span><?php endif; ?>
+									<?php if ( $ort ) : ?><span class="block truncate text-sm text-smoke"><?php echo esc_html( $ort ); ?></span><?php endif; ?>
 								</span>
 							</a>
 						</li>

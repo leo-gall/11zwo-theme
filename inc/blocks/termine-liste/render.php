@@ -11,7 +11,7 @@ $kategorien = get_terms( array( 'taxonomy' => 'termin_kategorie', 'hide_empty' =
 ?>
 <section class="mx-auto max-w-7xl px-5 py-8 md:px-8">
 	<?php if ( is_wp_error( $kategorien ) || ! $kategorien ) : ?>
-		<div class="rounded-2xl border border-border bg-card p-8 text-center"><p class="text-muted-foreground">Keine anstehenden Termine vorhanden.</p></div>
+		<div class="rounded-2xl border border-border bg-card p-8 text-center"><p class="text-smoke">Keine anstehenden Termine vorhanden.</p></div>
 	<?php else : ?>
 		<div class="space-y-12">
 			<?php foreach ( $kategorien as $kategorie ) :
@@ -46,7 +46,7 @@ $kategorien = get_terms( array( 'taxonomy' => 'termin_kategorie', 'hide_empty' =
 								<div class="grid gap-4 p-6 md:grid-cols-[1fr_300px] md:gap-6">
 									<div>
 										<h3 class="font-display text-2xl leading-tight"><?php echo esc_html( $termin->post_title ); ?></h3>
-										<?php if ( $kurz ) : ?><p class="mt-2 text-muted-foreground"><?php echo esc_html( $kurz ); ?></p><?php endif; ?>
+										<?php if ( $kurz ) : ?><p class="mt-2 text-smoke"><?php echo esc_html( $kurz ); ?></p><?php endif; ?>
 										<div class="mt-6 flex flex-wrap gap-4 text-sm">
 											<?php if ( $ts ) : ?><div class="flex items-center gap-2 text-foreground"><?php echo elfzwo_icon( 'calendar-days', 'h-4 w-4 text-signal' ); ?><span class="font-medium"><?php echo esc_html( date_i18n( 'l, d.m.Y', $ts ) ); ?></span></div><?php endif; ?>
 											<?php if ( $zeit ) : ?><div class="flex items-center gap-2 text-foreground"><?php echo elfzwo_icon( 'clock', 'h-4 w-4 text-signal' ); ?><span class="font-medium"><?php echo esc_html( $zeit ); ?></span></div><?php endif; ?>

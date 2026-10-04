@@ -22,7 +22,7 @@ while ( have_posts() ) :
 		);
 		?>
 		<section class="mx-auto max-w-3xl px-5 pt-6 pb-4 md:px-8">
-			<a href="<?php echo esc_url( home_url( '/einsaetze/' ) ); ?>" class="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
+			<a href="<?php echo esc_url( home_url( '/einsaetze/' ) ); ?>" class="inline-flex items-center gap-2 text-sm font-semibold text-smoke hover:text-foreground">
 				<?php echo elfzwo_icon( 'arrow-left', 'h-4 w-4' ); ?> Zurück zu Einsätze &amp; Aktuelles
 			</a>
 		</section>

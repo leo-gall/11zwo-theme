@@ -90,7 +90,7 @@ function elfzwo_einsatzliste_render( $post_id, array $data ) {
 					href="<?php echo elfzwo_einsatzliste_year_link( $post_id, $y, 1 ); ?>"
 					data-year="<?php echo esc_attr( $y ); ?>"
 					<?php if ( $is_selected ) : ?>aria-current="true"<?php endif; ?>
-					class="elfzwo-einsatzliste-year-chip shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors <?php echo $is_selected ? 'bg-signal/20 text-signal' : 'bg-secondary text-muted-foreground hover:bg-border'; ?>"
+					class="elfzwo-einsatzliste-year-chip shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest transition-colors <?php echo $is_selected ? 'bg-signal/20 text-signal' : 'bg-haze text-smoke hover:bg-border'; ?>"
 				><?php echo $y_label; ?></a>
 			<?php endforeach; ?>
 		</div>
@@ -102,7 +102,7 @@ function elfzwo_einsatzliste_render( $post_id, array $data ) {
 	<div class="mt-6 flex-1">
 		<table class="w-full table-fixed text-sm">
 			<thead>
-				<tr class="border-b border-border text-left text-xs text-muted-foreground">
+				<tr class="border-b border-border text-left text-xs text-smoke">
 					<th class="w-14 py-2 font-medium">Datum</th>
 					<th class="py-2 font-medium">Einsatz</th>
 					<th class="w-8"></th>
@@ -110,7 +110,7 @@ function elfzwo_einsatzliste_render( $post_id, array $data ) {
 			</thead>
 			<tbody>
 				<?php if ( ! $page_items ) : ?>
-					<tr><td colspan="3" class="py-4 text-muted-foreground">Keine Einsätze in diesem Jahr.</td></tr>
+					<tr><td colspan="3" class="py-4 text-smoke">Keine Einsätze in diesem Jahr.</td></tr>
 				<?php endif; ?>
 				<?php
 				foreach ( $page_items as $e ) :
@@ -122,19 +122,19 @@ function elfzwo_einsatzliste_render( $post_id, array $data ) {
 
 					$target_url = get_permalink( $e );
 					?>
-					<tr class="cursor-pointer border-b border-border last:border-0 hover:bg-secondary" onclick="window.location='<?php echo esc_url( $target_url ); ?>'">
+					<tr class="cursor-pointer border-b border-border last:border-0 hover:bg-haze" onclick="window.location='<?php echo esc_url( $target_url ); ?>'">
 						<td class="py-3 align-top">
-							<div class="flex items-center gap-1 text-xs text-muted-foreground">
+							<div class="flex items-center gap-1 text-xs text-smoke">
 								<span class="font-display text-sm text-foreground"><?php echo esc_html( $day ); ?></span>
 								<span class=""><?php echo esc_html( $month ); ?></span>
 							</div>
 						</td>
 						<td class="py-3 align-top">
 							<p class="truncate text-xs font-semibold leading-snug text-wood"><?php echo esc_html( $e->post_title ); ?></p>
-							<?php if ( $ort ) : ?><p class="mt-1 flex min-w-0 items-center gap-1 text-xs leading-snug text-muted-foreground"><?php echo elfzwo_icon( 'map-pin', 'h-3 w-3 shrink-0' ); ?><span class="truncate"><?php echo esc_html( $ort ); ?></span></p><?php endif; ?>
+							<?php if ( $ort ) : ?><p class="mt-1 flex min-w-0 items-center gap-1 text-xs leading-snug text-smoke"><?php echo elfzwo_icon( 'map-pin', 'h-3 w-3 shrink-0' ); ?><span class="truncate"><?php echo esc_html( $ort ); ?></span></p><?php endif; ?>
 						</td>
 						<td class="py-3 align-top text-right">
-							<a href="<?php echo esc_url( $target_url ); ?>" aria-label="Einsatz ansehen" class="inline-grid h-7 w-7 place-items-center rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground"><?php echo elfzwo_icon( 'chevron-right', 'h-4 w-4' ); ?></a>
+							<a href="<?php echo esc_url( $target_url ); ?>" aria-label="Einsatz ansehen" class="inline-grid h-7 w-7 place-items-center rounded-full text-smoke hover:bg-haze hover:text-foreground"><?php echo elfzwo_icon( 'chevron-right', 'h-4 w-4' ); ?></a>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -154,15 +154,15 @@ function elfzwo_einsatzliste_render( $post_id, array $data ) {
 
 	<div class="mt-4 flex items-center justify-between">
 		<?php if ( $page > 1 ) : ?>
-			<a href="<?php echo elfzwo_einsatzliste_year_link( $post_id, $selected_year, $page - 1 ); ?>" data-elfzwo-page="<?php echo esc_attr( $page - 1 ); ?>" class="elfzwo-einsatzliste-page grid h-8 w-8 place-items-center rounded-full text-foreground hover:bg-secondary"><?php echo elfzwo_icon( 'chevron-left', 'h-4 w-4' ); ?></a>
+			<a href="<?php echo elfzwo_einsatzliste_year_link( $post_id, $selected_year, $page - 1 ); ?>" data-elfzwo-page="<?php echo esc_attr( $page - 1 ); ?>" class="elfzwo-einsatzliste-page grid h-8 w-8 place-items-center rounded-full text-foreground hover:bg-haze"><?php echo elfzwo_icon( 'chevron-left', 'h-4 w-4' ); ?></a>
 		<?php else : ?>
-			<span class="grid h-8 w-8 place-items-center rounded-full text-muted-foreground opacity-30" aria-hidden="true"><?php echo elfzwo_icon( 'chevron-left', 'h-4 w-4' ); ?></span>
+			<span class="grid h-8 w-8 place-items-center rounded-full text-smoke opacity-30" aria-hidden="true"><?php echo elfzwo_icon( 'chevron-left', 'h-4 w-4' ); ?></span>
 		<?php endif; ?>
-		<span class="text-xs text-muted-foreground">Seite <?php echo esc_html( $page ); ?> von <?php echo esc_html( $total_pages ); ?></span>
+		<span class="text-xs text-smoke">Seite <?php echo esc_html( $page ); ?> von <?php echo esc_html( $total_pages ); ?></span>
 		<?php if ( $page < $total_pages ) : ?>
-			<a href="<?php echo elfzwo_einsatzliste_year_link( $post_id, $selected_year, $page + 1 ); ?>" data-elfzwo-page="<?php echo esc_attr( $page + 1 ); ?>" class="elfzwo-einsatzliste-page grid h-8 w-8 place-items-center rounded-full text-foreground hover:bg-secondary"><?php echo elfzwo_icon( 'chevron-right', 'h-4 w-4' ); ?></a>
+			<a href="<?php echo elfzwo_einsatzliste_year_link( $post_id, $selected_year, $page + 1 ); ?>" data-elfzwo-page="<?php echo esc_attr( $page + 1 ); ?>" class="elfzwo-einsatzliste-page grid h-8 w-8 place-items-center rounded-full text-foreground hover:bg-haze"><?php echo elfzwo_icon( 'chevron-right', 'h-4 w-4' ); ?></a>
 		<?php else : ?>
-			<span class="grid h-8 w-8 place-items-center rounded-full text-muted-foreground opacity-30" aria-hidden="true"><?php echo elfzwo_icon( 'chevron-right', 'h-4 w-4' ); ?></span>
+			<span class="grid h-8 w-8 place-items-center rounded-full text-smoke opacity-30" aria-hidden="true"><?php echo elfzwo_icon( 'chevron-right', 'h-4 w-4' ); ?></span>
 		<?php endif; ?>
 	</div>
 	</div>

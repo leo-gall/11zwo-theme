@@ -24,7 +24,7 @@ foreach ( $steps as $step ) {
 		<div class="md:sticky md:top-28 md:self-start">
 			<?php if ( $kicker ) : ?><p class="elfzwo-kicker"><?php echo esc_html( $kicker ); ?></p><?php endif; ?>
 			<h2 class="mt-1 font-display text-4xl md:text-5xl"><?php echo esc_html( $titel ); ?></h2>
-			<?php if ( $intro ) : ?><p class="mt-4 max-w-md text-muted-foreground"><?php echo esc_html( $intro ); ?></p><?php endif; ?>
+			<?php if ( $intro ) : ?><p class="mt-4 max-w-md text-smoke"><?php echo esc_html( $intro ); ?></p><?php endif; ?>
 			<?php if ( $aufruf ) : ?>
 				<a href="<?php echo esc_url( $aufruf['buttonUrl'] ?: home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary mt-6"><?php echo esc_html( $aufruf['buttonText'] ); ?></a>
 				<?php $aufruf = null; ?>
@@ -36,7 +36,7 @@ foreach ( $steps as $step ) {
 			<li class="relative pb-8 last:pb-0">
 				<span class="absolute -left-[2.5625rem] top-1.5 h-4 w-4 rounded-full border-[3px] border-background bg-signal" aria-hidden="true"></span>
 				<h3 class="font-display text-xl"><?php echo esc_html( $step['title'] ); ?></h3>
-				<?php if ( ! empty( $step['body'] ) ) : ?><p class="mt-1.5 text-muted-foreground"><?php echo esc_html( $step['body'] ); ?></p><?php endif; ?>
+				<?php if ( ! empty( $step['body'] ) ) : ?><p class="mt-1.5 text-smoke"><?php echo esc_html( $step['body'] ); ?></p><?php endif; ?>
 			</li>
 		<?php endforeach; ?>
 	</ol>

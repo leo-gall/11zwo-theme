@@ -4,7 +4,7 @@ $kategorien = get_terms( array( 'taxonomy' => 'download_kategorie', 'hide_empty'
 ?>
 <section class="mx-auto max-w-7xl space-y-14 px-5 py-8 md:px-8">
 	<?php if ( is_wp_error( $kategorien ) || ! $kategorien ) : ?>
-		<p class="text-muted-foreground">Noch keine Downloads vorhanden.</p>
+		<p class="text-smoke">Noch keine Downloads vorhanden.</p>
 	<?php endif; ?>
 	<?php foreach ( $kategorien as $kategorie ) :
 		$items = new WP_Query(
@@ -40,8 +40,8 @@ $kategorien = get_terms( array( 'taxonomy' => 'download_kategorie', 'hide_empty'
 							<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( $is_zip ? 'file-archive' : 'file-text', 'h-5 w-5', 2.2 ); ?></span>
 							<div class="min-w-0">
 								<h3 class="font-display text-lg leading-tight"><?php the_title(); ?></h3>
-								<?php if ( $beschreibung ) : ?><p class="mt-1 text-sm text-muted-foreground"><?php echo esc_html( $beschreibung ); ?></p><?php endif; ?>
-								<p class="mt-2 text-xs text-muted-foreground">
+								<?php if ( $beschreibung ) : ?><p class="mt-1 text-sm text-smoke"><?php echo esc_html( $beschreibung ); ?></p><?php endif; ?>
+								<p class="mt-2 text-xs text-smoke">
 									<?php echo esc_html( $ext ); ?><?php echo $filesize ? ' · ' . esc_html( $filesize ) : ''; ?> · Aktualisiert <?php echo esc_html( get_the_modified_date() ); ?>
 								</p>
 							</div>
