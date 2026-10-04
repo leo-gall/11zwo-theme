@@ -1,0 +1,63 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/aktive-mannschaft",
+	"title": "Aktive Mannschaft (Bild-Text mit Zeitstrahl)",
+	"category": "elfzwo-blocks",
+	"icon": "groups",
+	"textdomain": "11zwo",
+	"attributes": {
+		"titel": {
+			"type": "string",
+			"default": "Aktive Mannschaft"
+		},
+		"text": {
+			"type": "string",
+			"default": ""
+		},
+		"punkte": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "object",
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"body": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"bildId": {
+			"type": "number",
+			"default": 0
+		},
+		"bildUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"bild2Id": {
+			"type": "number",
+			"default": 0
+		},
+		"bild2Url": {
+			"type": "string",
+			"default": ""
+		},
+		"buttonText": {
+			"type": "string",
+			"default": "Mach mit!"
+		},
+		"buttonUrl": {
+			"type": "string",
+			"default": "/mitmachen/"
+		}
+	},
+	"supports": {
+		"html": false
+	},
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

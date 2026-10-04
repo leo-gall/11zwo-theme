@@ -249,3 +249,124 @@ function elfzwo_migrate_ansprechpartner() {
 	update_option( 'elfzwo_ansprechpartner_migrated', 1 );
 }
 add_action( 'init', 'elfzwo_migrate_ansprechpartner', 41 );
+
+/**
+ * Einmalige Migration: Der alte Zeitstrahl (elfzwo/join-timeline) wird auf
+ * allen Seiten durch den Block "Werdegang" ersetzt; ein Schritt ohne Nummer,
+ * aber mit Button-Text wird zum Button unter den Stufen.
+ */
+function elfzwo_migrate_werdegang() {
+	if ( get_option( 'elfzwo_werdegang_migrated' ) ) {
+		return;
+	}
+	$umbauen = function ( $blocks, &$changed ) use ( &$umbauen ) {
+		foreach ( $blocks as $i => $block ) {
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$blocks[ $i ]['innerBlocks'] = $umbauen( $block['innerBlocks'], $changed );
+			}
+			if ( 'elfzwo/join-timeline' !== $block['blockName'] ) {
+				continue;
+			}
+			$attrs = array( 'stufen' => array() );
+			foreach ( $block['attrs']['steps'] ?? array() as $step ) {
+				if ( ! empty( $step['buttonText'] ) && empty( $step['number'] ) ) {
+					$attrs['buttonText'] = $step['buttonText'];
+					$attrs['buttonUrl']  = $step['buttonUrl'] ?? '';
+				} elseif ( ! empty( $step['title'] ) ) {
+					$attrs['stufen'][] = array( 'titel' => $step['title'], 'info' => '', 'text' => $step['body'] ?? '' );
+				}
+			}
+			$blocks[ $i ] = array(
+				'blockName'    => 'elfzwo/werdegang',
+				'attrs'        => $attrs,
+				'innerBlocks'  => array(),
+				'innerHTML'    => '',
+				'innerContent' => array(),
+			);
+			$changed = true;
+		}
+		return $blocks;
+	};
+	foreach ( get_posts( array( 'post_type' => array( 'page', 'post', 'wp_block' ), 'post_status' => 'any', 'numberposts' => -1, 's' => 'elfzwo/join-timeline' ) ) as $post ) {
+		$changed = false;
+		$blocks  = $umbauen( parse_blocks( $post->post_content ), $changed );
+		if ( $changed ) {
+			_wp_put_post_revision( $post );
+			wp_update_post( array( 'ID' => $post->ID, 'post_content' => wp_slash( serialize_blocks( $blocks ) ) ) );
+		}
+	}
+	update_option( 'elfzwo_werdegang_migrated', 1 );
+}
+add_action( 'init', 'elfzwo_migrate_werdegang', 42 );
+
+/** Bild-URL aus den Block-Attributen "{key}Id" / "{key}Url". */
+function elfzwo_block_bild( $attrs, $key, $fallback = '' ) {
+	$id = (int) ( $attrs[ $key . 'Id' ] ?? 0 );
+	return ( $id ? wp_get_attachment_image_url( $id, 'large' ) : ( $attrs[ $key . 'Url' ] ?? '' ) ) ?: $fallback;
+}
+
+/**
+ * Wandelt einen alten "Mach mit"-Block (elfzwo/mitmachen-teaser) in die
+ * getrennten Blöcke "Aktive Mannschaft" und "Kinder- & Jugendfeuerwehr" um.
+ */
+function elfzwo_mitmachen_teaser_aufteilen( $attrs ) {
+	$teil   = $attrs['teil'] ?? 'beide';
+	$leer   = array( 'innerBlocks' => array(), 'innerHTML' => '', 'innerContent' => array() );
+	$blocks = array();
+	if ( 'jugend' !== $teil ) {
+		$blocks[] = array(
+			'blockName' => 'elfzwo/aktive-mannschaft',
+			'attrs'     => array(
+				'titel'      => $attrs['aktiveTitel'] ?? 'Aktive Mannschaft',
+				'text'       => $attrs['intro'] ?? '',
+				'punkte'     => $attrs['punkte'] ?? array(),
+				'bildId'     => (int) ( $attrs['aktiveImageId'] ?? 0 ),
+				'bildUrl'    => $attrs['aktiveImageUrl'] ?? '',
+				'bild2Id'    => (int) ( $attrs['aktiveImage2Id'] ?? 0 ),
+				'bild2Url'   => $attrs['aktiveImage2Url'] ?? '',
+				'buttonText' => $attrs['aktiveButtonText'] ?? 'Mach mit!',
+				'buttonUrl'  => $attrs['aktiveButtonUrl'] ?? '/mitmachen/',
+			),
+		) + $leer;
+	}
+	if ( 'aktive' !== $teil ) {
+		$blocks[] = array(
+			'blockName' => 'elfzwo/jugend-teaser',
+			'attrs'     => array(
+				'titel'      => $attrs['jugendTitel'] ?? 'Kinder- & Jugendfeuerwehr',
+				'text'       => $attrs['jugendText'] ?? '',
+				'punkte'     => $attrs['jugendPunkte'] ?? array(),
+				'bildId'     => (int) ( $attrs['jugendImageId'] ?? 0 ),
+				'bildUrl'    => $attrs['jugendImageUrl'] ?? '',
+				'buttonText' => $attrs['jugendButtonText'] ?? 'Alles zur Jugendfeuerwehr',
+				'buttonUrl'  => $attrs['jugendButtonUrl'] ?? '/jugendfeuerwehr/',
+			),
+		) + $leer;
+	}
+	return $blocks;
+}
+
+/** Einmalige Migration: vorhandene "Mach mit"-Blöcke in die zwei neuen Blöcke aufteilen. */
+function elfzwo_migrate_mitmachen_teaser_trennen() {
+	if ( get_option( 'elfzwo_mitmachen_teaser_getrennt' ) ) {
+		return;
+	}
+	foreach ( get_posts( array( 'post_type' => array( 'page', 'post', 'wp_block' ), 'post_status' => 'any', 'numberposts' => -1, 's' => 'elfzwo/mitmachen-teaser' ) ) as $post ) {
+		$neu     = array();
+		$changed = false;
+		foreach ( parse_blocks( $post->post_content ) as $block ) {
+			if ( 'elfzwo/mitmachen-teaser' === $block['blockName'] ) {
+				$neu     = array_merge( $neu, elfzwo_mitmachen_teaser_aufteilen( $block['attrs'] ) );
+				$changed = true;
+			} else {
+				$neu[] = $block;
+			}
+		}
+		if ( $changed ) {
+			_wp_put_post_revision( $post );
+			wp_update_post( array( 'ID' => $post->ID, 'post_content' => wp_slash( serialize_blocks( $neu ) ) ) );
+		}
+	}
+	update_option( 'elfzwo_mitmachen_teaser_getrennt', 1 );
+}
+add_action( 'init', 'elfzwo_migrate_mitmachen_teaser_trennen', 43 );

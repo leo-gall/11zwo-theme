@@ -88,9 +88,9 @@ function elfzwo_migrate_startseite() {
 
 	$blocks = array(
 		elfzwo_startseite_block( 'elfzwo/home-hero', $hero ),
-		elfzwo_startseite_block( 'elfzwo/mitmachen-teaser', array_merge( $mitmachen, array( 'teil' => 'aktive' ) ) ),
+		elfzwo_mitmachen_teaser_aufteilen( array_merge( $mitmachen, array( 'teil' => 'aktive' ) ) )[0],
 		elfzwo_startseite_block( 'elfzwo/aktuelles-uebersicht', array( 'teil' => 'neuigkeiten' ) ),
-		elfzwo_startseite_block( 'elfzwo/mitmachen-teaser', array_merge( $mitmachen, array( 'teil' => 'jugend' ) ) ),
+		elfzwo_mitmachen_teaser_aufteilen( array_merge( $mitmachen, array( 'teil' => 'jugend' ) ) )[0],
 	);
 
 	// Bisherigen Stand ausdrücklich als Revision sichern.

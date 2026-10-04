@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/werdegang",
+	"title": "Werdegang (Stufen)",
+	"category": "elfzwo-blocks",
+	"icon": "chart-bar",
+	"textdomain": "11zwo",
+	"attributes": {
+		"stufen": {
+			"type": "array",
+			"default": [
+				{ "titel": "", "info": "", "text": "" },
+				{ "titel": "", "info": "", "text": "" },
+				{ "titel": "", "info": "", "text": "" }
+			],
+			"items": {
+				"type": "object",
+				"properties": {
+					"titel": { "type": "string" },
+					"info": { "type": "string" },
+					"text": { "type": "string" }
+				}
+			}
+		},
+		"buttonText": { "type": "string", "default": "" },
+		"buttonUrl": { "type": "string", "default": "" }
+	},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}
