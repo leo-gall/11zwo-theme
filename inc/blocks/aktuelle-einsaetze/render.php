@@ -25,10 +25,10 @@ $hero_post = $hero_post ? $hero_post[0] : null;
 							<img src="<?php echo esc_url( $hero_image ); ?>" alt="<?php echo esc_attr( $hero_post->post_title ); ?>" width="1200" height="800" loading="lazy" class="h-[420px] w-full object-cover transition-transform duration-300 hover:scale-[1.02]">
 						</div>
 					<?php endif; ?>
-					<?php if ( $hero_kategorie ) : ?><p class="text-xs font-semibold uppercase tracking-[0.18em] text-signal"><?php echo esc_html( $hero_kategorie ); ?></p><?php endif; ?>
+					<?php if ( $hero_kategorie ) : ?><p class="text-xs font-semibold text-signal"><?php echo esc_html( $hero_kategorie ); ?></p><?php endif; ?>
 					<h2 class="mt-3 font-display text-4xl leading-tight md:text-5xl"><?php echo esc_html( $hero_post->post_title ); ?></h2>
 					<p class="mt-4 max-w-2xl text-lg text-muted-foreground"><?php echo esc_html( elfzwo_excerpt( $hero_post->ID, 55 ) ); ?></p>
-					<p class="mt-4 text-xs uppercase tracking-widest text-muted-foreground"><?php echo esc_html( get_the_date( '', $hero_post ) ); ?></p>
+					<p class="mt-4 text-xs text-muted-foreground"><?php echo esc_html( get_the_date( '', $hero_post ) ); ?></p>
 				</a>
 			<?php endif; ?>
 		</article>

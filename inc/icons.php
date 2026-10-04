@@ -65,6 +65,10 @@ function elfzwo_icon_paths() {
 
 function elfzwo_icon( $name, $class = 'h-4 w-4', $stroke_width = 2 ) {
 	$paths = elfzwo_icon_paths();
+	// Das Glitzer-Icon wirkt nach KI-Oberfläche — wo es noch gespeichert ist, wird ein Stern gezeigt.
+	if ( 'sparkles' === $name ) {
+		$name = 'star';
+	}
 
 	if ( ! isset( $paths[ $name ] ) ) {
 		return '';
@@ -82,5 +86,5 @@ function elfzwo_icon( $name, $class = 'h-4 w-4', $stroke_width = 2 ) {
  * Icon-Keys für Editor-Auswahlfelder (Block-Icon-Picker).
  */
 function elfzwo_icon_keys() {
-	return array_keys( elfzwo_icon_paths() );
+	return array_values( array_diff( array_keys( elfzwo_icon_paths() ), array( 'sparkles' ) ) );
 }

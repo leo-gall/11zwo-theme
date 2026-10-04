@@ -72,7 +72,7 @@ function elfzwo_render_einsatzdaten_card( $post_id, $show_content = true ) {
 				<div class="flex items-center gap-3 rounded-2xl border border-border p-4">
 					<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( $f['icon'], 'h-5 w-5', 2.2 ); ?></span>
 					<div class="min-w-0">
-						<dt class="text-[11px] uppercase tracking-widest text-muted-foreground"><?php echo esc_html( $f['label'] ); ?></dt>
+						<dt class="text-xs text-muted-foreground"><?php echo esc_html( $f['label'] ); ?></dt>
 						<dd class="font-display text-lg leading-tight"><?php echo esc_html( $f['value'] ); ?></dd>
 					</div>
 				</div>
@@ -83,7 +83,7 @@ function elfzwo_render_einsatzdaten_card( $post_id, $show_content = true ) {
 			<div class="mt-5 space-y-3 border-t border-border pt-5">
 				<?php if ( $fahrzeuge ) : ?>
 					<div class="flex flex-wrap items-center gap-2">
-						<span class="inline-flex shrink-0 items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"><?php echo elfzwo_icon( 'truck', 'h-3.5 w-3.5' ); ?> Fahrzeuge</span>
+						<span class="inline-flex shrink-0 items-center gap-1.5 text-xs font-semibold text-muted-foreground"><?php echo elfzwo_icon( 'truck', 'h-3.5 w-3.5' ); ?> Fahrzeuge</span>
 						<?php foreach ( $fahrzeuge as $f ) : ?>
 							<span class="rounded-full border border-border px-2.5 py-0.5 text-xs font-medium text-foreground/80"><?php echo esc_html( $f ); ?></span>
 						<?php endforeach; ?>
@@ -92,7 +92,7 @@ function elfzwo_render_einsatzdaten_card( $post_id, $show_content = true ) {
 
 				<?php if ( $einsatzkraefte ) : ?>
 					<div class="flex flex-wrap items-center gap-2">
-						<span class="inline-flex shrink-0 items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground"><?php echo elfzwo_icon( 'heart-handshake', 'h-3.5 w-3.5' ); ?> Weitere Kräfte</span>
+						<span class="inline-flex shrink-0 items-center gap-1.5 text-xs font-semibold text-muted-foreground"><?php echo elfzwo_icon( 'heart-handshake', 'h-3.5 w-3.5' ); ?> Weitere Kräfte</span>
 						<?php foreach ( $einsatzkraefte as $kraft ) : ?>
 							<?php if ( ! empty( $kraft['name'] ) ) : ?>
 								<?php if ( ! empty( $kraft['url'] ) ) : ?>

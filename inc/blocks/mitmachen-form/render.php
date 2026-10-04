@@ -12,6 +12,21 @@ $datenschutz_id  = (int) ( $attributes['datenschutzPageId'] ?? 0 );
 $datenschutz_url = $datenschutz_id ? get_permalink( $datenschutz_id ) : '';
 $datenschutz_url = $datenschutz_url ?: home_url( '/datenschutzerklaerung/' );
 $post_id = get_the_ID();
+// Vorauswahl per Link, z. B. /mitmachen/?interesse=verein — passt auf das erste Interesse, dessen Name das Stichwort enthält.
+$vorauswahl = 0;
+$wunsch     = isset( $_GET['interesse'] ) ? sanitize_title( wp_unslash( $_GET['interesse'] ) ) : '';
+$stichworte = array( 'verein' => array( 'foerder', 'verein' ), 'aktive' => array( 'aktiv' ), 'jugend' => array( 'jugend' ), 'kinder' => array( 'kinder' ) );
+if ( $wunsch ) {
+	foreach ( $interests as $i => $interest ) {
+		$name = sanitize_title( $interest['label'] ?? '' );
+		foreach ( $stichworte[ $wunsch ] ?? array( $wunsch ) as $wort ) {
+			if ( false !== strpos( $name, $wort ) ) {
+				$vorauswahl = $i;
+				break 2;
+			}
+		}
+	}
+}
 $status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET['mitmachen'] ) ) : '';
 ?>
 <section class="mx-auto max-w-2xl px-5 pt-10 pb-16 md:pt-16 lg:pb-20">
@@ -29,7 +44,7 @@ $status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET[
 
 	<?php if ( $steps ) : ?>
 		<div class="mt-8 md:mt-10">
-			<h2 class="text-center text-sm font-semibold uppercase tracking-wider text-muted-foreground">So geht's weiter</h2>
+			<h2 class="text-center text-sm font-semibold text-muted-foreground">So geht's weiter</h2>
 			<ol class="mt-4 grid gap-3 sm:grid-cols-<?php echo esc_attr( min( count( $steps ), 3 ) ); ?>">
 				<?php foreach ( $steps as $i => $step ) : ?>
 					<li class="flex gap-3 rounded-md border border-border bg-card p-4">
@@ -47,7 +62,7 @@ $status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET[
 	<div id="formular" class="mt-8 scroll-mt-28 rounded-lg border border-border bg-card md:mt-10">
 		<?php if ( 'success' === $status ) : ?>
 			<div class="px-6 py-12 text-center md:px-10">
-				<span class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-ember text-ember-foreground"><?php echo elfzwo_icon( 'sparkles', 'h-8 w-8' ); ?></span>
+				<span class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-ember text-ember-foreground"><?php echo elfzwo_icon( 'circle-check', 'h-8 w-8' ); ?></span>
 				<h2 class="mt-5 font-display text-3xl">Angekommen!</h2>
 				<p class="mx-auto mt-3 max-w-md text-muted-foreground">Wir melden uns in den nächsten Tagen.</p>
 				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="elfzwo-btn elfzwo-btn-secondary mt-6">Zur Startseite</a>
@@ -67,7 +82,7 @@ $status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET[
 					<div class="mt-2 grid gap-2 sm:grid-cols-2">
 						<?php foreach ( $interests as $i => $interest ) : ?>
 							<label class="flex cursor-pointer items-center gap-3 rounded-md border-2 border-border bg-background px-4 py-3 transition hover:border-signal/50 has-[:checked]:border-signal has-[:checked]:bg-signal/5 has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-signal/30">
-								<input type="radio" name="interesse" value="<?php echo esc_attr( $interest['label'] ?? '' ); ?>" class="h-4 w-4 shrink-0 accent-[var(--signal)]" <?php checked( 0 === $i ); ?> required>
+								<input type="radio" name="interesse" value="<?php echo esc_attr( $interest['label'] ?? '' ); ?>" class="h-4 w-4 shrink-0 accent-[var(--signal)]" <?php checked( $vorauswahl === $i ); ?> required>
 								<span class="min-w-0">
 									<span class="block font-semibold leading-tight"><?php echo esc_html( $interest['label'] ?? '' ); ?></span>
 									<?php if ( ! empty( $interest['hint'] ) ) : ?><span class="block text-sm text-muted-foreground"><?php echo esc_html( $interest['hint'] ); ?></span><?php endif; ?>

@@ -72,7 +72,7 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 				if ( $elfzwo_mnode['children'] ) :
 					?>
 					<div>
-						<span class="block px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground"><?php echo esc_html( $elfzwo_mitem->title ); ?></span>
+						<span class="block px-4 pt-3 pb-1 text-xs font-semibold text-muted-foreground"><?php echo esc_html( $elfzwo_mitem->title ); ?></span>
 						<div class="ml-2 flex flex-col gap-0.5 border-l border-border pl-3">
 							<?php foreach ( $elfzwo_mnode['children'] as $elfzwo_mchild ) : ?>
 								<a href="<?php echo esc_url( $elfzwo_mchild->url ); ?>" class="rounded-lg px-3 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-foreground"><?php echo esc_html( $elfzwo_mchild->title ); ?></a>
@@ -91,15 +91,26 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 </header>
 
 <?php
-$elfzwo_ticker = get_posts( array( 'post_type' => array( 'post', 'einsatz' ), 'numberposts' => 5, 'post_status' => 'publish' ) );
+// Einsätze mit ihrem Einsatzdatum (nicht dem Veröffentlichungsdatum), Beiträge mit dem Datum des Beitrags; die fünf neuesten.
+$elfzwo_ticker = array();
+foreach ( get_posts( array( 'post_type' => array( 'post', 'einsatz' ), 'numberposts' => 15, 'post_status' => 'publish' ) ) as $elfzwo_tp ) {
+	$elfzwo_datum = 'einsatz' === $elfzwo_tp->post_type ? elfzwo_meta( $elfzwo_tp->ID, 'datum', '' ) : '';
+	$elfzwo_ticker[] = array(
+		'post' => $elfzwo_tp,
+		'ts'   => $elfzwo_datum ? strtotime( $elfzwo_datum ) : get_post_time( 'U', false, $elfzwo_tp ),
+	);
+}
+usort( $elfzwo_ticker, function ( $a, $b ) { return $b['ts'] <=> $a['ts']; } );
+$elfzwo_ticker = array_slice( $elfzwo_ticker, 0, 5 );
 if ( $elfzwo_ticker ) :
 	ob_start();
-	foreach ( $elfzwo_ticker as $elfzwo_tp ) {
+	foreach ( $elfzwo_ticker as $elfzwo_te ) {
+		$elfzwo_tp = $elfzwo_te['post'];
 		printf(
 			'<a href="%1$s" class="inline-flex items-center gap-2 px-6 hover:underline"><strong class="font-semibold">%2$s:</strong> %3$s</a><span aria-hidden="true">•</span>',
 			esc_url( get_permalink( $elfzwo_tp ) ),
 			'einsatz' === $elfzwo_tp->post_type ? 'Einsatz' : 'Neuigkeit',
-			esc_html( get_the_title( $elfzwo_tp ) . ' (' . get_the_date( 'j. F Y', $elfzwo_tp ) . ')' )
+			esc_html( get_the_title( $elfzwo_tp ) . ' (' . date_i18n( 'j. F Y', $elfzwo_te['ts'] ) . ')' )
 		);
 	}
 	$elfzwo_ticker_html = ob_get_clean();

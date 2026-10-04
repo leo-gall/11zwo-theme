@@ -41,7 +41,7 @@ $kategorien = get_terms( array( 'taxonomy' => 'download_kategorie', 'hide_empty'
 							<div class="min-w-0">
 								<h3 class="font-display text-lg leading-tight"><?php the_title(); ?></h3>
 								<?php if ( $beschreibung ) : ?><p class="mt-1 text-sm text-muted-foreground"><?php echo esc_html( $beschreibung ); ?></p><?php endif; ?>
-								<p class="mt-2 text-xs uppercase tracking-widest text-muted-foreground">
+								<p class="mt-2 text-xs text-muted-foreground">
 									<?php echo esc_html( $ext ); ?><?php echo $filesize ? ' · ' . esc_html( $filesize ) : ''; ?> · Aktualisiert <?php echo esc_html( get_the_modified_date() ); ?>
 								</p>
 							</div>

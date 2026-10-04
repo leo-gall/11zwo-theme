@@ -1,6 +1,16 @@
 <?php
 // Aufruf zum Mitmachen im Footer — nicht auf der Mitmachen-Seite selbst.
-$elfzwo_footer_cta = ! ( is_singular() && has_block( 'elfzwo/mitmachen-form' ) );
+// Nicht auf der Mitmachen-Seite selbst und nicht auf reinen Info-Seiten (Downloads, Impressum, Datenschutz).
+$elfzwo_footer_cta = ! ( is_singular() && has_block( 'elfzwo/mitmachen-form' ) ) && ! is_page( array( 'downloads', 'impressum', 'datenschutzerklarung', 'datenschutzerklaerung' ) );
+// Passende Vorauswahl im Formular je nach Seite.
+$elfzwo_footer_cta_url = home_url( '/mitmachen/' );
+if ( is_page( 'jugendfeuerwehr' ) ) {
+	$elfzwo_footer_cta_url = add_query_arg( 'interesse', 'jugend', $elfzwo_footer_cta_url );
+} elseif ( is_page( 'verein' ) ) {
+	$elfzwo_footer_cta_url = add_query_arg( 'interesse', 'verein', $elfzwo_footer_cta_url );
+} elseif ( is_page( 'mannschaft' ) ) {
+	$elfzwo_footer_cta_url = add_query_arg( 'interesse', 'aktive', $elfzwo_footer_cta_url );
+}
 ?>
 <footer class="relative mt-16 text-white/85 md:mt-20">
 	<?php // Geschwungene Oberkante und freigestelltes HLF nach dem Vorbild der Aicher Ambulanz. ?>
@@ -12,7 +22,7 @@ $elfzwo_footer_cta = ! ( is_singular() && has_block( 'elfzwo/mitmachen-form' ) )
 				<div class="pt-2 md:pb-10">
 					<h2 class="font-display text-3xl text-white md:text-5xl">Werde Teil der Mannschaft!</h2>
 					<p class="mt-4 max-w-lg text-lg text-white/90">Ob Quereinsteiger, Jugendliche oder Fördermitglied – wir freuen uns über alle, die mit anpacken.</p>
-					<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-outline-light mt-6">Mach mit</a>
+					<a href="<?php echo esc_url( $elfzwo_footer_cta_url ); ?>" class="elfzwo-btn elfzwo-btn-outline-light mt-6">Mach mit!</a>
 				</div>
 				<img src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/footer-hlf.png' ); ?>" alt="Hilfeleistungslöschfahrzeug der Feuerwehr Greifenberg" loading="lazy" width="760" height="590" class="mx-auto -mt-4 w-full max-w-md drop-shadow-2xl md:-mt-44 md:max-w-lg md:justify-self-end">
 			</div>

@@ -16,14 +16,19 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 			array( 'key' => 'besatzung', 'icon' => 'users', 'label' => 'Besatzung' ),
 			array( 'key' => 'hersteller_aufbau', 'icon' => 'truck', 'label' => 'Hersteller / Aufbau' ),
 			array( 'key' => 'baujahr', 'icon' => 'calendar-days', 'label' => 'Baujahr' ),
-			array( 'key' => 'besonderheiten', 'icon' => 'sparkles', 'label' => 'Besonderheiten' ),
+			array( 'key' => 'besonderheiten', 'icon' => 'list-checks', 'label' => 'Besonderheiten' ),
 		);
 		$specs = array();
 		foreach ( $spec_fields as $sf ) {
+			$wert = trim( (string) elfzwo_meta( $fid, $sf['key'], '' ) );
+			// Leere Angaben (z. B. "Besatzung" bei Anhängern) gar nicht erst als Kachel zeigen.
+			if ( '' === $wert || in_array( $wert, array( '–', '-', '—' ), true ) ) {
+				continue;
+			}
 			$specs[] = array(
 				'icon'  => $sf['icon'],
 				'label' => $sf['label'],
-				'value' => elfzwo_meta( $fid, $sf['key'], '' ) ?: '–',
+				'value' => $wert,
 			);
 		}
 		$hotspots = elfzwo_hotspots_decode( get_post_meta( $fid, '_elfzwo_geraetefaecher', true ) );
@@ -48,7 +53,7 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 										<img src="<?php echo esc_url( $bild_url ); ?>" alt="<?php echo esc_attr( $spot['titel'] ); ?>" class="block max-h-[55vh] w-full bg-muted object-contain md:h-full md:max-h-[calc(100dvh-7rem)] md:object-cover">
 									<?php endif; ?>
 									<div class="p-6 md:self-center md:p-8">
-										<p class="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground"><?php echo esc_html( get_the_title() ); ?></p>
+										<p class="text-xs font-semibold text-muted-foreground"><?php echo esc_html( get_the_title() ); ?></p>
 										<?php if ( $spot['titel'] ) : ?><h3 class="fahrzeug-modal-titel mt-1 font-display text-3xl"><?php echo esc_html( $spot['titel'] ); ?></h3><?php endif; ?>
 										<?php if ( $spot['text'] ) : ?><div class="mt-3 space-y-3 text-muted-foreground"><?php echo wpautop( esc_html( $spot['text'] ) ); ?></div><?php endif; ?>
 									</div>
@@ -71,8 +76,8 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 							<div class="flex min-w-0 items-center gap-3 rounded-2xl border border-border bg-card p-4">
 								<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( $s['icon'], 'h-5 w-5', 2.2 ); ?></span>
 								<div class="min-w-0">
-									<dt class="text-[11px] uppercase tracking-widest text-muted-foreground [overflow-wrap:anywhere]"><?php echo esc_html( $s['label'] ); ?></dt>
-									<dd class="font-display text-lg leading-tight hyphens-auto [overflow-wrap:anywhere]"><?php echo esc_html( $s['value'] ); ?></dd>
+									<dt class="text-xs text-muted-foreground [overflow-wrap:anywhere]"><?php echo esc_html( $s['label'] ); ?></dt>
+									<dd class="font-display text-lg leading-tight break-words"><?php echo esc_html( $s['value'] ); ?></dd>
 								</div>
 							</div>
 						<?php endforeach; ?>
@@ -86,7 +91,7 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 		<div class="fahrzeug-modal-body"></div>
 		<div class="flex items-center justify-between gap-4 border-t border-border px-6 py-4 md:px-8">
 			<button type="button" class="fahrzeug-modal-prev inline-flex whitespace-nowrap items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold hover:text-signal disabled:invisible"><?php echo elfzwo_icon( 'chevron-left', 'h-4 w-4' ); ?> <span class="sm:hidden">Zurück</span><span class="hidden sm:inline">Vorheriges Fach</span></button>
-			<span class="fahrzeug-modal-zaehler whitespace-nowrap text-xs uppercase tracking-widest text-muted-foreground"></span>
+			<span class="fahrzeug-modal-zaehler whitespace-nowrap text-xs text-muted-foreground"></span>
 			<button type="button" class="fahrzeug-modal-next inline-flex whitespace-nowrap items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold hover:text-signal disabled:invisible"><span class="sm:hidden">Weiter</span><span class="hidden sm:inline">Nächstes Fach</span> <?php echo elfzwo_icon( 'chevron-right', 'h-4 w-4' ); ?></button>
 		</div>
 		<button type="button" class="fahrzeug-modal-close absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full bg-ink/70 text-white hover:bg-ink" aria-label="Schließen"><?php echo elfzwo_icon( 'x', 'h-5 w-5' ); ?></button>

@@ -18,7 +18,7 @@ $image_url = $image_id ? wp_get_attachment_image_url( $image_id, 'large' ) : ( $
 		<div class="min-w-0">
 			<?php if ( $zitat ) : ?><p class="mb-2 font-hand text-xl leading-snug">„<?php echo esc_html( $zitat ); ?>“</p><?php endif; ?>
 			<?php if ( $name ) : ?><p class="font-display text-xl leading-tight"><?php echo esc_html( $name ); ?></p><?php endif; ?>
-			<?php if ( $badge ) : ?><p class="mt-1 text-xs font-semibold uppercase tracking-wider text-white/75"><?php echo esc_html( $badge ); ?></p><?php endif; ?>
+			<?php if ( $badge ) : ?><p class="mt-1 text-xs font-semibold text-white/75"><?php echo esc_html( $badge ); ?></p><?php endif; ?>
 			<?php if ( $text ) : ?><p class="mt-2 max-w-sm text-sm text-white/80"><?php echo esc_html( $text ); ?></p><?php endif; ?>
 		</div>
 		<?php if ( $cta_text ) : ?>

@@ -197,7 +197,7 @@ h1 {
 .prose h2, .prose h3, .prose h4 {
   font-family: "Titillium Web", ui-sans-serif, system-ui, sans-serif;
   letter-spacing: -0.02em;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--foreground);
 }
 

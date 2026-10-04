@@ -102,7 +102,7 @@ function elfzwo_einsatzliste_render( $post_id, array $data ) {
 	<div class="mt-6 flex-1">
 		<table class="w-full table-fixed text-sm">
 			<thead>
-				<tr class="border-b border-border text-left text-xs uppercase tracking-widest text-muted-foreground">
+				<tr class="border-b border-border text-left text-xs text-muted-foreground">
 					<th class="w-14 py-2 font-medium">Datum</th>
 					<th class="py-2 font-medium">Einsatz</th>
 					<th class="w-8"></th>
@@ -126,7 +126,7 @@ function elfzwo_einsatzliste_render( $post_id, array $data ) {
 						<td class="py-3 align-top">
 							<div class="flex items-center gap-1 text-xs text-muted-foreground">
 								<span class="font-display text-sm text-foreground"><?php echo esc_html( $day ); ?></span>
-								<span class="uppercase tracking-widest"><?php echo esc_html( $month ); ?></span>
+								<span class=""><?php echo esc_html( $month ); ?></span>
 							</div>
 						</td>
 						<td class="py-3 align-top">

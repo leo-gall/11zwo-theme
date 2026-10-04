@@ -370,3 +370,42 @@ function elfzwo_migrate_mitmachen_teaser_trennen() {
 	update_option( 'elfzwo_mitmachen_teaser_getrennt', 1 );
 }
 add_action( 'init', 'elfzwo_migrate_mitmachen_teaser_trennen', 43 );
+
+/**
+ * Einmalige Aufräum-Migration: WordPress-Beispielseite in den Papierkorb und
+ * nichtssagende Untertitel in Seitenköpfen ("Aus Greifenberg", "Wer wir
+ * sind", …) leeren.
+ */
+function elfzwo_migrate_aufraeumen() {
+	if ( get_option( 'elfzwo_aufraeumen_v1' ) ) {
+		return;
+	}
+	foreach ( get_posts( array( 'post_type' => 'page', 'post_status' => 'any', 'numberposts' => -1, 'post_name__in' => array( 'beispiel-seite', 'sample-page' ) ) ) as $page ) {
+		if ( false !== stripos( $page->post_content, 'Fahrradkurier' ) || false !== stripos( $page->post_content, 'bike messenger' ) ) {
+			wp_trash_post( $page->ID );
+		}
+	}
+
+	$fuelltexte = array( 'aus greifenberg', 'zum herunterladen', 'zum mitnehmen', 'wer wir sind' );
+	$felder     = array(
+		'elfzwo/section-heading' => 'tag',
+		'elfzwo/simple-hero'     => 'kicker',
+		'elfzwo/hero-split'      => 'badge',
+	);
+	foreach ( get_posts( array( 'post_type' => 'page', 'post_status' => 'any', 'numberposts' => -1 ) ) as $page ) {
+		$blocks  = parse_blocks( $page->post_content );
+		$changed = false;
+		foreach ( $blocks as $i => $block ) {
+			$feld = $felder[ $block['blockName'] ] ?? '';
+			if ( $feld && isset( $block['attrs'][ $feld ] ) && in_array( mb_strtolower( trim( wp_specialchars_decode( $block['attrs'][ $feld ], ENT_QUOTES ) ) ), $fuelltexte, true ) ) {
+				$blocks[ $i ]['attrs'][ $feld ] = '';
+				$changed = true;
+			}
+		}
+		if ( $changed ) {
+			wp_update_post( array( 'ID' => $page->ID, 'post_content' => wp_slash( serialize_blocks( $blocks ) ) ) );
+		}
+	}
+	update_option( 'elfzwo_aufraeumen_v1', 1 );
+}
+add_action( 'init', 'elfzwo_migrate_aufraeumen', 44 );
