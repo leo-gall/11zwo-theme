@@ -1,9 +1,13 @@
 /*
-Theme Name: 11zwo
+Theme Name: 11zwo – Feuerwehr Greifenberg
 Theme URI: https://github.com/leo-gall/11zwo-theme
 Author: Leo Gall
-Description: Warmes, freundliches Theme fuer die Freiwillige Feuerwehr Greifenberg. Nachgebaut aus dem React-Prototyp (TanStack Start).
-Version: 1.0.0
+Description: Individuelles Theme für die Freiwillige Feuerwehr Greifenberg e.V. Eigene Blöcke für Startseite, Mitmachen, Kontakt, Termine, Downloads, Fahrzeuge und Einsatzberichte (inkl. Einsatzliste, NINA-Warnungen und Ansprechpartner-Wappen), Beiträge mit festen Kategorien und 16:9-Fotos im Editor sowie Farben passend zum Vereinslogo. Einmalige Datenmigrationen laufen beim ersten Seitenaufruf nach einem Update automatisch.
+Version: 2.0.0
+Requires at least: 6.3
+Tested up to: 7.1
 Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: 11zwo
 */
