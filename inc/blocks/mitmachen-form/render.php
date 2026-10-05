@@ -47,7 +47,7 @@ $status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET[
 			<h2 class="text-center text-sm font-semibold text-smoke">So geht's weiter</h2>
 			<ol class="mt-4 grid gap-3 <?php echo esc_attr( array( 1 => 'sm:grid-cols-1', 2 => 'sm:grid-cols-2', 3 => 'sm:grid-cols-3' )[ min( count( $steps ), 3 ) ] ); ?>">
 				<?php foreach ( $steps as $i => $step ) : ?>
-					<li class="flex gap-3 rounded-md bg-ash p-4">
+					<li class="flex gap-3 rounded-md border border-border bg-card p-4">
 						<span class="w-7 shrink-0 font-display text-2xl font-black leading-none text-signal"><?php echo esc_html( $i + 1 ); ?></span>
 						<span class="min-w-0">
 							<span class="block font-semibold leading-tight"><?php echo esc_html( $step['title'] ); ?></span>
@@ -59,7 +59,7 @@ $status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET[
 		</div>
 	<?php endif; ?>
 
-	<div id="formular" class="mt-8 scroll-mt-28 rounded-lg bg-ash md:mt-10">
+	<div id="formular" class="mt-8 scroll-mt-28 rounded-lg border border-border bg-card md:mt-10">
 		<?php if ( 'success' === $status ) : ?>
 			<div class="px-6 py-12 text-center md:px-10">
 				<span class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-ember text-signal-foreground"><?php echo elfzwo_icon( 'circle-check', 'h-8 w-8' ); ?></span>

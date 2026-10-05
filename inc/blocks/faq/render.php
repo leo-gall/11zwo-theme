@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 $items = $attributes['items'] ?? array();
 ?>
-<div class="divide-y divide-border rounded-lg bg-ash">
+<div class="divide-y divide-border rounded-lg border border-border bg-card">
 	<?php foreach ( $items as $item ) :
 		$question = $item['question'] ?? '';
 		$answer   = $item['answer'] ?? '';

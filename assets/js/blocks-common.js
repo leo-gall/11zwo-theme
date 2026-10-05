@@ -44,7 +44,7 @@ window.elfzwoBlocks = ( function () {
 		{ key: 'ember', label: 'Ember-Orange', color: '#db6a66', bgOpacity: 40 },
 		{ key: 'wood', label: 'Holzbraun', color: '#a92c28', bgOpacity: 35 },
 		{ key: 'ink', label: 'Tinte (Schwarz)', color: '#1a1a1a', bgOpacity: 20 },
-		{ key: 'cream', label: 'Creme (fast Weiß)', color: '#f6f2ef', bgOpacity: null },
+		{ key: 'cream', label: 'Creme (fast Weiß)', color: '#eef2f9', bgOpacity: null },
 		{ key: 'sky', label: 'Himmelblau', color: '#aec5ec', bgOpacity: 40 },
 		{ key: 'leaf', label: 'Weinrot', color: '#8c2521', bgOpacity: 40 },
 	];

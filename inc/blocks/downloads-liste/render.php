@@ -35,7 +35,7 @@ $kategorien = get_terms( array( 'taxonomy' => 'download_kategorie', 'hide_empty'
 					$filesize     = $datei_id ? size_format( filesize( get_attached_file( $datei_id ) ), 0 ) : '';
 					$ext          = $datei_id ? strtoupper( pathinfo( get_attached_file( $datei_id ), PATHINFO_EXTENSION ) ) : '';
 					?>
-					<div class="flex flex-col gap-4 rounded-2xl bg-ash p-5 sm:flex-row sm:items-center sm:justify-between">
+					<div class="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 sm:flex-row sm:items-center sm:justify-between">
 						<div class="flex min-w-0 items-start gap-4">
 							<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( $is_zip ? 'file-archive' : 'file-text', 'h-5 w-5', 2.2 ); ?></span>
 							<div class="min-w-0">

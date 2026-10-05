@@ -18,22 +18,22 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "oklch(98.5% 0.004 60)",
-        foreground: "oklch(0.24 0.012 40)",
-        card: "oklch(0.993 0.003 60)",
-        border: "oklch(0.89 0.01 55)",
+        background: "oklch(98.531% 0.005 260)",
+        foreground: "oklch(0.22 0.035 265)",
+        card: "oklch(0.99 0.006 260)",
+        border: "oklch(0.88 0.015 260)",
 
         ember: "#db6a66",
         signal: "#d44c47",
         "signal-foreground": "oklch(0.98 0.01 85)",
         wood: "#a92c28",
-        cream: "oklch(0.965 0.008 60)",
+        cream: "oklch(0.96 0.01 260)",
         ink: "#1a1a1a",
         sky: "oklch(0.82 0.06 260)",
         leaf: "#8c2521",
-        smoke: "oklch(0.5 0.015 45)",
-        ash: "oklch(0.945 0.008 60)",
-        haze: "oklch(0.93 0.01 55)",
+        smoke: "oklch(0.48 0.03 265)",
+        ash: "oklch(0.94 0.012 260)",
+        haze: "oklch(0.93 0.015 260)",
       },
       borderRadius: {
         sm: "0.375rem",

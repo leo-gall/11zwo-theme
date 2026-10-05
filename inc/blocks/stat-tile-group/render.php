@@ -6,7 +6,7 @@ $columns = max( 2, min( 6, $columns ) );
 $tiles   = $attributes['tiles'] ?? array();
 ?>
 <section class="mx-auto max-w-7xl px-5 py-8 md:px-8">
-	<div class="rounded-lg bg-ash p-8 md:p-10">
+	<div class="rounded-lg border border-border bg-card p-8 md:p-10">
 		<?php if ( $intro ) : ?>
 			<p class="max-w-2xl text-smoke"><?php echo esc_html( $intro ); ?></p>
 		<?php endif; ?>
@@ -16,7 +16,7 @@ $tiles   = $attributes['tiles'] ?? array();
 				$value = $tile['value'] ?? '';
 				$label = $tile['label'] ?? '';
 				?>
-				<div class="rounded-2xl bg-card p-5">
+				<div class="rounded-2xl border border-border bg-card p-5">
 					<?php if ( $icon ) : ?>
 						<span class="grid h-8 w-8 place-items-center text-signal">
 							<?php echo elfzwo_icon( $icon, 'h-5 w-5', 2.2 ); ?>

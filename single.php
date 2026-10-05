@@ -30,7 +30,7 @@ while ( have_posts() ) :
 		<article class="mx-auto max-w-3xl px-5 pb-20 md:px-8">
 
 			<?php if ( has_post_thumbnail() ) : ?>
-				<div class="relative mt-8 overflow-hidden rounded-lg">
+				<div class="relative mt-8 overflow-hidden rounded-lg border border-border">
 					<?php the_post_thumbnail( 'large', array( 'class' => 'h-[360px] w-full object-cover md:h-[460px]' ) ); ?>
 				</div>
 			<?php endif; ?>

@@ -9,7 +9,7 @@ $info_icon   = $attributes['infoIcon'] ?? '';
 $info_text   = $attributes['infoText'] ?? '';
 $no_section  = ! empty( $attributes['noSection'] );
 
-$bg_class  = 'signal' === $variant ? 'bg-signal text-signal-foreground' : 'bg-ash';
+$bg_class  = 'signal' === $variant ? 'bg-signal text-signal-foreground' : 'bg-card border border-border';
 $btn_class = 'signal' === $variant
 	? 'bg-cream text-signal hover:bg-cream/90'
 	: 'bg-signal text-signal-foreground hover:bg-signal/90';
