@@ -19,8 +19,8 @@ $aufmacher   = array_shift( $beitraege );
 		$kategorie = elfzwo_post_category_line( $aufmacher->ID );
 		?>
 		<article class="relative grid items-center md:grid-cols-[1.5fr_1fr]">
-			<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" class="aspect-[16/10] w-full rounded-md object-cover"><?php endif; ?>
-			<div class="relative z-10 -mt-12 mx-4 rounded-md bg-card p-7 shadow-lg md:mx-0 md:-ml-20 md:mt-0 md:p-9 <?php echo $bild ? '' : 'md:col-span-2 md:ml-0'; ?>">
+			<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" class="aspect-[16/10] w-full object-cover"><?php endif; ?>
+			<div class="relative z-10 -mt-12 mx-4 border border-border bg-card p-7 md:mx-0 md:-ml-20 md:mt-0 md:p-9 <?php echo $bild ? '' : 'md:col-span-2 md:ml-0'; ?>">
 				<?php if ( $kategorie ) : ?><p class="text-sm font-semibold text-signal"><?php echo esc_html( $kategorie ); ?></p><?php endif; ?>
 				<h3 class="mt-2 font-display text-2xl leading-tight md:text-3xl"><?php echo esc_html( get_the_title( $aufmacher ) ); ?></h3>
 				<p class="mt-3 text-smoke"><?php echo esc_html( elfzwo_excerpt( $aufmacher->ID, 32 ) ); ?></p>
@@ -36,7 +36,7 @@ $aufmacher   = array_shift( $beitraege );
 					$kategorie = elfzwo_post_category_line( $beitrag->ID );
 					?>
 					<a href="<?php echo esc_url( get_permalink( $beitrag ) ); ?>" class="group block">
-						<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="aspect-[16/10] w-full rounded-md object-cover"><?php endif; ?>
+						<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover"><?php endif; ?>
 						<?php if ( $kategorie ) : ?><p class="mt-4 text-sm font-semibold text-signal"><?php echo esc_html( $kategorie ); ?></p><?php endif; ?>
 						<h3 class="mt-1 font-display text-xl leading-snug group-hover:underline"><?php echo esc_html( get_the_title( $beitrag ) ); ?></h3>
 						<p class="mt-2 text-smoke"><?php echo esc_html( elfzwo_excerpt( $beitrag->ID, 22 ) ); ?></p>

@@ -37,7 +37,6 @@
 					el( TextareaControl, { label: 'Text', value: a.text, onChange: set( 'text' ) } ),
 					el( TextareaControl, { label: 'Zeitstrahl', help: 'Eine Zeile pro Punkt, Format „Titel: Text“.', rows: 6, value: punkteAlsText( a.punkte ), onChange: function ( v ) { props.setAttributes( { punkte: textAlsPunkte( v ) } ); } } ),
 					el( ImagePicker, { label: 'Foto (groß)', imageId: a.bildId, imageUrl: a.bildUrl, onSelect: function ( id, url ) { props.setAttributes( { bildId: id, bildUrl: url } ); }, onRemove: function () { props.setAttributes( { bildId: 0, bildUrl: '' } ); } } ),
-					el( ImagePicker, { label: 'Zweites Foto (klein, versetzt)', imageId: a.bild2Id, imageUrl: a.bild2Url, onSelect: function ( id, url ) { props.setAttributes( { bild2Id: id, bild2Url: url } ); }, onRemove: function () { props.setAttributes( { bild2Id: 0, bild2Url: '' } ); } } ),
 					el( TextControl, { label: 'Button – Text', value: a.buttonText, onChange: set( 'buttonText' ) } ),
 					el( TextControl, { label: 'Button – URL', value: a.buttonUrl, onChange: set( 'buttonUrl' ) } )
 				) ),

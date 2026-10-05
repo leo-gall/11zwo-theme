@@ -37,7 +37,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 
 	<div class="mt-8 grid gap-5 md:mt-10 <?php echo $show_geraetehaus && $personen ? 'md:grid-cols-[2fr_3fr]' : 'mx-auto max-w-2xl'; ?>">
 		<?php if ( $show_geraetehaus ) : ?>
-			<div class="rounded-lg border border-border bg-card p-6 md:p-8">
+			<div class="border border-border bg-card p-6 md:p-8">
 				<p class="text-xs font-bold text-ember">Gerätehaus</p>
 				<ul class="mt-5 space-y-5">
 					<?php if ( $strasse || $plz_ort ) : ?>
@@ -70,7 +70,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 		<?php endif; ?>
 
 		<?php if ( $personen ) : ?>
-			<div class="rounded-lg border border-border bg-card p-6 md:p-8">
+			<div class="border border-border bg-card p-6 md:p-8">
 				<p class="text-xs font-bold text-ember">Ansprechpartner</p>
 				<div class="mt-5 divide-y divide-border">
 					<?php foreach ( $personen as $person ) : ?>

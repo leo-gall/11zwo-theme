@@ -34,7 +34,7 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 			<div class="<?php echo $reverse ? 'md:order-2' : ''; ?>">
 				<div class="relative">
 					<div class="relative">
-						<img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" width="1200" height="800" loading="lazy" class="block w-full object-cover <?php echo $reverse ? 'elfzwo-bildform-b' : 'elfzwo-bildform-a'; ?>">
+						<img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" width="1200" height="800" loading="lazy" class="block w-full object-cover">
 						<?php foreach ( $hotspots as $h => $spot ) : ?>
 							<?php $bild_url = $spot['bild'] ? wp_get_attachment_image_url( $spot['bild'], 'large' ) : ''; ?>
 							<button type="button" class="fahrzeug-hotspot group absolute grid h-11 w-11 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full focus:outline-none" style="left:<?php echo esc_attr( (float) $spot['x'] ); ?>%;top:<?php echo esc_attr( (float) $spot['y'] ); ?>%;" aria-haspopup="dialog" aria-label="<?php echo esc_attr( 'Gerätefach ansehen: ' . ( $spot['titel'] ?: ( $h + 1 ) ) ); ?>">
@@ -68,7 +68,7 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 				<?php if ( $specs ) : ?>
 					<dl class="mt-6 grid gap-3 sm:grid-cols-2">
 						<?php foreach ( $specs as $s ) : ?>
-							<div class="flex min-w-0 items-center gap-3 rounded-2xl border border-border bg-card p-4">
+							<div class="flex min-w-0 items-center gap-3 border border-border bg-card p-4">
 								<span class="grid h-8 w-8 shrink-0 place-items-center text-signal"><?php echo elfzwo_icon( $s['icon'], 'h-5 w-5', 2.2 ); ?></span>
 								<div class="min-w-0">
 									<dt class="text-xs text-smoke [overflow-wrap:anywhere]"><?php echo esc_html( $s['label'] ); ?></dt>
@@ -82,12 +82,12 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 		</article>
 	<?php endwhile; wp_reset_postdata(); ?>
 
-	<dialog class="fahrzeug-modal m-auto w-[calc(100%-2rem)] max-w-4xl max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-lg bg-card p-0 text-foreground shadow-2xl backdrop:bg-ink/75">
+	<dialog class="fahrzeug-modal m-auto w-[calc(100%-2rem)] max-w-4xl max-h-[calc(100dvh-2rem)] overflow-y-auto border border-border bg-card p-0 text-foreground backdrop:bg-ink/75">
 		<div class="fahrzeug-modal-body"></div>
 		<div class="flex items-center justify-between gap-4 border-t border-border px-6 py-4 md:px-8">
-			<button type="button" class="fahrzeug-modal-prev inline-flex whitespace-nowrap items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold hover:text-signal disabled:invisible"><?php echo elfzwo_icon( 'chevron-left', 'h-4 w-4' ); ?> <span class="sm:hidden">Zurück</span><span class="hidden sm:inline">Vorheriges Fach</span></button>
+			<button type="button" class="fahrzeug-modal-prev inline-flex whitespace-nowrap items-center gap-1 px-2 py-1 text-sm font-semibold hover:text-signal disabled:invisible"><?php echo elfzwo_icon( 'chevron-left', 'h-4 w-4' ); ?> <span class="sm:hidden">Zurück</span><span class="hidden sm:inline">Vorheriges Fach</span></button>
 			<span class="fahrzeug-modal-zaehler whitespace-nowrap text-xs text-smoke"></span>
-			<button type="button" class="fahrzeug-modal-next inline-flex whitespace-nowrap items-center gap-1 rounded-md px-2 py-1 text-sm font-semibold hover:text-signal disabled:invisible"><span class="sm:hidden">Weiter</span><span class="hidden sm:inline">Nächstes Fach</span> <?php echo elfzwo_icon( 'chevron-right', 'h-4 w-4' ); ?></button>
+			<button type="button" class="fahrzeug-modal-next inline-flex whitespace-nowrap items-center gap-1 px-2 py-1 text-sm font-semibold hover:text-signal disabled:invisible"><span class="sm:hidden">Weiter</span><span class="hidden sm:inline">Nächstes Fach</span> <?php echo elfzwo_icon( 'chevron-right', 'h-4 w-4' ); ?></button>
 		</div>
 		<button type="button" class="fahrzeug-modal-close absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full bg-ink/70 text-white hover:bg-ink" aria-label="Schließen"><?php echo elfzwo_icon( 'x', 'h-5 w-5' ); ?></button>
 	</dialog>

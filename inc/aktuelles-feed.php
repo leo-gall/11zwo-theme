@@ -37,7 +37,7 @@ function elfzwo_render_aktuelles_feed_cards( $query ) {
 		?>
 		<article class="group flex flex-col">
 			<a href="<?php the_permalink(); ?>">
-				<?php if ( $image ) : ?><img src="<?php echo esc_url( $image ); ?>" alt="<?php the_title_attribute(); ?>" width="1200" height="800" loading="lazy" class="mb-5 aspect-[4/3] w-full rounded-md object-cover"><?php endif; ?>
+				<?php if ( $image ) : ?><img src="<?php echo esc_url( $image ); ?>" alt="<?php the_title_attribute(); ?>" width="1200" height="800" loading="lazy" class="mb-5 aspect-[4/3] w-full object-cover"><?php endif; ?>
 				<?php if ( $kategorie_line ) : ?><p class="text-xs font-semibold text-signal"><?php echo esc_html( $kategorie_line ); ?></p><?php endif; ?>
 				<h3 class="mt-2 font-display text-3xl leading-tight"><?php the_title(); ?></h3>
 				<p class="mt-3 text-smoke"><?php echo esc_html( elfzwo_excerpt( get_the_ID(), 55 ) ); ?></p>

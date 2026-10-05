@@ -27,7 +27,7 @@ if ( 'notruf' === $variant ) {
 		. '</div></div></section>'; // phpcs:ignore -- bereits escaped
 	return;
 }
-$banner = '<div class="flex h-full flex-wrap items-center justify-between gap-6 rounded-lg ' . esc_attr( $bg_class ) . ' p-8 md:p-10">'
+$banner = '<div class="flex h-full flex-wrap items-center justify-between gap-6 ' . esc_attr( $bg_class ) . ' p-8 md:p-10">'
 	. '<div>'
 	. ( $title ? '<h2 class="font-display text-3xl md:text-4xl">' . esc_html( $title ) . '</h2>' : '' )
 	. ( $text ? '<p class="mt-2 max-w-xl opacity-90">' . esc_html( $text ) . '</p>' : '' )

@@ -34,7 +34,7 @@ if ( 'neuigkeiten' === $teil ) :
 			<?php foreach ( array_filter( array_merge( array( $aufmacher ), $beitraege ) ) as $beitrag ) :
 				$bild = elfzwo_post_cover_image_url( $beitrag->ID, 'medium_large' );
 				?>
-				<a href="<?php echo esc_url( get_permalink( $beitrag ) ); ?>" class="group flex flex-col overflow-hidden rounded-md border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
+				<a href="<?php echo esc_url( get_permalink( $beitrag ) ); ?>" class="group flex flex-col overflow-hidden border border-border bg-card transition-colors hover:border-signal">
 					<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover"><?php endif; ?>
 					<div class="flex flex-1 flex-col p-5">
 						<h3 class="font-display text-lg font-semibold leading-snug group-hover:text-signal"><?php echo esc_html( get_the_title( $beitrag ) ); ?></h3>
@@ -102,7 +102,7 @@ endif;
 				$bild = elfzwo_post_cover_image_url( $aufmacher->ID, 'large' );
 				?>
 				<a href="<?php echo esc_url( get_permalink( $aufmacher ) ); ?>" class="group mt-6 grid gap-5 md:grid-cols-[1.2fr_1fr] md:items-center">
-					<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" class="aspect-[4/3] w-full rounded-md object-cover"><?php endif; ?>
+					<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" class="aspect-[4/3] w-full object-cover"><?php endif; ?>
 					<div class="<?php echo $bild ? '' : 'md:col-span-2'; ?>">
 						<p class="text-sm font-semibold text-signal"><?php echo esc_html( elfzwo_post_category_line( $aufmacher->ID ) ); ?></p>
 						<h3 class="mt-1 font-display text-2xl leading-tight group-hover:underline"><?php echo esc_html( get_the_title( $aufmacher ) ); ?></h3>
@@ -117,7 +117,7 @@ endif;
 							$bild = elfzwo_post_cover_image_url( $beitrag->ID, 'thumbnail' );
 							?>
 							<a href="<?php echo esc_url( get_permalink( $beitrag ) ); ?>" class="group flex gap-4">
-								<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="h-20 w-24 shrink-0 rounded-md object-cover"><?php endif; ?>
+								<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="h-20 w-24 shrink-0 object-cover"><?php endif; ?>
 								<span class="min-w-0">
 									<span class="block font-display text-lg leading-snug group-hover:underline"><?php echo esc_html( get_the_title( $beitrag ) ); ?></span>
 									<span class="mt-1 block text-sm text-smoke"><?php echo esc_html( get_the_date( 'd.m.Y', $beitrag ) ); ?></span>
@@ -129,7 +129,7 @@ endif;
 			<?php endif; ?>
 		</div>
 
-		<aside class="rounded-md border border-border bg-card p-6">
+		<aside class="border border-border bg-card p-6">
 			<div class="flex items-end justify-between gap-4">
 				<div>
 					<p class="elfzwo-kicker">Einsätze</p>

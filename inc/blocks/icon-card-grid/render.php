@@ -13,14 +13,14 @@ $kacheln = 'kacheln' === ( $attributes['stil'] ?? '' );
 			$body  = $card['body'] ?? '';
 			?>
 			<?php if ( $kacheln ) : ?>
-				<div class="elfzwo-kachel relative isolate min-h-[13rem] overflow-hidden bg-gradient-to-br from-signal to-wood p-7 text-white">
+				<div class="relative isolate min-h-[13rem] overflow-hidden bg-gradient-to-br from-signal to-wood p-7 text-white">
 					<h3 class="font-display text-2xl"><?php echo esc_html( $title ); ?></h3>
 					<p class="mt-2 max-w-[16rem] text-sm text-white/90"><?php echo esc_html( $body ); ?></p>
 					<?php if ( $icon ) : ?><span class="absolute -bottom-3 -right-3 -z-10 text-white/25"><?php echo elfzwo_icon( $icon, 'h-28 w-28', 1.5 ); ?></span><?php endif; ?>
 				</div>
 				<?php continue; ?>
 			<?php endif; ?>
-			<div class="group rounded-lg border border-border bg-card p-8 transition-colors hover:border-signal">
+			<div class="group border border-border bg-card p-8 transition-colors hover:border-signal">
 				<?php if ( $icon ) : ?>
 					<span class="grid h-8 w-8 place-items-center text-signal">
 						<?php echo elfzwo_icon( $icon, 'h-6 w-6', 2.2 ); ?>

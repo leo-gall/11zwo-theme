@@ -1,7 +1,7 @@
 <?php
 /**
- * Aktive Mannschaft: Bild-Text-Abschnitt (inc/komponenten.php) mit zwei
- * Fotos links und einem kurzen Zeitstrahl unter dem Text.
+ * Aktive Mannschaft: Bild-Text-Abschnitt (inc/komponenten.php) mit einem
+ * Foto links und einem kurzen Zeitstrahl unter dem Text.
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 $a      = $attributes;
@@ -20,12 +20,13 @@ if ( $punkte ) {
 
 echo elfzwo_render_bild_text( // phpcs:ignore -- bereits escaped
 	array(
-		'titel'      => $a['titel'] ?? '',
-		'text'       => $a['text'] ?? '',
-		'inhalt'     => $liste,
-		'bild'       => elfzwo_block_bild( $a, 'bild', get_template_directory_uri() . '/assets/images/hero-team.jpg' ),
-		'bild2'      => elfzwo_block_bild( $a, 'bild2', get_template_directory_uri() . '/assets/images/hero-hintergrund.jpg' ),
-		'bild_seite' => 'links',
-		'button'     => array( 'text' => $a['buttonText'] ?? '', 'url' => $a['buttonUrl'] ?? '/mitmachen/' ),
+		'titel'       => $a['titel'] ?? '',
+		'text'        => $a['text'] ?? '',
+		'inhalt'      => $liste,
+		'bild'        => elfzwo_block_bild( $a, 'bild', get_template_directory_uri() . '/assets/images/hero-team.jpg' ),
+		'bild_seite'  => 'links',
+		// Querformat wie das Foto selbst, damit links und rechts keine Fahrzeuge abgeschnitten werden.
+		'bild_format' => 'aspect-[3/2]',
+		'button'      => array( 'text' => $a['buttonText'] ?? '', 'url' => $a['buttonUrl'] ?? '/mitmachen/' ),
 	)
 );

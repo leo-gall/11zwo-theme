@@ -63,6 +63,7 @@ function elfzwo_render_jumbotron( $args ) {
  *     @type string $bild       Hauptbild-URL.
  *     @type string $bild2      Optionales zweites, kleineres Bild (versetzt dahinter).
  *     @type string $bild_seite 'rechts' (Standard) oder 'links'.
+ *     @type string $bild_format Tailwind-Seitenverhältnis des Hauptbilds, Standard 'aspect-[4/3]'.
  *     @type array  $button     array( 'text' => …, 'url' => … ).
  * }
  */
@@ -71,6 +72,7 @@ function elfzwo_render_bild_text( $args ) {
 	$bild2      = $args['bild2'] ?? '';
 	$bild_links = 'links' === ( $args['bild_seite'] ?? 'rechts' );
 	$button     = $args['button'] ?? array();
+	$format     = $args['bild_format'] ?? 'aspect-[4/3]';
 	ob_start();
 	?>
 	<section class="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
@@ -89,9 +91,9 @@ function elfzwo_render_bild_text( $args ) {
 			<?php if ( $bild ) : ?>
 				<div class="relative <?php echo $bild2 ? 'pt-[22%]' : ''; ?> <?php echo $bild_links ? 'lg:order-1' : ''; ?>">
 					<?php if ( $bild2 ) : ?>
-						<img src="<?php echo esc_url( $bild2 ); ?>" alt="" loading="lazy" class="elfzwo-bildform-b absolute top-0 aspect-[3/2] w-[52%] object-cover ring-[6px] ring-background <?php echo $bild_links ? 'right-[6%]' : 'left-[6%]'; ?>">
+						<img src="<?php echo esc_url( $bild2 ); ?>" alt="" loading="lazy" class="absolute top-0 aspect-[3/2] w-[52%] object-cover ring-[6px] ring-background <?php echo $bild_links ? 'right-[6%]' : 'left-[6%]'; ?>">
 					<?php endif; ?>
-					<img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="elfzwo-bildform-a relative aspect-[4/3] object-cover <?php echo $bild2 ? 'w-[78%] ' . ( $bild_links ? '' : 'ml-auto' ) : 'w-full'; ?>">
+					<img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="relative <?php echo esc_attr( $format ); ?> object-cover <?php echo $bild2 ? 'w-[78%] ' . ( $bild_links ? '' : 'ml-auto' ) : 'w-full'; ?>">
 				</div>
 			<?php endif; ?>
 		</div>
@@ -167,7 +169,7 @@ function elfzwo_render_ansprechpartner_karte( $person ) {
 	}
 	ob_start();
 	?>
-	<div class="flex h-full items-start gap-5 rounded-2xl border border-border bg-card p-6">
+	<div class="flex h-full items-start gap-5 border border-border bg-card p-6">
 		<div class="shrink-0"><?php echo elfzwo_person_wappen_svg( $name, $rolle, 56 ); // phpcs:ignore -- bereits escaped ?></div>
 		<div class="min-w-0">
 			<p class="font-display text-xl font-bold leading-tight"><?php echo esc_html( $name ); ?></p>

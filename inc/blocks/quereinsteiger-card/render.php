@@ -9,7 +9,7 @@ $cta_url   = $attributes['ctaUrl'] ?? '#';
 $image_id  = (int) ( $attributes['imageId'] ?? 0 );
 $image_url = $image_id ? wp_get_attachment_image_url( $image_id, 'large' ) : ( $attributes['imageUrl'] ?? '' );
 ?>
-<figure class="relative isolate flex h-full min-h-[26rem] flex-col justify-end overflow-hidden rounded-3xl bg-foreground text-white">
+<figure class="relative isolate flex h-full min-h-[26rem] flex-col justify-end overflow-hidden bg-foreground text-white">
 	<?php if ( $image_url ) : ?>
 		<img src="<?php echo esc_url( $image_url ); ?>" loading="lazy" alt="<?php echo esc_attr( $name ); ?>" class="absolute inset-0 -z-10 h-full w-full object-cover object-[center_15%]">
 	<?php endif; ?>

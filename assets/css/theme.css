@@ -1,12 +1,12 @@
 :root {
-  --background: oklch(98.531% 0.005 260);
+  --background: #fff;
   --foreground: oklch(0.22 0.035 265);
-  --card: oklch(0.99 0.006 260);
+  --card: #fff;
   --border: oklch(0.88 0.015 260);
 
-  --signal: #d44c47;
+  --signal: #c4161c;
   --signal-foreground: oklch(0.98 0.01 85);
-  --wood: #a92c28;
+  --wood: #9d1216;
   --ink: #1a1a1a;
   --cream: oklch(0.96 0.01 260);
   --smoke: oklch(0.48 0.03 265);
@@ -98,14 +98,14 @@ h1 {
   justify-content: center;
   gap: 0.625rem;
   border: 2px solid transparent;
-  border-radius: 0.625rem;
+  border-radius: 0;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.5rem;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
 }
 
 .elfzwo-btn:focus-visible {
@@ -133,12 +133,10 @@ h1 {
 .elfzwo-btn-primary {
   background-color: var(--signal);
   color: var(--signal-foreground);
-  box-shadow: 0 10px 24px -12px color-mix(in oklch, var(--signal) 80%, transparent);
 }
 
 .elfzwo-btn-primary:hover {
   background-color: color-mix(in oklch, var(--signal) 82%, black);
-  box-shadow: 0 14px 28px -12px color-mix(in oklch, var(--signal) 90%, transparent);
 }
 
 /* Weiße Buttons auf rotem Grund (Startseiten-Hero). */
@@ -247,7 +245,6 @@ h1 {
   display: block;
   max-width: 100%;
   height: auto;
-  border-radius: 1rem;
 }
 
 .prose hr {
@@ -295,7 +292,7 @@ h1 {
 
 /* Cream-Box (z. B. "Für Eltern"-Kurzinfo auf der Jugendfeuerwehr-Seite) */
 .elfzwo-cream-box {
-  border-radius: 1.25rem;
+  border-radius: 0;
   background-color: var(--cream);
   padding: 1.5rem;
 }
@@ -377,60 +374,9 @@ h1 {
   .elfzwo-mobile-menu { animation: none; }
 }
 
-/* Mannschaftsfoto im Startseiten-Hero: stark gerundet, aber jede Ecke anders
-   (elliptische Radien), damit die Form gewachsen statt geometrisch wirkt. */
+/* Mannschaftsfoto im Startseiten-Hero: breites Querformat, harte Kanten. */
 .elfzwo-hero-blob {
-  border-radius: 38% 22% 30% 46% / 46% 30% 40% 34%;
-}
-
-@media (max-width: 767px) {
-  .elfzwo-hero-blob {
-    border-radius: 28% 16% 22% 34% / 34% 22% 30% 26%;
-  }
-}
-
-/* Weitere "gewachsene" Formen: Foto im freien Bild-Teaser und die roten
-   Aufgaben-Kacheln (eine große, unregelmäßige Ecke wie bei der Aicher Ambulanz). */
-.elfzwo-blob-b {
-  border-radius: 30% 44% 36% 24% / 40% 34% 46% 30%;
-}
-
-.elfzwo-kachel {
-  border-radius: 1.25rem 1.25rem 1.25rem 4.5rem / 1.25rem 1.25rem 1.25rem 3.5rem;
-}
-
-/* Fotos im Bild-Text-Abschnitt (inc/komponenten.php): jede Ecke anders
-   gerundet, wie bei der Aicher Ambulanz. */
-.elfzwo-bildform-a {
-  border-radius: 2.25rem 6.5rem 1rem 4rem / 3rem 5rem 1.25rem 3.25rem;
-}
-
-.elfzwo-bildform-b {
-  border-radius: 4.5rem 1rem 3.25rem 1.5rem / 3.5rem 1.25rem 4rem 1.25rem;
-}
-
-@media (max-width: 767px) {
-  .elfzwo-bildform-a { border-radius: 1.25rem 3.25rem 0.75rem 2rem / 1.5rem 2.75rem 0.75rem 1.75rem; }
-  .elfzwo-bildform-b { border-radius: 2.5rem 0.75rem 1.75rem 1rem; }
-}
-
-/* Laufband mit Neuigkeiten unter der Navigation: der Inhalt steht doppelt
-   im Track, nach der Hälfte beginnt die Animation nahtlos von vorn. */
-@keyframes elfzwo-ticker {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-.elfzwo-ticker-track {
-  animation: elfzwo-ticker 60s linear infinite;
-}
-
-.elfzwo-ticker:hover .elfzwo-ticker-track {
-  animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .elfzwo-ticker-track { animation: none; }
+  aspect-ratio: 829 / 401;
 }
 
 /* Sticky Header: unter statt hinter der fixierten WP-Adminleiste einordnen (nur für eingeloggte Redakteure sichtbar) */

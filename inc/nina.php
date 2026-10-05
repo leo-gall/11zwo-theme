@@ -213,7 +213,7 @@ function elfzwo_nina_render_compact( $plz ) {
 
 	<div id="elfzwo-nina-modal" class="elfzwo-nina-modal fixed inset-0 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Aktuelle Warnmeldungen">
 		<div class="elfzwo-nina-modal-backdrop absolute inset-0 bg-ink/60" data-nina-close></div>
-		<div class="relative flex max-h-[80vh] w-full max-w-lg flex-col rounded-2xl border border-border bg-background shadow-md">
+		<div class="relative flex max-h-[80vh] w-full max-w-lg flex-col border border-border bg-background">
 			<div class="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
 				<div class="flex items-center gap-2">
 					<?php echo elfzwo_bbk_logo_svg( 'h-6 w-6' ); ?>
@@ -228,7 +228,7 @@ function elfzwo_nina_render_compact( $plz ) {
 							<?php $tag = $w['url'] ? 'a' : 'div'; ?>
 							<<?php echo $tag; ?>
 								<?php if ( $w['url'] ) : ?>href="<?php echo esc_url( $w['url'] ); ?>" target="_blank" rel="noopener"<?php endif; ?>
-								class="block rounded-xl border border-leaf/40 bg-leaf/10 p-3<?php echo $w['url'] ? ' transition-colors hover:bg-leaf/15' : ''; ?>"
+								class="block border border-leaf/40 bg-leaf/10 p-3<?php echo $w['url'] ? ' transition-colors hover:bg-leaf/15' : ''; ?>"
 							>
 								<div class="flex items-center justify-between gap-2">
 									<span class="text-[11px] font-bold uppercase tracking-widest text-leaf"><?php echo esc_html( $w['level'] ); ?></span>

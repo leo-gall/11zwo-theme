@@ -14,14 +14,14 @@ $hero_post = $hero_post ? $hero_post[0] : null;
 	<div class="grid gap-10 lg:grid-cols-[1.6fr_1fr]">
 		<article class="min-w-0">
 			<?php if ( ! $hero_post ) : ?>
-				<div class="flex h-[420px] items-center justify-center rounded-lg border border-border text-center text-smoke">Aktuell gibt es keine vorgestellte Meldung.</div>
+				<div class="flex h-[420px] items-center justify-center border border-border text-center text-smoke">Aktuell gibt es keine vorgestellte Meldung.</div>
 			<?php else :
 				$hero_image     = elfzwo_post_cover_image_url( $hero_post->ID, 'large' );
 				$hero_kategorie = elfzwo_post_category_line( $hero_post->ID );
 				?>
 				<a href="<?php echo esc_url( get_permalink( $hero_post ) ); ?>" class="block">
 					<?php if ( $hero_image ) : ?>
-						<div class="elfzwo-bildform-a relative mb-6 overflow-hidden">
+						<div class="relative mb-6 overflow-hidden">
 							<img src="<?php echo esc_url( $hero_image ); ?>" alt="<?php echo esc_attr( $hero_post->post_title ); ?>" width="1200" height="800" loading="lazy" class="h-[420px] w-full object-cover transition-transform duration-300 hover:scale-[1.02]">
 						</div>
 					<?php endif; ?>
@@ -33,7 +33,7 @@ $hero_post = $hero_post ? $hero_post[0] : null;
 			<?php endif; ?>
 		</article>
 
-		<aside id="elfzwo-einsatzliste-<?php echo esc_attr( $post_id ); ?>" class="elfzwo-einsatzliste flex min-w-0 flex-col rounded-lg border border-border bg-card p-6 transition-opacity md:p-8" data-post-id="<?php echo esc_attr( $post_id ); ?>">
+		<aside id="elfzwo-einsatzliste-<?php echo esc_attr( $post_id ); ?>" class="elfzwo-einsatzliste flex min-w-0 flex-col border border-border bg-card p-6 transition-opacity md:p-8" data-post-id="<?php echo esc_attr( $post_id ); ?>">
 			<?php echo elfzwo_einsatzliste_render( $post_id, $einsatzliste_data ); // phpcs:ignore -- bereits escaped in elfzwo_einsatzliste_render() ?>
 		</aside>
 	</div>

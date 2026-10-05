@@ -40,13 +40,13 @@ window.elfzwoBlocks = ( function () {
 	// Werte 1:1 aus tailwind.config.js übernommen (oklch-Farben in den
 	// entsprechenden Hex-Wert umgerechnet).
 	var ACCENT_PALETTE = [
-		{ key: 'signal', label: 'Signalrot', color: '#d44c47', bgOpacity: 30 },
-		{ key: 'ember', label: 'Ember-Orange', color: '#db6a66', bgOpacity: 40 },
-		{ key: 'wood', label: 'Holzbraun', color: '#a92c28', bgOpacity: 35 },
+		{ key: 'signal', label: 'Signalrot', color: '#c4161c', bgOpacity: 30 },
+		{ key: 'ember', label: 'Ember-Orange', color: '#d35055', bgOpacity: 40 },
+		{ key: 'wood', label: 'Holzbraun', color: '#9d1216', bgOpacity: 35 },
 		{ key: 'ink', label: 'Tinte (Schwarz)', color: '#1a1a1a', bgOpacity: 20 },
 		{ key: 'cream', label: 'Creme (fast Weiß)', color: '#eef2f9', bgOpacity: null },
 		{ key: 'sky', label: 'Himmelblau', color: '#aec5ec', bgOpacity: 40 },
-		{ key: 'leaf', label: 'Weinrot', color: '#8c2521', bgOpacity: 40 },
+		{ key: 'leaf', label: 'Weinrot', color: '#7f0e12', bgOpacity: 40 },
 	];
 
 	function accentEntry( key ) {
