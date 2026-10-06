@@ -3,6 +3,8 @@
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<?php // Immer hell darstellen: verhindert dunkle Formularfelder und das automatische Abdunkeln (z. B. Chrome, Samsung Internet). ?>
+	<meta name="color-scheme" content="only light">
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class( 'min-h-screen overflow-x-clip' ); ?>>

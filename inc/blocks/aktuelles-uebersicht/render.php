@@ -26,9 +26,9 @@ if ( 'neuigkeiten' === $teil ) :
 	<section class="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
 		<div class="flex items-end justify-between gap-4">
 			<div>
-				<h2 class="font-display text-3xl font-bold text-signal md:text-4xl">Neuigkeiten aus der Feuerwehr</h2>
+				<h2 class="font-display text-3xl font-black text-signal md:text-4xl">Neuigkeiten aus der Feuerwehr</h2>
 			</div>
-			<a href="<?php echo esc_url( $link_url ); ?>" class="shrink-0 text-sm font-semibold text-signal hover:underline">Alle Neuigkeiten</a>
+			<a href="<?php echo esc_url( home_url( '/verein/#aktuelles' ) ); ?>" class="shrink-0 text-sm font-semibold text-signal hover:underline">Alle Neuigkeiten</a>
 		</div>
 		<div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 			<?php foreach ( array_filter( array_merge( array( $aufmacher ), $beitraege ) ) as $beitrag ) :
@@ -93,7 +93,7 @@ endif;
 					<p class="elfzwo-kicker">Aktuelles</p>
 					<h2 class="mt-1 font-display text-3xl md:text-4xl">Neuigkeiten</h2>
 				</div>
-				<a href="<?php echo esc_url( $link_url ); ?>" class="shrink-0 text-sm font-semibold text-signal hover:underline">Alle Neuigkeiten</a>
+				<a href="<?php echo esc_url( home_url( '/verein/#aktuelles' ) ); ?>" class="shrink-0 text-sm font-semibold text-signal hover:underline">Alle Neuigkeiten</a>
 			</div>
 
 			<?php if ( ! $aufmacher ) : ?>

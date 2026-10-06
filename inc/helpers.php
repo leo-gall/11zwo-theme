@@ -102,3 +102,69 @@ function elfzwo_get_menu_tree( $location ) {
 	}
 	return $tree;
 }
+
+/**
+ * Einmalig: "Einsätze & Aktuelles" aufteilen. Die Seite /einsaetze/ heißt nur
+ * noch "Einsätze" und zeigt die Einsatztabelle; die Beiträge wandern als
+ * Aktuelles-Block auf die Verein-Seite (vor den Aufruf am Ende, sonst ans Ende).
+ */
+function elfzwo_migrate_aktuelles_auf_verein() {
+	if ( get_option( 'elfzwo_aktuelles_auf_verein' ) ) {
+		return;
+	}
+	update_option( 'elfzwo_aktuelles_auf_verein', 1 );
+
+	$einsaetze = get_page_by_path( 'einsaetze' );
+	if ( $einsaetze ) {
+		$blocks = array_values(
+			array_filter(
+				parse_blocks( $einsaetze->post_content ),
+				function ( $b ) {
+					return 'elfzwo/aktuelles-feed' !== $b['blockName'];
+				}
+			)
+		);
+		foreach ( $blocks as $i => $b ) {
+			if ( 'elfzwo/section-heading' === $b['blockName'] && 'Einsätze & Aktuelles' === ( $b['attrs']['title'] ?? '' ) ) {
+				$blocks[ $i ]['attrs']['title'] = 'Einsätze';
+			}
+		}
+		_wp_put_post_revision( $einsaetze );
+		wp_update_post(
+			array(
+				'ID'           => $einsaetze->ID,
+				'post_title'   => 'Einsätze & Aktuelles' === $einsaetze->post_title ? 'Einsätze' : $einsaetze->post_title,
+				'post_content' => wp_slash( serialize_blocks( $blocks ) ),
+			)
+		);
+	}
+
+	$verein = get_page_by_path( 'verein' );
+	if ( $verein && ! has_block( 'elfzwo/aktuelles-feed', $verein ) ) {
+		$blocks = parse_blocks( $verein->post_content );
+		$neu    = array(
+			'blockName'    => 'elfzwo/aktuelles-feed',
+			'attrs'        => array(),
+			'innerBlocks'  => array(),
+			'innerHTML'    => '',
+			'innerContent' => array(),
+		);
+		$stelle = count( $blocks );
+		foreach ( $blocks as $i => $b ) {
+			if ( 'elfzwo/cta-banner' === $b['blockName'] ) {
+				$stelle = $i;
+			}
+		}
+		array_splice( $blocks, $stelle, 0, array( $neu ) );
+		_wp_put_post_revision( $verein );
+		wp_update_post( array( 'ID' => $verein->ID, 'post_content' => wp_slash( serialize_blocks( $blocks ) ) ) );
+	}
+
+	// Menüpunkte mit eigenem Titel umbenennen (sonst übernimmt WordPress den Seitentitel).
+	foreach ( get_posts( array( 'post_type' => 'nav_menu_item', 'numberposts' => -1, 'post_status' => 'any' ) ) as $eintrag ) {
+		if ( in_array( $eintrag->post_title, array( 'Einsätze & Aktuelles', 'Einsätze &amp; Aktuelles', 'Einsätze &#038; Aktuelles' ), true ) ) {
+			wp_update_post( array( 'ID' => $eintrag->ID, 'post_title' => 'Einsätze' ) );
+		}
+	}
+}
+add_action( 'init', 'elfzwo_migrate_aktuelles_auf_verein', 30 );

@@ -20,7 +20,7 @@ $kacheln = 'kacheln' === ( $attributes['stil'] ?? '' );
 				</div>
 				<?php continue; ?>
 			<?php endif; ?>
-			<div class="group border border-border bg-card p-8 transition-colors hover:border-signal">
+			<div class="border border-border bg-card p-8">
 				<?php if ( $icon ) : ?>
 					<span class="grid h-8 w-8 place-items-center text-signal">
 						<?php echo elfzwo_icon( $icon, 'h-6 w-6', 2.2 ); ?>

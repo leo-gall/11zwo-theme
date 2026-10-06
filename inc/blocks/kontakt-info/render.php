@@ -27,7 +27,7 @@ $personen         = ! empty( $attributes['showPersonen'] ) ? array_values( array
 	<div class="text-center">
 		<?php if ( $kicker ) : ?><p class="elfzwo-kicker"><?php echo esc_html( $kicker ); ?></p><?php endif; ?>
 		<?php if ( $title || $title_hand ) : ?>
-			<h1 class="mt-1 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
+			<h1 class="mt-1 text-4xl font-black leading-tight tracking-tight md:text-5xl">
 				<?php echo esc_html( $title ); ?>
 				<?php if ( $title_hand ) : ?><span class="text-signal"><?php echo esc_html( $title_hand ); ?></span><?php endif; ?>
 			</h1>

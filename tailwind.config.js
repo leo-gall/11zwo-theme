@@ -19,21 +19,21 @@ module.exports = {
     extend: {
       colors: {
         background: "#fff",
-        foreground: "oklch(0.22 0.035 265)",
+        foreground: "#2d2727",
         card: "#fff",
-        border: "oklch(0.88 0.015 260)",
+        border: "#e6e1e1",
 
         ember: "#d35055",
         signal: "#c4161c",
         "signal-foreground": "oklch(0.98 0.01 85)",
         wood: "#9d1216",
-        cream: "oklch(0.96 0.01 260)",
+        cream: "#f3f0f0",
         ink: "#1a1a1a",
         sky: "oklch(0.82 0.06 260)",
         leaf: "#7f0e12",
-        smoke: "oklch(0.48 0.03 265)",
-        ash: "oklch(0.94 0.012 260)",
-        haze: "oklch(0.93 0.015 260)",
+        smoke: "#716868",
+        ash: "#f3f0f0",
+        haze: "#ebe6e6",
       },
       borderRadius: {
         sm: "0.375rem",

@@ -53,8 +53,8 @@ function elfzwo_enqueue_assets() {
 	wp_enqueue_script( 'elfzwo-nav', get_template_directory_uri() . '/assets/js/nav.js', array(), filemtime( get_template_directory() . '/assets/js/nav.js' ), true );
 
 	if ( has_block( 'elfzwo/aktuelle-einsaetze' ) ) {
-		wp_enqueue_script( 'elfzwo-einsatzliste', get_template_directory_uri() . '/assets/js/einsatzliste.js', array(), filemtime( get_template_directory() . '/assets/js/einsatzliste.js' ), true );
-		wp_localize_script( 'elfzwo-einsatzliste', 'elfzwoEinsatzliste', array( 'ajaxUrl' => admin_url( 'admin-ajax.php' ) ) );
+		wp_enqueue_script( 'elfzwo-einsaetze', get_template_directory_uri() . '/assets/js/einsaetze.js', array(), filemtime( get_template_directory() . '/assets/js/einsaetze.js' ), true );
+		wp_localize_script( 'elfzwo-einsaetze', 'elfzwoEinsaetze', array( 'ajaxUrl' => admin_url( 'admin-ajax.php' ) ) );
 	}
 
 	if ( has_block( 'elfzwo/aktuelles-feed' ) ) {

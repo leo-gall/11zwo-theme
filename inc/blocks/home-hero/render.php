@@ -28,7 +28,7 @@ for ( $i = 1; $i <= 3; $i++ ) {
 	<div class="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-28 pt-14 md:grid-cols-[1fr_1.5fr] md:px-8 md:pb-36 md:pt-20">
 		<div>
 			<?php if ( $subtitle ) : ?><p class="text-lg text-white/90"><?php echo esc_html( $subtitle ); ?></p><?php endif; ?>
-			<h1 class="mt-2 font-display text-4xl font-bold leading-tight md:text-5xl lg:text-6xl">
+			<h1 class="mt-2 font-display text-4xl font-black leading-tight md:text-5xl lg:text-6xl">
 				<?php echo esc_html( $title1 ); ?><?php if ( $title2 ) : ?><br><?php echo esc_html( $title2 ); ?><?php endif; ?>
 			</h1>
 			<?php if ( $description ) : ?><p class="mt-5 max-w-xl text-lg leading-relaxed text-white/90"><?php echo esc_html( $description ); ?></p><?php endif; ?>

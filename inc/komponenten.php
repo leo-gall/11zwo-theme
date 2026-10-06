@@ -35,9 +35,10 @@ function elfzwo_render_jumbotron( $args ) {
 	?>
 	<section class="relative isolate overflow-hidden bg-signal text-white">
 		<img src="<?php echo esc_url( $bild ); ?>" alt="" class="absolute inset-0 -z-20 h-full w-full object-cover">
-		<div class="absolute inset-0 -z-10 bg-signal/80" aria-hidden="true"></div>
+		<?php // Gleicher Schleier wie im Startseiten-Hero. ?>
+		<div class="absolute inset-0 -z-10 bg-gradient-to-r from-wood/95 via-signal/90 to-signal/75" aria-hidden="true"></div>
 		<div class="mx-auto max-w-3xl px-5 pb-24 pt-14 text-center md:pb-32 md:pt-20">
-			<h1 class="font-display text-4xl font-bold leading-tight md:text-5xl"><?php echo esc_html( $titel ); ?></h1>
+			<h1 class="font-display text-4xl font-black leading-tight md:text-5xl"><?php echo esc_html( $titel ); ?></h1>
 			<?php if ( $untertitel ) : ?><p class="mt-4 text-lg font-light text-white/90 md:text-xl"><?php echo esc_html( $untertitel ); ?></p><?php endif; ?>
 			<?php if ( $text ) : ?><p class="mx-auto mt-4 max-w-2xl font-light leading-relaxed text-white/85"><?php echo esc_html( $text ); ?></p><?php endif; ?>
 			<?php if ( $buttons ) : ?>
@@ -79,7 +80,7 @@ function elfzwo_render_bild_text( $args ) {
 		<div class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
 			<div class="<?php echo $bild_links ? 'lg:order-2' : ''; ?>">
 				<?php if ( ! empty( $args['kicker'] ) ) : ?><p class="elfzwo-kicker"><?php echo esc_html( $args['kicker'] ); ?></p><?php endif; ?>
-				<?php if ( ! empty( $args['titel'] ) ) : ?><h2 class="mt-2 font-display text-3xl font-bold leading-tight text-signal md:text-5xl"><?php echo esc_html( $args['titel'] ); ?></h2><?php endif; ?>
+				<?php if ( ! empty( $args['titel'] ) ) : ?><h2 class="mt-2 font-display text-3xl font-black leading-tight text-signal md:text-5xl"><?php echo esc_html( $args['titel'] ); ?></h2><?php endif; ?>
 				<?php foreach ( array_filter( preg_split( "/\n\s*\n/", (string) ( $args['text'] ?? '' ) ) ) as $absatz ) : ?>
 					<p class="mt-5 font-light leading-relaxed text-foreground/80"><?php echo esc_html( trim( $absatz ) ); ?></p>
 				<?php endforeach; ?>

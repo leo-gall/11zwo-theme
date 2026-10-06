@@ -42,7 +42,7 @@ $kategorien = get_terms( array( 'taxonomy' => 'termin_kategorie', 'hide_empty' =
 							$ts    = $datum ? strtotime( $datum ) : false;
 							$image = has_post_thumbnail( $tid ) ? get_the_post_thumbnail_url( $tid, 'large' ) : '';
 							?>
-							<article class="overflow-hidden border border-border bg-card transition-colors hover:border-signal">
+							<article class="overflow-hidden border border-border bg-card">
 								<div class="grid gap-4 p-6 md:grid-cols-[1fr_300px] md:gap-6">
 									<div>
 										<h3 class="font-display text-2xl leading-tight"><?php echo esc_html( $termin->post_title ); ?></h3>

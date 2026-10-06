@@ -1,41 +1,26 @@
 <?php
 /**
- * Einzelansicht eines Aktuelles-Beitrags (natives WP-Post).
+ * Einzelansicht eines Vereinsbeitrags: Datum, Titel, Foto, Text. Sonst nichts.
  */
 
 get_header();
 
 while ( have_posts() ) :
 	the_post();
-	$post_id       = get_the_ID();
-	$kategorie_line = elfzwo_post_category_line( $post_id );
 	?>
 
-	<main>
-		<?php
-		echo elfzwo_render_jumbotron( // phpcs:ignore -- bereits escaped
-			array(
-				'titel'      => get_the_title(),
-				'untertitel' => implode( ' · ', array_filter( array( $kategorie_line, get_the_date( 'j. F Y' ) ) ) ),
-				'bild'       => has_post_thumbnail() ? get_the_post_thumbnail_url( null, 'full' ) : '',
-			)
-		);
-		?>
-		<section class="mx-auto max-w-3xl px-5 pt-6 pb-4 md:px-8">
-			<a href="<?php echo esc_url( home_url( '/einsaetze/' ) ); ?>" class="inline-flex items-center gap-2 text-sm font-semibold text-smoke hover:text-foreground">
-				<?php echo elfzwo_icon( 'arrow-left', 'h-4 w-4' ); ?> Zurück zu Einsätze &amp; Aktuelles
-			</a>
-		</section>
+	<main class="mx-auto max-w-3xl px-5 py-12 md:px-8 md:py-16">
+		<a href="<?php echo esc_url( home_url( '/verein/#aktuelles' ) ); ?>" class="text-sm text-smoke underline underline-offset-4 hover:text-foreground">Alle Beiträge</a>
 
-		<article class="mx-auto max-w-3xl px-5 pb-20 md:px-8">
+		<article class="mt-10">
+			<p class="text-smoke"><?php echo esc_html( get_the_date( 'd.m.Y' ) ); ?></p>
+			<h1 class="mt-2 border-b-2 border-foreground pb-4 text-4xl font-bold leading-tight md:text-5xl"><?php the_title(); ?></h1>
 
 			<?php if ( has_post_thumbnail() ) : ?>
-				<div class="relative mt-8 overflow-hidden border border-border">
-					<?php the_post_thumbnail( 'large', array( 'class' => 'h-[360px] w-full object-cover md:h-[460px]' ) ); ?>
-				</div>
+				<?php the_post_thumbnail( 'large', array( 'class' => 'mt-8 w-full' ) ); ?>
 			<?php endif; ?>
 
-			<div class="prose prose-neutral mt-10 max-w-none text-lg leading-relaxed">
+			<div class="prose mt-8 max-w-none text-lg">
 				<?php the_content(); ?>
 			</div>
 		</article>

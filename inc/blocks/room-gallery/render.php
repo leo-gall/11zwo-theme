@@ -17,9 +17,9 @@ $tiles  = $attributes['tiles'] ?? array();
 			$image_id   = (int) ( $tile['imageId'] ?? 0 );
 			$image_url  = $image_id ? wp_get_attachment_image_url( $image_id, 'large' ) : ( $tile['imageUrl'] ?? '' );
 			?>
-			<div class="group relative overflow-hidden bg-ink <?php echo $featured ? 'col-span-2 aspect-[21/9]' : 'aspect-[4/5]'; ?>">
+			<div class="relative overflow-hidden bg-ink <?php echo $featured ? 'col-span-2 aspect-[21/9]' : 'aspect-[4/5]'; ?>">
 				<?php if ( $image_url ) : ?>
-					<img src="<?php echo esc_url( $image_url ); ?>" loading="lazy" alt="<?php echo esc_attr( $tile_title ); ?>" class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+					<img src="<?php echo esc_url( $image_url ); ?>" loading="lazy" alt="<?php echo esc_attr( $tile_title ); ?>" class="absolute inset-0 h-full w-full object-cover">
 				<?php endif; ?>
 				<div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent"></div>
 				<div class="relative flex h-full flex-col justify-end p-5">

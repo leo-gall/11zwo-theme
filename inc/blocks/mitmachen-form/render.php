@@ -34,7 +34,7 @@ $status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET[
 	<?php if ( ! elfzwo_kopf_uebernommen( 'elfzwo/mitmachen-form' ) ) : ?>
 	<div class="text-center">
 		<?php if ( $kicker ) : ?><p class="elfzwo-kicker"><?php echo esc_html( $kicker ); ?></p><?php endif; ?>
-		<h1 class="mt-1 text-4xl font-bold leading-tight tracking-tight md:text-5xl">
+		<h1 class="mt-1 text-4xl font-black leading-tight tracking-tight md:text-5xl">
 			<?php echo esc_html( $title ); ?>
 			<?php if ( $title_hand ) : ?><span class="text-signal"><?php echo esc_html( $title_hand ); ?></span><?php endif; ?>
 		</h1>
@@ -44,7 +44,7 @@ $status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET[
 
 	<?php if ( $steps ) : ?>
 		<div class="mt-8 md:mt-10">
-			<h2 class="text-center text-sm font-semibold text-smoke">So geht's weiter</h2>
+			<h2 class="text-center text-sm font-black text-smoke">So geht's weiter</h2>
 			<ol class="mt-4 grid gap-3 <?php echo esc_attr( array( 1 => 'sm:grid-cols-1', 2 => 'sm:grid-cols-2', 3 => 'sm:grid-cols-3' )[ min( count( $steps ), 3 ) ] ); ?>">
 				<?php foreach ( $steps as $i => $step ) : ?>
 					<li class="flex gap-3 border border-border bg-card p-4">

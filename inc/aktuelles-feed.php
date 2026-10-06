@@ -10,38 +10,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/** Neuester Beitrag — wird an anderer Stelle als Aufmacher gezeigt, daher aus dem Feed ausgeschlossen. */
-function elfzwo_aktuelles_feed_hero_post() {
-	$posts = get_posts( array( 'post_type' => 'post', 'posts_per_page' => 1, 'orderby' => 'date', 'order' => 'DESC' ) );
-	return $posts ? $posts[0] : null;
-}
-
 function elfzwo_aktuelles_feed_query( $page ) {
-	$hero_post = elfzwo_aktuelles_feed_hero_post();
 	return new WP_Query(
 		array(
 			'post_type'      => 'post',
-			'posts_per_page' => 4,
+			'posts_per_page' => 6,
 			'paged'          => $page,
-			'post__not_in'   => $hero_post ? array( $hero_post->ID ) : array(),
 		)
 	);
 }
 
+/** Beiträge als Karten im Stil der übrigen Karten: Foto, Datum, Titel, kurzer Anriss. */
 function elfzwo_render_aktuelles_feed_cards( $query ) {
 	ob_start();
 	while ( $query->have_posts() ) :
 		$query->the_post();
-		$kategorie_line = elfzwo_post_category_line( get_the_ID() );
-		$image          = elfzwo_post_cover_image_url( get_the_ID(), 'large' );
+		$bild = elfzwo_post_cover_image_url( get_the_ID(), 'medium_large' );
 		?>
-		<article class="group flex flex-col">
-			<a href="<?php the_permalink(); ?>">
-				<?php if ( $image ) : ?><img src="<?php echo esc_url( $image ); ?>" alt="<?php the_title_attribute(); ?>" width="1200" height="800" loading="lazy" class="mb-5 aspect-[4/3] w-full object-cover"><?php endif; ?>
-				<?php if ( $kategorie_line ) : ?><p class="text-xs font-semibold text-signal"><?php echo esc_html( $kategorie_line ); ?></p><?php endif; ?>
-				<h3 class="mt-2 font-display text-3xl leading-tight"><?php the_title(); ?></h3>
-				<p class="mt-3 text-smoke"><?php echo esc_html( elfzwo_excerpt( get_the_ID(), 55 ) ); ?></p>
-				<p class="mt-3 text-xs text-smoke"><?php echo esc_html( get_the_date() ); ?></p>
+		<article class="group flex flex-col overflow-hidden border border-border bg-card transition-colors hover:border-signal">
+			<a href="<?php the_permalink(); ?>" class="flex flex-1 flex-col">
+				<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover"><?php endif; ?>
+				<span class="flex flex-1 flex-col p-6">
+					<span class="text-sm text-smoke"><?php echo esc_html( get_the_date( 'j. F Y' ) ); ?></span>
+					<span class="mt-1 font-display text-xl font-bold leading-snug group-hover:text-signal"><?php the_title(); ?></span>
+					<span class="mt-2 text-smoke"><?php echo esc_html( elfzwo_excerpt( get_the_ID(), 18 ) ); ?></span>
+				</span>
 			</a>
 		</article>
 		<?php
