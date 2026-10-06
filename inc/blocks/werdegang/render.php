@@ -26,6 +26,6 @@ $spalten = array( 1 => 'lg:grid-cols-1', 2 => 'lg:grid-cols-2', 3 => 'lg:grid-co
 		<?php endforeach; ?>
 	</ol>
 	<?php if ( ! empty( $attributes['buttonText'] ) ) : ?>
-		<a href="<?php echo esc_url( $attributes['buttonUrl'] ?: home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary mt-8"><?php echo esc_html( $attributes['buttonText'] ); ?></a>
+		<a href="<?php echo esc_url( $attributes['buttonUrl'] ?: elfzwo_mitmachen_url() ); ?>" class="elfzwo-btn elfzwo-btn-primary mt-8"><?php echo esc_html( $attributes['buttonText'] ); ?></a>
 	<?php endif; ?>
 </section>

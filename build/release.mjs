@@ -1,10 +1,11 @@
 // Baut das Upload-Zip: Tailwind kompilieren, das Theme nach dist/11zwo kopieren,
 // PHP ohne Kommentare und Leerraum (php -w), JavaScript und CSS minifiziert,
-// JSON kompakt. Ergebnis: ../11zwo.wp-JJJJ-MM-TT-HHMM.zip (ältere Zips werden gelöscht).
+// JSON kompakt, Skripte und Stylesheets unter neutralen Hash-Namen. Ergebnis: ../11zwo.wp-JJJJ-MM-TT-HHMM.zip (ältere Zips werden gelöscht).
 //
 //   ./zip.sh   (oder: npm run release)
 
 import { execFileSync } from 'node:child_process';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -23,8 +24,8 @@ const AUSLASSEN = new Set( [
 const LIZENZEN = `Verwendete Fremdbestandteile
 ============================
 
-Icons: sketchyicons (MIT), https://github.com/Fantomiald/sketchyicons
-Formen abgeleitet von Lucide (ISC), (c) Lucide Icons and Contributors, https://lucide.dev
+Icons: SVG Repo, Sammlung "Hand Drawn" (CC0 1.0), https://www.svgrepo.com/collection/hand-drawn/
+Menü-Pfeil und RSS-Symbol: Lucide (ISC), (c) Lucide Contributors, https://lucide.dev
 
 Schrift: Titillium Web, SIL Open Font License 1.1, siehe assets/fonts/OFL.txt
 
@@ -80,6 +81,48 @@ for ( const rel of liste ) {
 }
 fs.writeFileSync( path.join( ZIEL, 'LIZENZEN.txt' ), LIZENZEN );
 
+// Skripte und Stylesheets bekommen neutrale Namen aus ihrem Inhalt (z. B.
+// assets/js/3f9a1c2e.js); alle Verweise in PHP, JSON, JS und CSS werden mit
+// umbenannt. Die Editor-Skripte der Blöcke nehmen ihre .asset.php mit.
+const UMBENENNEN = /^(assets\/(js|css)\/[^/]+\.(js|css)|inc\/blocks\/[^/]+\/edit\.js)$/;
+const umbenannt = {};
+for ( const rel of liste.filter( ( r ) => UMBENENNEN.test( r ) ) ) {
+	const datei = path.join( ZIEL, rel );
+	const endung = path.extname( rel );
+	const hash = crypto.createHash( 'sha1' ).update( rel ).update( fs.readFileSync( datei ) ).digest( 'hex' ).slice( 0, 10 );
+	const neu = path.posix.join( path.posix.dirname( rel ), hash + endung );
+	fs.renameSync( datei, path.join( ZIEL, neu ) );
+	umbenannt[ rel ] = neu;
+	const asset = datei.replace( /\.js$/, '.asset.php' );
+	if ( endung === '.js' && fs.existsSync( asset ) ) {
+		const asset_neu = path.join( ZIEL, path.posix.dirname( rel ), hash + '.asset.php' );
+		fs.renameSync( asset, asset_neu );
+		fs.writeFileSync( asset_neu, fs.readFileSync( asset_neu, 'utf8' ).split( 'edit.js' ).join( hash + '.js' ) );
+	}
+}
+const TEXT = /\.(php|json|js|css)$/;
+for ( const rel of dateien( ZIEL ).filter( ( r ) => TEXT.test( r ) ) ) {
+	const datei = path.join( ZIEL, rel );
+	let inhalt = fs.readFileSync( datei, 'utf8' );
+	const vorher = inhalt;
+	for ( const [ alt, neu ] of Object.entries( umbenannt ) ) {
+		if ( alt.startsWith( 'inc/blocks/' ) ) {
+			if ( rel === path.posix.join( path.posix.dirname( alt ), 'block.json' ) ) {
+				inhalt = inhalt.split( 'file:./edit.js' ).join( 'file:./' + path.posix.basename( neu ) );
+			}
+		} else {
+			inhalt = inhalt.split( '/' + alt ).join( '/' + neu );
+		}
+	}
+	if ( inhalt !== vorher ) {
+		fs.writeFileSync( datei, inhalt );
+	}
+}
+const uebrig = dateien( ZIEL ).filter( ( r ) => TEXT.test( r ) ).filter( ( r ) => Object.keys( umbenannt ).some( ( alt ) => ! alt.startsWith( 'inc/blocks/' ) && fs.readFileSync( path.join( ZIEL, r ), 'utf8' ).includes( '/' + alt ) ) );
+if ( uebrig.length ) {
+	throw new Error( 'Alte Dateinamen noch referenziert in: ' + uebrig.join( ', ' ) );
+}
+
 const themes = path.dirname( THEME );
 for ( const alt of fs.readdirSync( themes ).filter( ( n ) => /^11zwo.*\.zip$/.test( n ) ) ) {
 	fs.rmSync( path.join( themes, alt ) );
@@ -89,4 +132,4 @@ const zwei = ( n ) => String( n ).padStart( 2, '0' );
 const name = `11zwo.wp-${ jetzt.getFullYear() }-${ zwei( jetzt.getMonth() + 1 ) }-${ zwei( jetzt.getDate() ) }-${ zwei( jetzt.getHours() ) }${ zwei( jetzt.getMinutes() ) }.zip`;
 execFileSync( 'zip', [ '-qr', path.join( themes, name ), '11zwo' ], { cwd: DIST } );
 
-console.log( `${ liste.length } Dateien kompiliert, Zip: wp-content/themes/${ name }` );
+console.log( `${ liste.length } Dateien kompiliert, ${ Object.keys( umbenannt ).length } umbenannt, Zip: wp-content/themes/${ name }` );

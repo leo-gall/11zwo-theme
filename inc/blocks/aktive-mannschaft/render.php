@@ -27,6 +27,6 @@ echo elfzwo_render_bild_text( // phpcs:ignore -- bereits escaped
 		'bild_seite'  => 'links',
 		// Querformat wie das Foto selbst, damit links und rechts keine Fahrzeuge abgeschnitten werden.
 		'bild_format' => 'aspect-[3/2]',
-		'button'      => array( 'text' => $a['buttonText'] ?? '', 'url' => $a['buttonUrl'] ?? '/mitmachen/' ),
+		'button'      => array( 'text' => $a['buttonText'] ?? '', 'url' => $a['buttonUrl'] ?? elfzwo_mitmachen_url() ),
 	)
 );

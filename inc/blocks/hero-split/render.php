@@ -16,6 +16,6 @@ echo elfzwo_render_jumbotron( // phpcs:ignore -- bereits escaped
 		'untertitel' => $attributes['badge'] ?? '',
 		'text'       => $attributes['description'] ?? '',
 		'bild'       => $image_url,
-		'buttons'    => array( array( 'text' => $attributes['ctaPrimary'] ?? '', 'url' => $attributes['ctaUrl'] ?? '/mitmachen/' ) ),
+		'buttons'    => array( array( 'text' => $attributes['ctaPrimary'] ?? '', 'url' => $attributes['ctaUrl'] ?? elfzwo_mitmachen_url() ) ),
 	)
 );

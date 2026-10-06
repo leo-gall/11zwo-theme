@@ -44,7 +44,7 @@
 		},
 		"aktiveButtonUrl": {
 			"type": "string",
-			"default": "/mitmachen/"
+			"default": "/#mitmachen"
 		},
 		"jugendTitel": {
 			"type": "string",

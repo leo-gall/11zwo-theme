@@ -20,7 +20,7 @@
 		inhalt.querySelectorAll( '[data-filter]' ).forEach( function ( knopf ) {
 			knopf.setAttribute( 'aria-pressed', knopf.dataset.filter === art ? 'true' : 'false' );
 		} );
-		inhalt.querySelectorAll( 'circle[data-art]' ).forEach( function ( teil ) {
+		inhalt.querySelectorAll( 'svg [data-art]' ).forEach( function ( teil ) {
 			teil.style.opacity = ! art || teil.dataset.art === art ? '1' : '.2';
 		} );
 	}

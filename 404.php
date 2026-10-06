@@ -1,17 +1,23 @@
 <?php
 /**
- * Seite nicht gefunden: Kopfbereich wie auf den übrigen Seiten, eine Suche
- * und Wegweiser zu den wichtigsten Bereichen.
+ * Seite nicht gefunden: Kopfbereich wie auf den übrigen Seiten, Suchfeld mit
+ * Vorschlägen und, falls die aufgerufene Adresse etwas hergibt, passende
+ * Seiten zu ihren Wörtern.
  */
 
 get_header();
 
-$elfzwo_wegweiser = array(
-	array( 'icon' => 'flame', 'titel' => 'Startseite', 'text' => 'Zurück zum Anfang', 'url' => home_url( '/' ) ),
-	array( 'icon' => 'siren', 'titel' => 'Einsätze', 'text' => 'Alle Einsätze mit Berichten', 'url' => home_url( '/einsaetze/' ) ),
-	array( 'icon' => 'users', 'titel' => 'Verein', 'text' => 'Aktuelles aus dem Vereinsleben', 'url' => home_url( '/verein/' ) ),
-	array( 'icon' => 'heart-handshake', 'titel' => 'Mach mit!', 'text' => 'Werde Teil der Mannschaft', 'url' => home_url( '/mitmachen/' ) ),
-);
+$elfzwo_woerter = trim( preg_replace( '/[^\p{L}\p{N}]+/u', ' ', urldecode( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ) ) ) );
+$elfzwo_treffer = array();
+if ( mb_strlen( $elfzwo_woerter ) >= 3 ) {
+	$elfzwo_treffer = get_posts(
+		array(
+			's'              => $elfzwo_woerter,
+			'post_type'      => array( 'page', 'post', 'einsatz', 'download', 'fahrzeug' ),
+			'posts_per_page' => 4,
+		)
+	);
+}
 ?>
 
 <main>
@@ -20,36 +26,30 @@ $elfzwo_wegweiser = array(
 		array(
 			'titel'      => 'Seite nicht gefunden',
 			'untertitel' => 'Fehler 404',
-			'text'       => 'Hier gibt es nichts zu löschen: Die Seite wurde verschoben, umbenannt oder hat nie existiert.',
 		)
 	);
 	?>
+	<section class="mx-auto flex min-h-[calc(100vh-26rem)] max-w-3xl flex-col items-center justify-center px-5 py-16 text-center md:px-8">
+		<p class="text-lg text-foreground/80">Diese Seite gibt es nicht oder nicht mehr. Vielleicht findest du sie über die Suche.</p>
+		<div class="mt-8 w-full"><?php echo elfzwo_suchfeld(); // phpcs:ignore -- bereits escaped ?></div>
 
-	<section class="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-16">
-		<div class="max-w-2xl">
-			<h2 class="font-display text-3xl font-black text-signal md:text-4xl">Wonach suchst du?</h2>
-			<p class="mt-3 text-foreground/80">Vielleicht hilft die Suche weiter, oder du nimmst einen der Wege unten.</p>
-			<form role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="mt-6 flex">
-				<label class="sr-only" for="elfzwo-404-suche">Suchbegriff</label>
-				<input id="elfzwo-404-suche" type="search" name="s" placeholder="z. B. Jugendfeuerwehr, Übungsplan …" class="min-w-0 flex-1 border-2 border-r-0 border-border bg-background px-4 py-3 text-base outline-none focus:border-signal">
-				<button type="submit" class="elfzwo-btn elfzwo-btn-primary">Suchen</button>
-			</form>
-		</div>
+		<?php if ( $elfzwo_treffer ) : ?>
+			<div class="mt-10 w-full max-w-xl text-left">
+				<p class="font-semibold">Meintest du vielleicht:</p>
+				<ul class="mt-2 border-t border-border">
+					<?php foreach ( $elfzwo_treffer as $elfzwo_eintrag ) : ?>
+						<li class="border-b border-border">
+							<a href="<?php echo esc_url( get_permalink( $elfzwo_eintrag ) ); ?>" class="flex items-baseline justify-between gap-4 py-3 hover:text-signal">
+								<span class="font-semibold"><?php echo esc_html( get_the_title( $elfzwo_eintrag ) ); ?></span>
+								<span class="shrink-0 text-sm text-smoke"><?php echo esc_html( elfzwo_typ_name( $elfzwo_eintrag->post_type ) ); ?></span>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+		<?php endif; ?>
 
-		<ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-			<?php foreach ( $elfzwo_wegweiser as $elfzwo_weg ) : ?>
-				<li>
-					<a href="<?php echo esc_url( $elfzwo_weg['url'] ); ?>" class="group flex h-full flex-col border border-border bg-card p-6 transition-colors hover:border-signal">
-						<span class="text-signal"><?php echo elfzwo_icon( $elfzwo_weg['icon'], 'h-8 w-8' ); ?></span>
-						<span class="mt-4 font-display text-xl font-bold group-hover:text-signal"><?php echo esc_html( $elfzwo_weg['titel'] ); ?></span>
-						<span class="mt-1 text-smoke"><?php echo esc_html( $elfzwo_weg['text'] ); ?></span>
-						<span class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-signal">Hierher <?php echo elfzwo_icon( 'arrow-right', 'h-4 w-4 transition-transform group-hover:translate-x-1' ); ?></span>
-					</a>
-				</li>
-			<?php endforeach; ?>
-		</ul>
-
-		<p class="mt-12 text-smoke">Im Notfall gilt immer: <a href="tel:112" class="font-bold text-signal hover:underline">Notruf 112</a>.</p>
+		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="mt-10 font-semibold text-signal underline underline-offset-4 hover:text-wood">Zur Startseite</a>
 	</section>
 </main>
 

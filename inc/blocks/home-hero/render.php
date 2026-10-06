@@ -34,7 +34,7 @@ for ( $i = 1; $i <= 3; $i++ ) {
 			<?php if ( $description ) : ?><p class="mt-5 max-w-xl text-lg leading-relaxed text-white/90"><?php echo esc_html( $description ); ?></p><?php endif; ?>
 			<div class="mt-8 flex flex-wrap items-center gap-3">
 				<?php if ( $cta1 ) : ?>
-					<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-light w-full sm:w-auto">
+					<a href="<?php echo esc_url( elfzwo_mitmachen_url() ); ?>" class="elfzwo-btn elfzwo-btn-light w-full sm:w-auto">
 						<?php echo esc_html( $cta1 ); ?>
 					</a>
 				<?php endif; ?>

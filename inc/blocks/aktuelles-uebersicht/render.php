@@ -31,19 +31,9 @@ if ( 'neuigkeiten' === $teil ) :
 			<a href="<?php echo esc_url( home_url( '/verein/#aktuelles' ) ); ?>" class="shrink-0 text-sm font-semibold text-signal hover:underline">Alle Neuigkeiten</a>
 		</div>
 		<div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-			<?php foreach ( array_filter( array_merge( array( $aufmacher ), $beitraege ) ) as $beitrag ) :
-				$bild = elfzwo_post_cover_image_url( $beitrag->ID, 'medium_large' );
-				?>
-				<a href="<?php echo esc_url( get_permalink( $beitrag ) ); ?>" class="group flex flex-col overflow-hidden border border-border bg-card transition-colors hover:border-signal">
-					<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover"><?php endif; ?>
-					<div class="flex flex-1 flex-col p-5">
-						<h3 class="font-display text-lg font-semibold leading-snug group-hover:text-signal"><?php echo esc_html( get_the_title( $beitrag ) ); ?></h3>
-						<p class="mt-2 flex-1 text-sm font-light text-foreground/75"><?php echo esc_html( elfzwo_excerpt( $beitrag->ID, 18 ) ); ?></p>
-						<span class="mt-4 text-sm font-semibold text-signal">Weiterlesen</span>
-					</div>
-					<div class="border-t border-border px-5 py-2.5 text-xs text-smoke"><?php echo esc_html( get_the_date( 'j. F Y', $beitrag ) ); ?></div>
-				</a>
-			<?php endforeach; ?>
+			<?php foreach ( array_filter( array_merge( array( $aufmacher ), $beitraege ) ) as $beitrag ) {
+				echo elfzwo_beitrag_karte( $beitrag ); // phpcs:ignore -- bereits escaped
+			} ?>
 		</div>
 	</section>
 	<?php

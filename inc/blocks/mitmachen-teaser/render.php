@@ -43,7 +43,7 @@ if ( 'jugend' !== $teil ) {
 		'bild'       => $bild( 'aktiveImage', get_template_directory_uri() . '/assets/images/hero-team.jpg' ),
 		'bild2'      => $bild( 'aktiveImage2', get_template_directory_uri() . '/assets/images/hero-hintergrund.jpg' ),
 		'bild_seite' => 'links',
-		'button'     => array( 'text' => $a['aktiveButtonText'] ?? '', 'url' => $a['aktiveButtonUrl'] ?? '/mitmachen/' ),
+		'button'     => array( 'text' => $a['aktiveButtonText'] ?? '', 'url' => $a['aktiveButtonUrl'] ?? elfzwo_mitmachen_url() ),
 	)
 	);
 }

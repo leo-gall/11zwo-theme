@@ -65,23 +65,35 @@ function elfzwo_einsaetze_alle() {
 
 /** Ringdiagramm der Verteilung (Kreisumfang 100, damit Anteile = Strichlängen). */
 function elfzwo_einsaetze_ring( $je_art, $anzahl ) {
-	$arten  = elfzwo_einsatz_arten();
-	$svg    = '<svg viewBox="0 0 42 42" class="h-full w-full -rotate-90" aria-hidden="true"><circle cx="21" cy="21" r="15.915" fill="none" stroke="#ebe6e6" stroke-width="7"/>';
-	$versatz = 0;
-	foreach ( $je_art as $art => $n ) {
-		if ( ! $n ) {
-			continue;
+	// Ring aus einzelnen Kreisbögen mit kleinen weißen Lücken, oben beginnend im Uhrzeigersinn.
+	$arten = elfzwo_einsatz_arten();
+	$r     = 16;
+	$luecke = 1.2;
+	$svg   = '<svg viewBox="0 0 42 42" class="h-full w-full" aria-hidden="true">';
+	$start = 0;
+	$teile = array_filter( $je_art );
+	foreach ( $teile as $art => $n ) {
+		$grad = 360 * $n / $anzahl;
+		if ( 1 === count( $teile ) ) {
+			$svg .= sprintf( '<circle cx="21" cy="21" r="%1$s" fill="none" stroke="%2$s" stroke-width="7" data-art="%3$s"/>', $r, esc_attr( $arten[ $art ]['farbe'] ), esc_attr( $art ) );
+			break;
 		}
-		$anteil = 100 * $n / $anzahl;
-		$svg   .= sprintf(
-			'<circle cx="21" cy="21" r="15.915" fill="none" stroke="%1$s" stroke-width="7" stroke-dasharray="%2$s %3$s" stroke-dashoffset="%4$s" data-art="%5$s" class="transition-opacity"/>',
+		$von  = $start + min( $luecke, $grad / 4 ) / 2;
+		$bis  = $start + $grad - min( $luecke, $grad / 4 ) / 2;
+		$punkt = function ( $winkel ) use ( $r ) {
+			$rad = deg2rad( $winkel - 90 );
+			return round( 21 + $r * cos( $rad ), 3 ) . ' ' . round( 21 + $r * sin( $rad ), 3 );
+		};
+		$svg .= sprintf(
+			'<path d="M%1$s A%2$s %2$s 0 %3$d 1 %4$s" fill="none" stroke="%5$s" stroke-width="7" data-art="%6$s"/>',
+			$punkt( $von ),
+			$r,
+			$bis - $von > 180 ? 1 : 0,
+			$punkt( $bis ),
 			esc_attr( $arten[ $art ]['farbe'] ),
-			esc_attr( round( $anteil, 3 ) ),
-			esc_attr( round( 100 - $anteil, 3 ) ),
-			esc_attr( round( -$versatz, 3 ) ),
 			esc_attr( $art )
 		);
-		$versatz += $anteil;
+		$start += $grad;
 	}
 	return $svg . '</svg>';
 }
@@ -125,14 +137,13 @@ function elfzwo_einsaetze_ansicht( $jahr, $seite_url ) {
 				<span class="absolute inset-0 grid place-items-center text-center leading-tight"><span><span class="block font-display text-4xl font-black"><?php echo esc_html( $anzahl ); ?></span><span class="text-sm text-smoke">Einsätze</span></span></span>
 			</div>
 			<div>
-				<p class="text-sm font-semibold text-smoke">Verteilung nach Einsatzart – zum Filtern anklicken</p>
-				<ul class="mt-3 grid gap-2 sm:grid-cols-2">
+				<ul class="mt-3 grid gap-x-16 gap-y-1 sm:grid-cols-2">
 					<?php foreach ( $arten as $art => $info ) : ?>
 						<li>
 							<button type="button" data-filter="<?php echo esc_attr( $art ); ?>" aria-pressed="false" class="flex w-full items-center gap-3 border border-transparent px-3 py-2 text-left hover:border-border disabled:cursor-default disabled:opacity-40 aria-pressed:border-foreground" <?php disabled( 0 === $je_art[ $art ] ); ?>>
 								<span class="h-4 w-4 shrink-0" style="background:<?php echo esc_attr( $info['farbe'] ); ?>" aria-hidden="true"></span>
-								<span class="flex-1"><?php echo esc_html( $info['label'] ); ?></span>
-								<span class="font-bold"><?php echo esc_html( $je_art[ $art ] ); ?></span>
+								<span class="flex-1 whitespace-nowrap"><?php echo esc_html( $info['label'] ); ?></span>
+								<span class="w-8 text-right font-bold"><?php echo esc_html( $je_art[ $art ] ); ?></span>
 								<span class="w-12 text-right text-sm text-smoke"><?php echo esc_html( round( 100 * $je_art[ $art ] / $anzahl ) ); ?> %</span>
 							</button>
 						</li>

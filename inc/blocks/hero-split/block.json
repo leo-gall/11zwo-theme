@@ -13,7 +13,7 @@
 		"titleLine2": { "type": "string", "default": "" },
 		"description": { "type": "string", "default": "" },
 		"ctaPrimary": { "type": "string", "default": "" },
-		"ctaUrl": { "type": "string", "default": "/mitmachen/" },
+		"ctaUrl": { "type": "string", "default": "/#mitmachen" },
 		"zitat": { "type": "string", "default": "" },
 		"imageId": { "type": "number", "default": 0 },
 		"imageUrl": { "type": "string", "default": "" }

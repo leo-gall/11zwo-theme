@@ -52,7 +52,7 @@
 		},
 		"buttonUrl": {
 			"type": "string",
-			"default": "/mitmachen/"
+			"default": "/#mitmachen"
 		}
 	},
 	"supports": {

@@ -50,7 +50,13 @@ function elfzwo_enqueue_assets() {
 	// Nach theme.css, damit Utility-Klassen die Basis-Styles überschreiben.
 	wp_enqueue_style( 'elfzwo-tailwind', get_template_directory_uri() . '/assets/css/tailwind.css', array( 'elfzwo-theme' ), filemtime( get_template_directory() . '/assets/css/tailwind.css' ) );
 
+	wp_enqueue_script( 'elfzwo-bilder', get_template_directory_uri() . '/assets/js/bilder.js', array(), filemtime( get_template_directory() . '/assets/js/bilder.js' ), true );
 	wp_enqueue_script( 'elfzwo-nav', get_template_directory_uri() . '/assets/js/nav.js', array(), filemtime( get_template_directory() . '/assets/js/nav.js' ), true );
+
+	if ( is_404() || is_search() ) {
+		wp_enqueue_script( 'elfzwo-suche', get_template_directory_uri() . '/assets/js/suche.js', array(), filemtime( get_template_directory() . '/assets/js/suche.js' ), true );
+		wp_localize_script( 'elfzwo-suche', 'elfzwoSuche', array( 'restUrl' => rest_url( 'elfzwo/v1/suche' ) ) );
+	}
 
 	if ( has_block( 'elfzwo/aktuelle-einsaetze' ) ) {
 		wp_enqueue_script( 'elfzwo-einsaetze', get_template_directory_uri() . '/assets/js/einsaetze.js', array(), filemtime( get_template_directory() . '/assets/js/einsaetze.js' ), true );
@@ -82,6 +88,7 @@ add_action( 'wp_enqueue_scripts', 'elfzwo_enqueue_assets' );
 
 require get_template_directory() . '/inc/icons.php';
 require get_template_directory() . '/inc/helpers.php';
+require get_template_directory() . '/inc/lizenzen-abschnitt.php';
 require get_template_directory() . '/inc/komponenten.php';
 require get_template_directory() . '/inc/person-wappen.php';
 require get_template_directory() . '/inc/post-types.php';

@@ -57,7 +57,7 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 
 		<div class="flex items-center gap-2">
 			<?php elfzwo_render_nav_group( $elfzwo_nav_items, 'mr-3' ); ?>
-			<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary elfzwo-btn-sm hidden sm:inline-flex">
+			<a href="<?php echo esc_url( elfzwo_mitmachen_url() ); ?>" class="elfzwo-btn elfzwo-btn-primary elfzwo-btn-sm hidden sm:inline-flex">
 				Mach mit!
 			</a>
 			<button id="mobile-toggle" type="button" class="relative grid h-11 w-11 place-items-center border border-border bg-card transition-colors hover:bg-haze lg:hidden" aria-label="Menü" aria-expanded="false">
@@ -87,7 +87,7 @@ $elfzwo_nav_items = elfzwo_get_menu_tree( 'primary' );
 				endif;
 			endforeach;
 			?>
-			<a href="<?php echo esc_url( home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary mt-2">Mach mit!</a>
+			<a href="<?php echo esc_url( elfzwo_mitmachen_url() ); ?>" class="elfzwo-btn elfzwo-btn-primary mt-2">Mach mit!</a>
 		</div>
 	</div>
 </header>

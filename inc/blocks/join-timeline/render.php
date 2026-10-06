@@ -26,7 +26,7 @@ foreach ( $steps as $step ) {
 			<h2 class="mt-1 font-display text-4xl md:text-5xl"><?php echo esc_html( $titel ); ?></h2>
 			<?php if ( $intro ) : ?><p class="mt-4 max-w-md text-smoke"><?php echo esc_html( $intro ); ?></p><?php endif; ?>
 			<?php if ( $aufruf ) : ?>
-				<a href="<?php echo esc_url( $aufruf['buttonUrl'] ?: home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary mt-6"><?php echo esc_html( $aufruf['buttonText'] ); ?></a>
+				<a href="<?php echo esc_url( $aufruf['buttonUrl'] ?: elfzwo_mitmachen_url() ); ?>" class="elfzwo-btn elfzwo-btn-primary mt-6"><?php echo esc_html( $aufruf['buttonText'] ); ?></a>
 				<?php $aufruf = null; ?>
 			<?php endif; ?>
 		</div>
@@ -42,7 +42,7 @@ foreach ( $steps as $step ) {
 	</ol>
 	<?php if ( $aufruf ) : ?>
 		<div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 sm:pl-10">
-			<a href="<?php echo esc_url( $aufruf['buttonUrl'] ?: home_url( '/mitmachen/' ) ); ?>" class="elfzwo-btn elfzwo-btn-primary"><?php echo esc_html( $aufruf['buttonText'] ); ?></a>
+			<a href="<?php echo esc_url( $aufruf['buttonUrl'] ?: elfzwo_mitmachen_url() ); ?>" class="elfzwo-btn elfzwo-btn-primary"><?php echo esc_html( $aufruf['buttonText'] ); ?></a>
 			<?php if ( ! empty( $aufruf['title'] ) ) : ?><span class="font-semibold"><?php echo esc_html( $aufruf['title'] ); ?></span><?php endif; ?>
 		</div>
 	<?php endif; ?>

@@ -16,7 +16,7 @@ $fahrzeuge = new WP_Query( array( 'post_type' => 'fahrzeug', 'posts_per_page' =>
 			array( 'key' => 'besatzung', 'icon' => 'users', 'label' => 'Besatzung' ),
 			array( 'key' => 'hersteller_aufbau', 'icon' => 'truck', 'label' => 'Hersteller / Aufbau' ),
 			array( 'key' => 'baujahr', 'icon' => 'calendar-days', 'label' => 'Baujahr' ),
-			array( 'key' => 'besonderheiten', 'icon' => 'list-checks', 'label' => 'Besonderheiten' ),
+			array( 'key' => 'besonderheiten', 'icon' => 'clipboard-check', 'label' => 'Besonderheiten' ),
 		);
 		$specs = array();
 		foreach ( $spec_fields as $sf ) {

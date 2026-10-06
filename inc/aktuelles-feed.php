@@ -20,27 +20,35 @@ function elfzwo_aktuelles_feed_query( $page ) {
 	);
 }
 
-/** Beiträge als Karten im Stil der übrigen Karten: Foto, Datum, Titel, kurzer Anriss. */
-function elfzwo_render_aktuelles_feed_cards( $query ) {
+/**
+ * Eine Beitragskarte (Startseite "Neuigkeiten" und Verein "Aktuelles"): Foto,
+ * Datum, Titel, kurzer Anriss und "Weiterlesen".
+ */
+function elfzwo_beitrag_karte( $post ) {
+	$bild = elfzwo_post_cover_image_url( $post->ID, 'medium_large' );
 	ob_start();
-	while ( $query->have_posts() ) :
-		$query->the_post();
-		$bild = elfzwo_post_cover_image_url( get_the_ID(), 'medium_large' );
-		?>
-		<article class="group flex flex-col overflow-hidden border border-border bg-card transition-colors hover:border-signal">
-			<a href="<?php the_permalink(); ?>" class="flex flex-1 flex-col">
-				<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover"><?php endif; ?>
-				<span class="flex flex-1 flex-col p-6">
-					<span class="text-sm text-smoke"><?php echo esc_html( get_the_date( 'j. F Y' ) ); ?></span>
-					<span class="mt-1 font-display text-xl font-bold leading-snug group-hover:text-signal"><?php the_title(); ?></span>
-					<span class="mt-2 text-smoke"><?php echo esc_html( elfzwo_excerpt( get_the_ID(), 18 ) ); ?></span>
-				</span>
-			</a>
-		</article>
-		<?php
-	endwhile;
-	wp_reset_postdata();
+	?>
+	<article class="group flex flex-col overflow-hidden border border-border bg-card transition-colors hover:border-signal">
+		<a href="<?php echo esc_url( get_permalink( $post ) ); ?>" class="flex flex-1 flex-col">
+			<?php if ( $bild ) : ?><img src="<?php echo esc_url( $bild ); ?>" alt="" loading="lazy" class="aspect-[16/10] w-full object-cover"><?php endif; ?>
+			<span class="flex flex-1 flex-col p-5">
+				<span class="text-sm text-smoke"><?php echo esc_html( get_the_date( 'j. F Y', $post ) ); ?></span>
+				<span class="mt-1 font-display text-lg font-bold leading-snug group-hover:text-signal"><?php echo esc_html( get_the_title( $post ) ); ?></span>
+				<span class="mt-2 flex-1 text-smoke"><?php echo esc_html( elfzwo_excerpt( $post->ID, 18 ) ); ?></span>
+				<span class="mt-4 text-sm font-semibold text-signal">Weiterlesen</span>
+			</span>
+		</a>
+	</article>
+	<?php
 	return ob_get_clean();
+}
+
+function elfzwo_render_aktuelles_feed_cards( $query ) {
+	$html = '';
+	foreach ( $query->posts as $post ) {
+		$html .= elfzwo_beitrag_karte( $post );
+	}
+	return $html;
 }
 
 /**

@@ -297,8 +297,8 @@ h1, h2, h1.font-display, h2.font-display {
   height: 1.25rem;
   flex-shrink: 0;
   background-color: var(--signal);
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19.88 5.96Q15.18 12.18 9.07 16.96Q6.25 14.75 4.01 12.04'/%3E%3C/svg%3E") no-repeat center / 100%;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19.88 5.96Q15.18 12.18 9.07 16.96Q6.25 14.75 4.01 12.04'/%3E%3C/svg%3E") no-repeat center / 100%;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 469.933 469.933'%3E%3Cpath fill='white' d='M429.2,44.6c-3.2-5.7-8.4-8.9-14.6-8.9c-3.4,0-6.9,1.0-9.9,2.8 c-2.0,0.9-3.7,2.1-5.3,3.7c-92.6,92.5-171.4,169.4-254.2,242.7l-43.4-52.8 c-4.2-5.1-8.9-6.2-12.1-6.2c-3.8,0-7.7,1.5-10.7,4.1l-0.7,0.3 c-23.5,15.1-45.6,27.8-67.3,38.8c-5.7,2.9-9.1,7.9-9.3,13.9c-2.6,6.5-1.1,13.5,4.2,18.6 c19.4,18.6,37.5,39.2,55.0,59.1c19.1,21.7,38.9,44.2,60.6,64.3c0.7,0.7,1.6,1.3,2.5,2.0 c3.2,4.3,7.7,6.7,12.4,6.7c3.3,0,6.6-1.1,9.7-3.5c60.7-45.8,114.8-97.5,155.2-137.4 c11.8-11.7,23.7-23.4,35.6-35.1c41.7-41.0,84.9-83.4,125.7-126.5c2.2-2.3,3.7-5.0,4.5-8.0 c3.5-5.5,3.4-12.0-0.4-17.9C452.7,84.2,440.4,64.3,429.2,44.6z M429.1,114.1 c-30.0,31.3-61.6,62.4-92.1,92.5c-16.1,15.8-32.1,31.7-48.1,47.7 c-45.5,45.5-95.3,93.6-150.7,136.7c-18.1-17.7-35.1-37.0-51.6-55.7c-12.8-14.5-26.1-29.6-39.9-43.8 c12.4-6.7,25.0-14.1,38.4-22.5l45.1,54.7c4.2,5.1,8.9,6.2,12.1,6.2c4.1,0,8.2-1.7,11.6-4.8 c1.2-0.6,2.2-1.4,3.2-2.3c88.6-77.6,173.7-160.9,252.5-239.5C415.4,92.7,421.8,102.8,429.1,114.1 z'/%3E%3C/svg%3E") no-repeat center / 100%;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 469.933 469.933'%3E%3Cpath fill='white' d='M429.2,44.6c-3.2-5.7-8.4-8.9-14.6-8.9c-3.4,0-6.9,1.0-9.9,2.8 c-2.0,0.9-3.7,2.1-5.3,3.7c-92.6,92.5-171.4,169.4-254.2,242.7l-43.4-52.8 c-4.2-5.1-8.9-6.2-12.1-6.2c-3.8,0-7.7,1.5-10.7,4.1l-0.7,0.3 c-23.5,15.1-45.6,27.8-67.3,38.8c-5.7,2.9-9.1,7.9-9.3,13.9c-2.6,6.5-1.1,13.5,4.2,18.6 c19.4,18.6,37.5,39.2,55.0,59.1c19.1,21.7,38.9,44.2,60.6,64.3c0.7,0.7,1.6,1.3,2.5,2.0 c3.2,4.3,7.7,6.7,12.4,6.7c3.3,0,6.6-1.1,9.7-3.5c60.7-45.8,114.8-97.5,155.2-137.4 c11.8-11.7,23.7-23.4,35.6-35.1c41.7-41.0,84.9-83.4,125.7-126.5c2.2-2.3,3.7-5.0,4.5-8.0 c3.5-5.5,3.4-12.0-0.4-17.9C452.7,84.2,440.4,64.3,429.2,44.6z M429.1,114.1 c-30.0,31.3-61.6,62.4-92.1,92.5c-16.1,15.8-32.1,31.7-48.1,47.7 c-45.5,45.5-95.3,93.6-150.7,136.7c-18.1-17.7-35.1-37.0-51.6-55.7c-12.8-14.5-26.1-29.6-39.9-43.8 c12.4-6.7,25.0-14.1,38.4-22.5l45.1,54.7c4.2,5.1,8.9,6.2,12.1,6.2c4.1,0,8.2-1.7,11.6-4.8 c1.2-0.6,2.2-1.4,3.2-2.3c88.6-77.6,173.7-160.9,252.5-239.5C415.4,92.7,421.8,102.8,429.1,114.1 z'/%3E%3C/svg%3E") no-repeat center / 100%;
 }
 
 /* Cream-Box (z. B. "Für Eltern"-Kurzinfo auf der Jugendfeuerwehr-Seite) */
@@ -504,4 +504,146 @@ body.admin-bar header.sticky {
   width: 1px;
   height: 1px;
   overflow: hidden;
+}
+
+/* Eingabefelder im Mach-mit-Formular (auf rotem Grund): weiße Felder mit
+   ohne Rand, auch nicht beim Fokus; eigener Pfeil für die Auswahlliste. */
+.elfzwo-feld {
+  display: block;
+  width: 100%;
+  min-height: 3.25rem;
+  border: 0;
+  background-color: #fff;
+  padding: 0.75rem 1rem;
+  color: var(--foreground);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  appearance: none;
+}
+
+.elfzwo-feld::placeholder {
+  color: #9a9393;
+}
+
+.elfzwo-feld:focus {
+  outline: none;
+}
+
+select.elfzwo-feld {
+  padding-right: 2.75rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c4161c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-position: right 0.875rem center;
+  background-repeat: no-repeat;
+  background-size: 1.1rem;
+  cursor: pointer;
+}
+
+textarea.elfzwo-feld {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+/* Bilder öffnen (assets/js/bilder.js) */
+.elfzwo-zoombar {
+  cursor: zoom-in;
+}
+
+.elfzwo-lightbox {
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding: 3.5rem 4.5rem;
+  background: rgb(20 17 17 / 0.94);
+  color: #fff;
+}
+
+.elfzwo-lightbox[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.elfzwo-lightbox::backdrop {
+  background: transparent;
+}
+
+.elfzwo-lightbox img {
+  max-width: 100%;
+  max-height: calc(100vh - 8rem);
+  object-fit: contain;
+}
+
+.elfzwo-lightbox-text {
+  margin-top: 0.75rem;
+  max-width: 48rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: rgb(255 255 255 / 0.85);
+}
+
+.elfzwo-lightbox-zaehler {
+  position: absolute;
+  top: 1.1rem;
+  left: 1.5rem;
+  font-size: 0.9rem;
+  color: rgb(255 255 255 / 0.75);
+}
+
+.elfzwo-lightbox button {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: #fff;
+  background: none;
+  cursor: pointer;
+}
+
+.elfzwo-lightbox button:hover {
+  color: var(--signal);
+}
+
+.elfzwo-lightbox-zu {
+  top: 0.5rem;
+  right: 0.75rem;
+}
+
+.elfzwo-lightbox-vor,
+.elfzwo-lightbox-nach {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3.5rem !important;
+}
+
+.elfzwo-lightbox-vor {
+  left: 0.75rem;
+}
+
+.elfzwo-lightbox-nach {
+  right: 0.75rem;
+}
+
+.elfzwo-lightbox.is-einzeln .elfzwo-lightbox-vor,
+.elfzwo-lightbox.is-einzeln .elfzwo-lightbox-nach {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .elfzwo-lightbox {
+    padding: 3.5rem 0.75rem;
+  }
+
+  .elfzwo-lightbox-vor,
+  .elfzwo-lightbox-nach {
+    top: auto;
+    bottom: 0.5rem;
+    transform: none;
+  }
 }
