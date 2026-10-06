@@ -21,11 +21,11 @@ for ( $i = 1; $i <= 3; $i++ ) {
 	$images[] = $url ?: $fallback_images[ $i - 1 ];
 }
 ?>
-<?php // Aufbau nach dem Vorbild der Aicher Ambulanz: Fahrzeugfoto als Hintergrund unter rotem Schleier, Mannschaftsfoto frei geschwungen, unten eine Welle. ?>
+<?php // Aufbau nach dem Vorbild der Aicher Ambulanz: Fahrzeugfoto als Hintergrund unter rotem Schleier, Mannschaftsfoto rechts. ?>
 <section class="relative isolate overflow-hidden bg-signal text-white">
 	<img src="<?php echo esc_url( $images[1] ); ?>" alt="" class="absolute inset-0 -z-20 h-full w-full object-cover">
 	<div class="absolute inset-0 -z-10 bg-gradient-to-r from-wood/95 via-signal/90 to-signal/75" aria-hidden="true"></div>
-	<div class="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-28 pt-14 md:grid-cols-[1fr_1.5fr] md:px-8 md:pb-36 md:pt-20">
+	<div class="mx-auto grid max-w-7xl items-center gap-10 px-5 py-14 md:grid-cols-[1fr_1.5fr] md:px-8 md:py-20">
 		<div>
 			<?php if ( $subtitle ) : ?><p class="text-lg text-white/90"><?php echo esc_html( $subtitle ); ?></p><?php endif; ?>
 			<h1 class="mt-2 font-display text-4xl font-black leading-tight md:text-5xl lg:text-6xl">
@@ -52,5 +52,4 @@ for ( $i = 1; $i <= 3; $i++ ) {
 		</div>
 		<img src="<?php echo esc_url( $images[0] ); ?>" alt="Mannschaft der Freiwilligen Feuerwehr Greifenberg" class="elfzwo-hero-blob w-full max-w-none object-cover object-[center_85%] xl:w-[calc(100%+5rem)]">
 	</div>
-	<svg class="absolute inset-x-0 bottom-0 h-16 w-full text-background md:h-24" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 70 C 360 120, 900 110, 1440 30 L1440 100 L0 100 Z"/></svg>
 </section>

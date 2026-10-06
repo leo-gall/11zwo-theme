@@ -37,7 +37,7 @@ function elfzwo_render_jumbotron( $args ) {
 		<img src="<?php echo esc_url( $bild ); ?>" alt="" class="absolute inset-0 -z-20 h-full w-full object-cover">
 		<?php // Gleicher Schleier wie im Startseiten-Hero. ?>
 		<div class="absolute inset-0 -z-10 bg-gradient-to-r from-wood/95 via-signal/90 to-signal/75" aria-hidden="true"></div>
-		<div class="mx-auto max-w-3xl px-5 pb-24 pt-14 text-center md:pb-32 md:pt-20">
+		<div class="mx-auto max-w-3xl px-5 py-14 text-center md:py-20">
 			<h1 class="font-display text-4xl font-black leading-tight md:text-5xl"><?php echo esc_html( $titel ); ?></h1>
 			<?php if ( $untertitel ) : ?><p class="mt-4 text-lg font-light text-white/90 md:text-xl"><?php echo esc_html( $untertitel ); ?></p><?php endif; ?>
 			<?php if ( $text ) : ?><p class="mx-auto mt-4 max-w-2xl font-light leading-relaxed text-white/85"><?php echo esc_html( $text ); ?></p><?php endif; ?>
@@ -49,7 +49,6 @@ function elfzwo_render_jumbotron( $args ) {
 				</div>
 			<?php endif; ?>
 		</div>
-		<svg class="absolute inset-x-0 bottom-0 h-12 w-full text-background md:h-20" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 80 C 380 115, 980 90, 1440 20 L1440 100 L0 100 Z"/></svg>
 	</section>
 	<?php
 	return ob_get_clean();
