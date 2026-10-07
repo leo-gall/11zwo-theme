@@ -62,20 +62,6 @@ function elfzwo_kommentar_posten_sperren() {
 }
 add_action( 'pre_comment_on_post', 'elfzwo_kommentar_posten_sperren' );
 
-/** Bestehende Beiträge und die Standard-Einstellungen einmalig auf "geschlossen" setzen. */
-function elfzwo_migrate_kommentare_schliessen() {
-	if ( get_option( 'elfzwo_kommentare_geschlossen' ) ) {
-		return;
-	}
-	update_option( 'elfzwo_kommentare_geschlossen', 1 );
-	global $wpdb;
-	$wpdb->query( "UPDATE {$wpdb->posts} SET comment_status = 'closed', ping_status = 'closed' WHERE comment_status <> 'closed' OR ping_status <> 'closed'" );
-	update_option( 'default_comment_status', 'closed' );
-	update_option( 'default_ping_status', 'closed' );
-	update_option( 'default_pingback_flag', 0 );
-}
-add_action( 'init', 'elfzwo_migrate_kommentare_schliessen', 30 );
-
 function elfzwo_theme_support_feed_links() {
 	add_theme_support( 'automatic-feed-links' );
 }

@@ -377,14 +377,6 @@ body.admin-bar header.sticky {
 
 /* Honeypot im Mach-mit-Formular: für Menschen unsichtbar, für Bots ein ganz
    normales Feld (deshalb nicht display:none). */
-.elfzwo-hp {
-  position: absolute;
-  left: -10000px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
 /* Eingabefelder im Mach-mit-Formular (auf rotem Grund): weiße Felder mit
    ohne Rand, auch nicht beim Fokus; eigener Pfeil für die Auswahlliste. */
 .elfzwo-feld {

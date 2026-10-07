@@ -43,6 +43,8 @@ function elfzwo_disable_emojis() {
 	add_filter( 'emoji_svg_url', '__return_false' );
 }
 add_action( 'init', 'elfzwo_disable_emojis' );
+// Im Backend hängt WordPress das Emoji-Skript erst nach init ein (wp-admin/includes/admin-filters.php).
+add_action( 'admin_init', 'elfzwo_disable_emojis' );
 
 function elfzwo_enqueue_assets() {
 	wp_enqueue_style( 'elfzwo-style', get_stylesheet_uri(), array(), filemtime( get_stylesheet_directory() . '/style.css' ) );
@@ -96,6 +98,7 @@ require get_template_directory() . '/inc/analytics.php';
 require get_template_directory() . '/inc/einsatzliste.php';
 require get_template_directory() . '/inc/aktuelles-feed.php';
 require get_template_directory() . '/inc/nav-walker.php';
+require get_template_directory() . '/inc/mail-protokoll.php';
 require get_template_directory() . '/inc/mitmachen-handler.php';
 require get_template_directory() . '/inc/blocks.php';
 require get_template_directory() . '/inc/comments.php';

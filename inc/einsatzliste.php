@@ -137,14 +137,14 @@ function elfzwo_einsaetze_ansicht( $jahr, $seite_url ) {
 				<span class="absolute inset-0 grid place-items-center text-center leading-tight"><span><span class="block font-display text-4xl font-black"><?php echo esc_html( $anzahl ); ?></span><span class="text-sm text-smoke">Einsätze</span></span></span>
 			</div>
 			<div>
-				<ul class="mt-3 grid gap-x-16 gap-y-1 sm:grid-cols-2">
+				<ul class="mt-3 grid gap-x-10 gap-y-1 xl:grid-cols-2">
 					<?php foreach ( $arten as $art => $info ) : ?>
 						<li>
-							<button type="button" data-filter="<?php echo esc_attr( $art ); ?>" aria-pressed="false" class="flex w-full items-center gap-3 border border-transparent px-3 py-2 text-left hover:border-border disabled:cursor-default disabled:opacity-40 aria-pressed:border-foreground" <?php disabled( 0 === $je_art[ $art ] ); ?>>
+							<button type="button" data-filter="<?php echo esc_attr( $art ); ?>" aria-pressed="false" class="flex w-full items-center gap-3 border border-transparent px-2 py-2 sm:px-3 text-left hover:border-border disabled:cursor-default disabled:opacity-40 aria-pressed:border-foreground" <?php disabled( 0 === $je_art[ $art ] ); ?>>
 								<span class="h-4 w-4 shrink-0" style="background:<?php echo esc_attr( $info['farbe'] ); ?>" aria-hidden="true"></span>
-								<span class="flex-1 whitespace-nowrap"><?php echo esc_html( $info['label'] ); ?></span>
-								<span class="w-8 text-right font-bold"><?php echo esc_html( $je_art[ $art ] ); ?></span>
-								<span class="w-12 text-right text-sm text-smoke"><?php echo esc_html( round( 100 * $je_art[ $art ] / $anzahl ) ); ?> %</span>
+								<span class="min-w-0 flex-1 xl:whitespace-nowrap"><?php echo esc_html( $info['label'] ); ?></span>
+								<span class="w-6 shrink-0 text-right font-bold sm:w-8"><?php echo esc_html( $je_art[ $art ] ); ?></span>
+								<span class="w-10 shrink-0 text-right text-sm text-smoke sm:w-12"><?php echo esc_html( round( 100 * $je_art[ $art ] / $anzahl ) ); ?> %</span>
 							</button>
 						</li>
 					<?php endforeach; ?>
@@ -153,8 +153,8 @@ function elfzwo_einsaetze_ansicht( $jahr, $seite_url ) {
 		</div>
 
 		<div class="mt-10 overflow-x-auto" data-einsaetze-tabelle>
-			<table class="w-full min-w-[44rem] border-collapse text-left">
-				<thead>
+			<table class="w-full border-collapse text-left md:min-w-[44rem]">
+				<thead class="hidden md:table-header-group">
 					<tr class="border-b-2 border-foreground text-sm">
 						<th scope="col" class="py-3 pr-4 font-bold">Nr.</th>
 						<th scope="col" class="py-3 pr-4 font-bold">Datum</th>
@@ -168,12 +168,12 @@ function elfzwo_einsaetze_ansicht( $jahr, $seite_url ) {
 					<?php foreach ( $im_jahr as $e ) : ?>
 						<?php $id = $e['post']->ID; ?>
 						<tr id="einsatz-<?php echo esc_attr( $id ); ?>" class="cursor-pointer scroll-mt-32 border-b border-border hover:bg-ash" data-art="<?php echo esc_attr( $e['art'] ); ?>" data-zeile data-einsatz-nummer="<?php echo esc_attr( $e['nummer'] ); ?>" data-einsatz-titel="<?php echo esc_attr( wp_specialchars_decode( $e['post']->post_title, ENT_QUOTES ) ); ?>" data-einsatz-datum="<?php echo esc_attr( date_i18n( 'd.m.Y H:i', $e['zeit'] ) ); ?>" data-einsatz-ort="<?php echo esc_attr( $e['ort'] ); ?>">
-							<td class="py-3 pr-4 text-smoke"><?php echo esc_html( $e['nummer'] ? $e['nummer'] : '' ); ?></td>
-							<td class="whitespace-nowrap py-3 pr-4"><?php echo esc_html( date_i18n( 'd.m.Y', $e['zeit'] ) ); ?></td>
-							<td class="whitespace-nowrap py-3 pr-4 text-smoke"><?php echo esc_html( date_i18n( 'H:i', $e['zeit'] ) ); ?> Uhr</td>
-							<td class="whitespace-nowrap py-3 pr-4"><span class="inline-flex items-center gap-2 text-sm"><span class="h-2.5 w-2.5" style="background:<?php echo esc_attr( $arten[ $e['art'] ]['farbe'] ); ?>" aria-hidden="true"></span><?php echo esc_html( $arten[ $e['art'] ]['label'] ); ?></span></td>
-							<td class="py-3 pr-4"><button type="button" class="group flex items-center gap-2 text-left font-semibold" aria-expanded="false" aria-controls="einsatz-<?php echo esc_attr( $id ); ?>-details" data-details><?php echo esc_html( wp_specialchars_decode( $e['post']->post_title, ENT_QUOTES ) ); ?><?php echo elfzwo_icon( 'chevron-down', 'h-4 w-4 shrink-0 text-smoke transition-transform duration-300 group-aria-expanded:rotate-180' ); ?></button></td>
-							<td class="py-3"><?php echo esc_html( $e['ort'] ); ?></td>
+							<td class="w-10 py-3 pr-3 align-top text-smoke md:w-auto md:pr-4 md:align-middle"><?php echo esc_html( $e['nummer'] ? $e['nummer'] : '' ); ?></td>
+							<td class="hidden whitespace-nowrap py-3 pr-4 md:table-cell"><?php echo esc_html( date_i18n( 'd.m.Y', $e['zeit'] ) ); ?></td>
+							<td class="hidden whitespace-nowrap py-3 pr-4 text-smoke md:table-cell"><?php echo esc_html( date_i18n( 'H:i', $e['zeit'] ) ); ?> Uhr</td>
+							<td class="hidden whitespace-nowrap py-3 pr-4 md:table-cell"><span class="inline-flex items-center gap-2 text-sm"><span class="h-2.5 w-2.5" style="background:<?php echo esc_attr( $arten[ $e['art'] ]['farbe'] ); ?>" aria-hidden="true"></span><?php echo esc_html( $arten[ $e['art'] ]['label'] ); ?></span></td>
+							<td class="py-3 md:pr-4"><button type="button" class="group flex w-full items-center justify-between gap-2 text-left font-semibold md:w-auto md:justify-start" aria-expanded="false" aria-controls="einsatz-<?php echo esc_attr( $id ); ?>-details" data-details><?php echo esc_html( wp_specialchars_decode( $e['post']->post_title, ENT_QUOTES ) ); ?><?php echo elfzwo_icon( 'chevron-down', 'h-4 w-4 shrink-0 text-smoke transition-transform duration-300 group-aria-expanded:rotate-180' ); ?></button><span class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-sm text-smoke md:hidden"><span><?php echo esc_html( date_i18n( 'd.m.Y, H:i', $e['zeit'] ) ); ?> Uhr</span><?php if ( $e['ort'] ) : ?><span><?php echo esc_html( $e['ort'] ); ?></span><?php endif; ?><span class="inline-flex items-center gap-1.5"><span class="h-2 w-2" style="background:<?php echo esc_attr( $arten[ $e['art'] ]['farbe'] ); ?>" aria-hidden="true"></span><?php echo esc_html( $arten[ $e['art'] ]['label'] ); ?></span></span></td>
+							<td class="hidden py-3 md:table-cell"><?php echo esc_html( $e['ort'] ); ?></td>
 						</tr>
 						<tr id="einsatz-<?php echo esc_attr( $id ); ?>-details" class="elfzwo-einsatz-details">
 							<td colspan="6"><div class="elfzwo-einsatz-klappe"><div><?php echo elfzwo_einsatz_details( $id ); // phpcs:ignore -- bereits escaped ?></div></div></td>
