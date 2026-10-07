@@ -37,7 +37,8 @@
 
 			var daten = new FormData( form );
 			daten.append( 'ajax', '1' );
-			fetch( form.action, { method: 'POST', body: daten, credentials: 'same-origin' } )
+			// Nicht form.action: das versteckte Feld name="action" überdeckt die Eigenschaft.
+			fetch( form.getAttribute( 'action' ), { method: 'POST', body: daten, credentials: 'same-origin' } )
 				.then( function ( r ) { return r.json(); } )
 				.then( function ( antwort ) {
 					if ( 'success' !== antwort.status ) {
