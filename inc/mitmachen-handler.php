@@ -101,21 +101,16 @@ function elfzwo_mitmachen_empfaenger( $raw ) {
 	return $emails ? $emails : array( get_option( 'admin_email' ) );
 }
 
-function elfzwo_mitmachen_mail_inhalt( $config, $name, $kontakt, $interesse, $nachricht = '' ) {
+function elfzwo_mitmachen_mail_inhalt( $config, $name, $kontakt, $interesse ) {
 	$betreff_vorlage = trim( $config['betreff'] ) ?: 'Neue Mach-mit-Anfrage von {name}';
 	$text_vorlage    = trim( $config['text'] ) ?: "Name: {name}\nKontakt: {kontakt}\nInteresse: {interesse}";
 
 	$suche  = array( '{name}', '{kontakt}', '{interesse}' );
 	$ersatz = array( $name, $kontakt, $interesse );
 
-	$text = str_replace( $suche, $ersatz, $text_vorlage );
-	if ( '' !== $nachricht ) {
-		$text .= "\n\nNachricht:\n" . $nachricht;
-	}
-
 	return array(
 		'betreff' => str_replace( $suche, $ersatz, $betreff_vorlage ),
-		'text'    => $text,
+		'text'    => str_replace( $suche, $ersatz, $text_vorlage ),
 	);
 }
 
@@ -164,7 +159,6 @@ function elfzwo_handle_mitmachen_submit() {
 	$interesse = isset( $_POST['interesse'] ) ? sanitize_text_field( wp_unslash( $_POST['interesse'] ) ) : '';
 	$name      = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 	$kontakt   = isset( $_POST['kontakt'] ) ? sanitize_email( wp_unslash( $_POST['kontakt'] ) ) : '';
-	$nachricht = isset( $_POST['nachricht'] ) ? mb_substr( sanitize_textarea_field( wp_unslash( $_POST['nachricht'] ) ), 0, 2000 ) : '';
 
 	if ( '' === $name || ! is_email( $kontakt ) ) {
 		wp_safe_redirect( add_query_arg( 'mitmachen', 'error', get_permalink( $page_id ) ) . '#formular' );
@@ -172,7 +166,7 @@ function elfzwo_handle_mitmachen_submit() {
 	}
 
 	$config = elfzwo_mitmachen_config( $page_id, $interesse );
-	$mail   = elfzwo_mitmachen_mail_inhalt( $config, $name, $kontakt, $interesse, $nachricht );
+	$mail   = elfzwo_mitmachen_mail_inhalt( $config, $name, $kontakt, $interesse );
 	wp_mail( elfzwo_mitmachen_empfaenger( $config['empfaenger'] ), $mail['betreff'], $mail['text'], array( 'Reply-To: ' . $kontakt ) );
 
 	wp_safe_redirect( add_query_arg( 'mitmachen', 'success', get_permalink( $page_id ) ) . '#formular' );

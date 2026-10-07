@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "elfzwo/seitenkopf",
+	"title": "Seitenkopf",
+	"description": "Roter Kopfbereich mit Titel, optionaler Zeile darunter, kurzem Text und Hintergrundfoto.",
+	"category": "elfzwo-blocks",
+	"icon": "cover-image",
+	"textdomain": "11zwo",
+	"attributes": {
+		"titel": { "type": "string", "default": "" },
+		"untertitel": { "type": "string", "default": "" },
+		"text": { "type": "string", "default": "" },
+		"bildId": { "type": "number", "default": 0 },
+		"bildUrl": { "type": "string", "default": "" }
+	},
+	"supports": { "html": false },
+	"render": "file:./render.php",
+	"editorScript": "file:./edit.js"
+}

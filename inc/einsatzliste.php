@@ -152,7 +152,7 @@ function elfzwo_einsaetze_ansicht( $jahr, $seite_url ) {
 			</div>
 		</div>
 
-		<div class="mt-10 overflow-x-auto">
+		<div class="mt-10 overflow-x-auto" data-einsaetze-tabelle>
 			<table class="w-full min-w-[44rem] border-collapse text-left">
 				<thead>
 					<tr class="border-b-2 border-foreground text-sm">
@@ -166,13 +166,17 @@ function elfzwo_einsaetze_ansicht( $jahr, $seite_url ) {
 				</thead>
 				<tbody>
 					<?php foreach ( $im_jahr as $e ) : ?>
-						<tr class="border-b border-border" data-art="<?php echo esc_attr( $e['art'] ); ?>">
+						<?php $id = $e['post']->ID; ?>
+						<tr id="einsatz-<?php echo esc_attr( $id ); ?>" class="cursor-pointer scroll-mt-32 border-b border-border hover:bg-ash" data-art="<?php echo esc_attr( $e['art'] ); ?>" data-zeile>
 							<td class="py-3 pr-4 text-smoke"><?php echo esc_html( $e['nummer'] ? $e['nummer'] : '' ); ?></td>
 							<td class="whitespace-nowrap py-3 pr-4"><?php echo esc_html( date_i18n( 'd.m.Y', $e['zeit'] ) ); ?></td>
 							<td class="whitespace-nowrap py-3 pr-4 text-smoke"><?php echo esc_html( date_i18n( 'H:i', $e['zeit'] ) ); ?> Uhr</td>
 							<td class="whitespace-nowrap py-3 pr-4"><span class="inline-flex items-center gap-2 text-sm"><span class="h-2.5 w-2.5" style="background:<?php echo esc_attr( $arten[ $e['art'] ]['farbe'] ); ?>" aria-hidden="true"></span><?php echo esc_html( $arten[ $e['art'] ]['label'] ); ?></span></td>
-							<td class="py-3 pr-4"><a href="<?php echo esc_url( get_permalink( $e['post'] ) ); ?>" class="font-semibold hover:text-signal hover:underline"><?php echo esc_html( wp_specialchars_decode( $e['post']->post_title, ENT_QUOTES ) ); ?></a></td>
+							<td class="py-3 pr-4"><button type="button" class="group flex items-center gap-2 text-left font-semibold" aria-expanded="false" aria-controls="einsatz-<?php echo esc_attr( $id ); ?>-details" data-details><?php echo esc_html( wp_specialchars_decode( $e['post']->post_title, ENT_QUOTES ) ); ?><?php echo elfzwo_icon( 'chevron-down', 'h-4 w-4 shrink-0 text-smoke transition-transform duration-300 group-aria-expanded:rotate-180' ); ?></button></td>
 							<td class="py-3"><?php echo esc_html( $e['ort'] ); ?></td>
+						</tr>
+						<tr id="einsatz-<?php echo esc_attr( $id ); ?>-details" class="elfzwo-einsatz-details">
+							<td colspan="6"><div class="elfzwo-einsatz-klappe"><div><?php echo elfzwo_einsatz_details( $id ); // phpcs:ignore -- bereits escaped ?></div></div></td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -182,6 +186,65 @@ function elfzwo_einsaetze_ansicht( $jahr, $seite_url ) {
 	<?php
 	return ob_get_clean();
 }
+
+/** Aufklappbare Details eines Einsatzes direkt unter seiner Tabellenzeile. */
+function elfzwo_einsatz_details( $post_id ) {
+	$namen = function ( $meta, $typ ) use ( $post_id ) {
+		$liste = array();
+		foreach ( array_filter( array_map( 'intval', explode( ',', elfzwo_meta( $post_id, $meta, '' ) ) ) ) as $id ) {
+			$post = get_post( $id );
+			if ( $post && $typ === $post->post_type ) {
+				$liste[] = array(
+					'name' => 'fahrzeug' === $typ ? ( elfzwo_meta( $id, 'tag', '' ) ?: $post->post_title ) : $post->post_title,
+					'url'  => 'externe_kraft' === $typ ? elfzwo_meta( $id, 'url', '' ) : '',
+				);
+			}
+		}
+		return $liste;
+	};
+	$bericht = trim( (string) get_post_field( 'post_content', $post_id ) );
+	$listen  = array_filter(
+		array(
+			'Fahrzeuge'      => $namen( 'fahrzeuge', 'fahrzeug' ),
+			'Weitere Kräfte' => $namen( 'einsatzkraefte', 'externe_kraft' ),
+		)
+	);
+	ob_start();
+	?>
+	<div class="elfzwo-einsatz-klappe-inhalt bg-cream px-5 py-4 md:px-6">
+		<?php if ( $bericht ) : ?>
+			<div class="max-w-3xl space-y-2 text-[0.95rem] leading-relaxed text-foreground/85"><?php echo apply_filters( 'the_content', $bericht ); // phpcs:ignore -- Kern-Filter ?></div>
+		<?php else : ?>
+			<p class="text-[0.95rem] text-smoke">Zu diesem Einsatz gibt es keinen Bericht.</p>
+		<?php endif; ?>
+		<?php foreach ( $listen as $titel => $eintraege ) : ?>
+			<p class="mt-3 flex flex-wrap items-center gap-1.5 text-sm">
+				<span class="mr-1 font-semibold text-smoke"><?php echo esc_html( $titel ); ?>:</span>
+				<?php foreach ( $eintraege as $e ) : ?>
+					<?php if ( $e['url'] ) : ?>
+						<a href="<?php echo esc_url( $e['url'] ); ?>" target="_blank" rel="noopener noreferrer" class="border border-border bg-white px-2 py-0.5 font-semibold hover:border-signal hover:text-signal"><?php echo esc_html( $e['name'] ); ?></a>
+					<?php else : ?>
+						<span class="border border-border bg-white px-2 py-0.5 font-semibold"><?php echo esc_html( $e['name'] ); ?></span>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</p>
+		<?php endforeach; ?>
+	</div>
+	<?php
+	return ob_get_clean();
+}
+
+/** Eine eigene Einsatzseite gibt es nicht mehr: alte Links führen zur Zeile in der Tabelle. */
+function elfzwo_einsatz_zur_tabelle() {
+	if ( ! is_singular( 'einsatz' ) || is_preview() ) {
+		return;
+	}
+	$id   = get_queried_object_id();
+	$jahr = (int) gmdate( 'Y', strtotime( elfzwo_einsatz_zeitpunkt( $id ) ) );
+	wp_safe_redirect( add_query_arg( 'einsatz_jahr', $jahr, home_url( '/einsaetze/' ) ) . '#einsatz-' . $id, 301 );
+	exit;
+}
+add_action( 'template_redirect', 'elfzwo_einsatz_zur_tabelle', 5 );
 
 /** AJAX: Ansicht eines anderen Jahres als HTML-Fragment. */
 function elfzwo_ajax_einsaetze() {

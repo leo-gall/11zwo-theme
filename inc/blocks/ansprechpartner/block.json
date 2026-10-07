@@ -11,10 +11,6 @@
 			"type": "string",
 			"default": "Deine Ansprechpartner"
 		},
-		"columns": {
-			"type": "number",
-			"default": 2
-		},
 		"people": {
 			"type": "array",
 			"default": [
@@ -53,10 +49,6 @@
 					}
 				}
 			}
-		},
-		"text": {
-			"type": "string",
-			"default": ""
 		}
 	},
 	"supports": {

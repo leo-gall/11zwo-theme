@@ -21,7 +21,8 @@ $kategorien = get_terms( array( 'taxonomy' => 'download_kategorie', 'hide_empty'
 		}
 		?>
 		<div>
-			<h2 class="border-b border-border pb-4 font-display text-3xl"><?php echo esc_html( $kategorie->name ); ?></h2>
+			<?php // Gleiche Überschrift wie im Impressum (Typografie-Stil "prose"). ?>
+			<div class="prose prose-neutral max-w-none border-b border-border pb-4"><h2 class="!my-0"><?php echo esc_html( $kategorie->name ); ?></h2></div>
 			<div class="mt-6 space-y-4">
 				<?php
 				while ( $items->have_posts() ) :

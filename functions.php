@@ -79,16 +79,11 @@ function elfzwo_enqueue_assets() {
 	if ( has_block( 'elfzwo/faq' ) ) {
 		wp_enqueue_script( 'elfzwo-faq-accordion', get_template_directory_uri() . '/assets/js/faq-accordion.js', array(), filemtime( get_template_directory() . '/assets/js/faq-accordion.js' ), true );
 	}
-
-	if ( has_block( 'elfzwo/section-heading' ) ) {
-		wp_enqueue_script( 'elfzwo-nina-warnungen', get_template_directory_uri() . '/assets/js/nina-warnungen.js', array(), filemtime( get_template_directory() . '/assets/js/nina-warnungen.js' ), true );
-	}
 }
 add_action( 'wp_enqueue_scripts', 'elfzwo_enqueue_assets' );
 
 require get_template_directory() . '/inc/icons.php';
 require get_template_directory() . '/inc/helpers.php';
-require get_template_directory() . '/inc/lizenzen-abschnitt.php';
 require get_template_directory() . '/inc/komponenten.php';
 require get_template_directory() . '/inc/person-wappen.php';
 require get_template_directory() . '/inc/post-types.php';
@@ -97,12 +92,9 @@ require get_template_directory() . '/inc/beitrag-editor.php';
 require get_template_directory() . '/inc/einsatzstichwoerter.php';
 require get_template_directory() . '/inc/kategorien.php';
 require get_template_directory() . '/inc/einsatz-nummern.php';
-require get_template_directory() . '/inc/settings.php';
 require get_template_directory() . '/inc/analytics.php';
-require get_template_directory() . '/inc/nina.php';
 require get_template_directory() . '/inc/einsatzliste.php';
 require get_template_directory() . '/inc/aktuelles-feed.php';
-require get_template_directory() . '/inc/einsatz-card.php';
 require get_template_directory() . '/inc/nav-walker.php';
 require get_template_directory() . '/inc/mitmachen-handler.php';
 require get_template_directory() . '/inc/blocks.php';

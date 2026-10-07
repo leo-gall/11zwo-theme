@@ -5,13 +5,10 @@ module.exports = {
     "./inc/**/*.{php,js,json}",
     "./assets/js/**/*.js",
   ],
-  // Klassen, die nicht wörtlich im Code stehen: die Akzentfarben-Palette aus
-  // blocks-common.js (setzt "bg-<farbe>/<deckkraft>" zur Laufzeit zusammen),
-  // Klassen, die im Editor in Block-Attribute ("Tailwind-Klassen") eingetragen
-  // wurden, und "size-full", das WordPress selbst an Bilder hängt.
+  // Klassen, die nicht wörtlich im Code stehen: im Editor in Block-Attribute
+  // ("Tailwind-Klassen") eingetragene und "size-full", das WordPress selbst an
+  // Bilder hängt.
   safelist: [
-    { pattern: /^text-(signal|ember|wood|ink|cream|sky|leaf)$/ },
-    "bg-signal/30", "bg-ember/40", "bg-wood/35", "bg-ink/20", "bg-cream", "bg-sky/40", "bg-leaf/40",
     "lg:grid-cols-[5fr_7fr]", "pb-10", "py-0",
     "size-full",
   ],

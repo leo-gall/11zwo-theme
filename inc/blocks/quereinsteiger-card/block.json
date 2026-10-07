@@ -15,22 +15,6 @@
 			"type": "string",
 			"default": ""
 		},
-		"text": {
-			"type": "string",
-			"default": ""
-		},
-		"zitat": {
-			"type": "string",
-			"default": ""
-		},
-		"ctaText": {
-			"type": "string",
-			"default": ""
-		},
-		"ctaUrl": {
-			"type": "string",
-			"default": ""
-		},
 		"imageId": {
 			"type": "number",
 			"default": 0

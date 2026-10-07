@@ -16,7 +16,6 @@ get_header();
 		}
 		?>
 		<?php the_content(); ?>
-		<?php if ( is_page( 'impressum' ) ) { echo elfzwo_lizenzen_abschnitt(); } // phpcs:ignore -- bereits escaped ?>
 	<?php endwhile; ?>
 </main>
 

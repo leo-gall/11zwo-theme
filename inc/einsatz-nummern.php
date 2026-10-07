@@ -192,25 +192,6 @@ function elfzwo_einsatz_permalink( $link, $post ) {
 }
 add_filter( 'post_type_link', 'elfzwo_einsatz_permalink', 10, 2 );
 
-/**
- * Alte URLs (/einsatz/{slug}/) dauerhaft auf /einsatz/{jahr}/{nr}/
- * umleiten. Der Slug bleibt beim Neu-Nummerieren unverändert, alte Links
- * führen also weiterhin zum selben Einsatz.
- */
-function elfzwo_einsatz_redirect_to_id_url() {
-	if ( ! is_singular( 'einsatz' ) || is_preview() ) {
-		return;
-	}
-	$canonical = get_permalink( get_queried_object_id() );
-	$requested = home_url( add_query_arg( array() ) );
-	if ( untrailingslashit( strtok( $requested, '?' ) ) !== untrailingslashit( $canonical ) ) {
-		$query = wp_parse_url( $requested, PHP_URL_QUERY );
-		wp_safe_redirect( $canonical . ( $query ? '?' . $query : '' ), 301 );
-		exit;
-	}
-}
-add_action( 'template_redirect', 'elfzwo_einsatz_redirect_to_id_url' );
-
 /* ---------------------------------------------------------- Backend-Liste */
 
 function elfzwo_einsatz_admin_columns( $columns ) {

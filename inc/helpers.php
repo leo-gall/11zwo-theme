@@ -8,15 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Escaped eine E-Mail-Adresse für die Anzeige und setzt nach "@" und jedem
- * "." ein <wbr>, damit lange Adressen in schmalen Spalten an sinnvollen
- * Stellen umbrechen statt (mit break-all) mitten im Wort zu reißen.
- */
-function elfzwo_wbr_email( $email ) {
-	return str_replace( array( '@', '.' ), array( '@<wbr>', '.<wbr>' ), esc_html( $email ) );
-}
-
-/**
  * Fest gekürzter Auszug eines Beitrags, unabhängig von WordPress' eigenem
  * get_the_excerpt()/wp_trim_excerpt(): Core-Blöcke wie core/post-excerpt
  * setzen den 'excerpt_length'-Filter beim Rendern kurzzeitig auf 101 und
@@ -35,27 +26,9 @@ function elfzwo_excerpt( $post_id, $words = 55 ) {
 	return wp_trim_words( $text, $words, '…' );
 }
 
-/** Zugewiesene Kategorien eines Beitrags als "·"-getrennter String für die Anzeige. */
-function elfzwo_post_category_line( $post_id ) {
-	$categories = get_the_category( $post_id );
-	if ( ! $categories ) {
-		return '';
-	}
-	return implode( ' · ', wp_list_pluck( $categories, 'name' ) );
-}
-
 /** Beitragsbild eines Beitrags als URL, oder leerer String, wenn keins gesetzt ist. */
 function elfzwo_post_cover_image_url( $post_id, $size = 'large' ) {
 	return has_post_thumbnail( $post_id ) ? (string) get_the_post_thumbnail_url( $post_id, $size ) : '';
-}
-
-function elfzwo_initials( $name ) {
-	$parts    = preg_split( '/\s+/', trim( $name ) );
-	$initials = '';
-	foreach ( array_slice( $parts, 0, 2 ) as $part ) {
-		$initials .= mb_strtoupper( mb_substr( $part, 0, 1 ) );
-	}
-	return $initials;
 }
 
 /**
@@ -316,83 +289,6 @@ function elfzwo_suche_route() {
 }
 add_action( 'rest_api_init', 'elfzwo_suche_route' );
 
-/** Alle Fremdbestandteile der Website für die Seite /lizenzen/ (page-lizenzen.php). */
-function elfzwo_lizenzen() {
-	return array(
-		'Software'       => array(
-			array(
-				'name'       => 'WordPress',
-				'url'        => 'https://wordpress.org/',
-				'lizenz'     => 'GPL 2.0 oder später',
-				'lizenz_url' => 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.html',
-				'hinweis'    => '© WordPress-Mitwirkende. Grundlage der Website und des Redaktionssystems.',
-			),
-			array(
-				'name'       => 'Tailwind CSS',
-				'url'        => 'https://tailwindcss.com/',
-				'lizenz'     => 'MIT',
-				'lizenz_url' => 'https://github.com/tailwindlabs/tailwindcss/blob/main/LICENSE',
-				'hinweis'    => '© Tailwind Labs, Inc. Erzeugt die Gestaltungsklassen der Website.',
-			),
-			array(
-				'name'       => 'Umami',
-				'url'        => 'https://umami.is/',
-				'lizenz'     => 'MIT',
-				'lizenz_url' => 'https://github.com/umami-software/umami/blob/master/LICENSE',
-				'hinweis'    => '© Umami Software, Inc. Cookielose Besucherstatistik (Umami Cloud).',
-			),
-			array(
-				'name'       => 'esbuild',
-				'url'        => 'https://esbuild.github.io/',
-				'lizenz'     => 'MIT',
-				'lizenz_url' => 'https://github.com/evanw/esbuild/blob/main/LICENSE.md',
-				'hinweis'    => '© Evan Wallace. Verkleinert JavaScript und CSS beim Erstellen des Themes.',
-			),
-		),
-		'Schrift'        => array(
-			array(
-				'name'       => 'Titillium Web',
-				'url'        => 'https://fonts.google.com/specimen/Titillium+Web',
-				'lizenz'     => 'SIL Open Font License 1.1',
-				'lizenz_url' => 'https://openfontlicense.org/open-font-license-official-text/',
-				'hinweis'    => '© Accademia di Belle Arti di Urbino. Wird von dieser Website selbst ausgeliefert, nicht von Google.',
-			),
-		),
-		'Icons'          => array(
-			array(
-				'name'       => 'SVG Repo – handgezeichnete Icons',
-				'url'        => 'https://www.svgrepo.com/vectors/hand-drawn/',
-				'lizenz'     => 'CC0 1.0 (gemeinfrei)',
-				'lizenz_url' => 'https://creativecommons.org/publicdomain/zero/1.0/deed.de',
-				'hinweis'    => 'Die übrigen Icons der Website, z. B. Telefon, Kalender, Pfeile und Fahrzeug.',
-			),
-			array(
-				'name'       => 'Lucide',
-				'url'        => 'https://lucide.dev/',
-				'lizenz'     => 'ISC',
-				'lizenz_url' => 'https://lucide.dev/license',
-				'hinweis'    => '© Lucide Contributors. Pfeil im Menü und RSS-Symbol.',
-			),
-		),
-		'Daten & Dienste' => array(
-			array(
-				'name'       => 'NINA – Warn-App des Bundes',
-				'url'        => 'https://warnung.bund.de/',
-				'lizenz'     => 'Bundesamt für Bevölkerungsschutz und Katastrophenhilfe',
-				'lizenz_url' => 'https://warnung.bund.de/impressum',
-				'hinweis'    => 'Aktuelle Warnmeldungen für Greifenberg. Quelle: BBK, Warnsystem MoWaS.',
-			),
-			array(
-				'name'       => 'OpenPLZ API',
-				'url'        => 'https://www.openplzapi.org/',
-				'lizenz'     => 'Daten: CC BY 4.0 / ODbL',
-				'lizenz_url' => 'https://www.openplzapi.org/de/',
-				'hinweis'    => 'Ordnet die Postleitzahl dem Gemeindeschlüssel für die Warnmeldungen zu.',
-			),
-		),
-	);
-}
-
 /** Die Lizenzen stehen im Impressum; eine früher angelegte eigene Seite kommt weg. */
 function elfzwo_migrate_lizenzen_ins_impressum() {
 	if ( get_option( 'elfzwo_lizenzen_im_impressum' ) ) {
@@ -405,6 +301,100 @@ function elfzwo_migrate_lizenzen_ins_impressum() {
 	}
 }
 add_action( 'init', 'elfzwo_migrate_lizenzen_ins_impressum', 30 );
+
+/**
+ * Einmalig: die Lizenzen als normaler Text ans Ende des Impressums schreiben,
+ * im selben Stil wie der übrige Impressumstext und dort frei bearbeitbar.
+ */
+function elfzwo_migrate_lizenzen_als_text() {
+	if ( get_option( 'elfzwo_lizenzen_als_text' ) ) {
+		return;
+	}
+	update_option( 'elfzwo_lizenzen_als_text', 1 );
+	$seite = get_page_by_path( 'impressum' );
+	if ( ! $seite || false !== strpos( $seite->post_content, 'id="lizenzen"' ) ) {
+		return;
+	}
+	$html = <<<'HTML'
+
+<h2 id="lizenzen">Lizenzen</h2>
+<p>Diese Website nutzt freie Software, Schriften und Grafiken.</p>
+
+<h3>Software</h3>
+<ul>
+<li><a href="https://wordpress.org/">WordPress</a>: <a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GPL 2.0 oder später</a>. © WordPress-Mitwirkende.</li>
+<li><a href="https://tailwindcss.com/">Tailwind CSS</a>: <a href="https://github.com/tailwindlabs/tailwindcss/blob/main/LICENSE">MIT</a>. © Tailwind Labs, Inc.</li>
+<li><a href="https://umami.is/">Umami</a>: <a href="https://github.com/umami-software/umami/blob/master/LICENSE">MIT</a>. © Umami Software, Inc.</li>
+<li><a href="https://esbuild.github.io/">esbuild</a>: <a href="https://github.com/evanw/esbuild/blob/main/LICENSE.md">MIT</a>. © Evan Wallace.</li>
+</ul>
+
+<h3>Schrift</h3>
+<ul>
+<li><a href="https://fonts.google.com/specimen/Titillium+Web">Titillium Web</a>: <a href="https://openfontlicense.org/open-font-license-official-text/">SIL Open Font License 1.1</a>. © Accademia di Belle Arti di Urbino. Wird von dieser Website selbst ausgeliefert, nicht von Google.</li>
+</ul>
+
+<h3>Icons</h3>
+<ul>
+<li><a href="https://www.svgrepo.com/vectors/hand-drawn/">SVG Repo – handgezeichnete Icons</a>: <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.de">CC0 1.0 (gemeinfrei)</a>.</li>
+<li><a href="https://lucide.dev/">Lucide</a>: <a href="https://lucide.dev/license">ISC</a>. © Lucide Contributors. Pfeil im Menü, Download- und RSS-Symbol.</li>
+</ul>
+HTML;
+	$ende   = "</div>\n<!-- /wp:html -->";
+	$stelle = strrpos( $seite->post_content, $ende );
+	$inhalt = false === $stelle
+		? $seite->post_content . "\n\n<!-- wp:html -->\n<div class=\"prose prose-neutral mx-auto max-w-3xl px-5 md:px-8\">" . $html . "\n" . $ende
+		: substr_replace( $seite->post_content, $html . "\n", $stelle, 0 );
+	_wp_put_post_revision( $seite );
+	wp_update_post( array( 'ID' => $seite->ID, 'post_content' => wp_slash( $inhalt ) ) );
+}
+add_action( 'init', 'elfzwo_migrate_lizenzen_als_text', 30 );
+
+/**
+ * Einmalig: die drei gleich aussehenden Seiten-Heros (hero-split,
+ * jugendfeuerwehr-hero, simple-hero) werden zum Block "Seitenkopf". Dazu
+ * fallen die Optionen der entfernten NINA-Warnungen und Footer-Felder weg.
+ */
+function elfzwo_migrate_seitenkopf() {
+	if ( get_option( 'elfzwo_seitenkopf_migriert' ) ) {
+		return;
+	}
+	update_option( 'elfzwo_seitenkopf_migriert', 1 );
+
+	$umbauen = function ( $blocks ) use ( &$umbauen ) {
+		foreach ( $blocks as $i => $b ) {
+			$a = $b['attrs'];
+			if ( in_array( $b['blockName'], array( 'elfzwo/hero-split', 'elfzwo/jugendfeuerwehr-hero' ), true ) ) {
+				$titel  = trim( ( $a['titleLine1'] ?? '' ) . ' ' . ( $a['titleHighlight'] ?? '' ) );
+				$rest   = $a['titleLine2'] ?? '';
+				$titel .= $rest ? ( preg_match( '/^[.,!?:;]/u', $rest ) ? '' : ' ' ) . $rest : '';
+				$neu    = array( 'titel' => $titel, 'untertitel' => $a['badge'] ?? '', 'text' => $a['description'] ?? '' );
+			} elseif ( 'elfzwo/simple-hero' === $b['blockName'] ) {
+				$neu = array( 'titel' => $a['title'] ?? '', 'untertitel' => $a['kicker'] ?? '', 'text' => $a['description'] ?? '' );
+			} else {
+				$blocks[ $i ]['innerBlocks'] = $umbauen( $b['innerBlocks'] );
+				continue;
+			}
+			$neu['bildId']  = (int) ( $a['imageId'] ?? 0 );
+			$neu['bildUrl'] = $a['imageUrl'] ?? '';
+			$blocks[ $i ]['blockName'] = 'elfzwo/seitenkopf';
+			$blocks[ $i ]['attrs']     = array_filter( $neu );
+		}
+		return $blocks;
+	};
+
+	foreach ( get_posts( array( 'post_type' => 'any', 'post_status' => 'any', 'posts_per_page' => -1 ) ) as $post ) {
+		if ( ! preg_match( '#wp:elfzwo/(hero-split|jugendfeuerwehr-hero|simple-hero)\b#', $post->post_content ) ) {
+			continue;
+		}
+		_wp_put_post_revision( $post );
+		wp_update_post( array( 'ID' => $post->ID, 'post_content' => wp_slash( serialize_blocks( $umbauen( parse_blocks( $post->post_content ) ) ) ) ) );
+	}
+
+	foreach ( array( 'elfzwo_nina_plz', 'elfzwo_footer_personen', 'elfzwo_geraetehaus_strasse', 'elfzwo_geraetehaus_plz_ort', 'elfzwo_geraetehaus_zeiten', 'elfzwo_geraetehaus_zeiten_2', 'elfzwo_kontakt_email', 'elfzwo_footer_claim', 'elfzwo_footer_text', 'elfzwo_gegruendet' ) as $option ) {
+		delete_option( $option );
+	}
+}
+add_action( 'init', 'elfzwo_migrate_seitenkopf', 30 );
 
 function elfzwo_lizenzen_weiterleitung() {
 	if ( 'lizenzen' === trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' ) ) {

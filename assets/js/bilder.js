@@ -1,13 +1,11 @@
 /**
  * Bilder öffnen: Jedes Inhaltsbild, das nicht schon verlinkt ist, öffnet per
- * Klick groß in einem Overlay. Pfeiltasten bzw. Wischen blättern durch alle
- * Bilder der Seite, Escape oder ein Klick daneben schließt.
+ * Klick einzeln groß in einem Overlay, ohne Beschriftung. Escape, das Kreuz
+ * oder ein Klick daneben schließt.
  */
 ( function () {
 	var MIN = 120;
-	var bilder = [];
-	var aktuell = 0;
-	var dialog, bild, text, zaehler, startX = null;
+	var dialog, bild;
 
 	function grosseQuelle( img ) {
 		var beste = img.currentSrc || img.src;
@@ -42,54 +40,17 @@
 		dialog.setAttribute( 'aria-label', 'Bild' );
 		bild = document.createElement( 'img' );
 		bild.alt = '';
-		text = document.createElement( 'p' );
-		text.className = 'elfzwo-lightbox-text';
-		zaehler = document.createElement( 'span' );
-		zaehler.className = 'elfzwo-lightbox-zaehler';
 		var zu = knopf( 'elfzwo-lightbox-zu', 'Schließen', '&times;' );
-		var vor = knopf( 'elfzwo-lightbox-vor', 'Vorheriges Bild', '&#8249;' );
-		var nach = knopf( 'elfzwo-lightbox-nach', 'Nächstes Bild', '&#8250;' );
-		dialog.append( bild, text, zaehler, zu, vor, nach );
+		dialog.append( bild, zu );
 		document.body.appendChild( dialog );
 
 		zu.addEventListener( 'click', function () { dialog.close(); } );
-		vor.addEventListener( 'click', function () { zeigen( aktuell - 1 ); } );
-		nach.addEventListener( 'click', function () { zeigen( aktuell + 1 ); } );
 		dialog.addEventListener( 'click', function ( e ) {
 			if ( e.target === dialog ) {
 				dialog.close();
 			}
 		} );
-		dialog.addEventListener( 'keydown', function ( e ) {
-			if ( 'ArrowLeft' === e.key ) {
-				zeigen( aktuell - 1 );
-			} else if ( 'ArrowRight' === e.key ) {
-				zeigen( aktuell + 1 );
-			}
-		} );
-		dialog.addEventListener( 'touchstart', function ( e ) { startX = e.touches[ 0 ].clientX; }, { passive: true } );
-		dialog.addEventListener( 'touchend', function ( e ) {
-			if ( null === startX ) {
-				return;
-			}
-			var dx = e.changedTouches[ 0 ].clientX - startX;
-			startX = null;
-			if ( Math.abs( dx ) > 50 ) {
-				zeigen( aktuell + ( dx < 0 ? 1 : -1 ) );
-			}
-		} );
 		dialog.addEventListener( 'close', function () { document.documentElement.style.overflow = ''; } );
-	}
-
-	function zeigen( index ) {
-		aktuell = ( index + bilder.length ) % bilder.length;
-		var img = bilder[ aktuell ];
-		bild.src = grosseQuelle( img );
-		var figur = img.closest( 'figure' );
-		var unterschrift = figur && figur.querySelector( 'figcaption' );
-		text.textContent = ( unterschrift && unterschrift.textContent.trim() ) || img.alt || '';
-		zaehler.textContent = bilder.length > 1 ? ( aktuell + 1 ) + ' / ' + bilder.length : '';
-		dialog.classList.toggle( 'is-einzeln', bilder.length < 2 );
 	}
 
 	function erfassen() {
@@ -113,11 +74,10 @@
 					return;
 				}
 				e.preventDefault();
-				bilder = Array.prototype.filter.call( document.querySelectorAll( 'img[data-lightbox]' ), function ( b ) { return b.offsetParent !== null; } );
 				if ( ! dialog ) {
 					bauen();
 				}
-				zeigen( Math.max( 0, bilder.indexOf( img ) ) );
+				bild.src = grosseQuelle( img );
 				document.documentElement.style.overflow = 'hidden';
 				dialog.showModal();
 			} );

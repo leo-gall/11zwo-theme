@@ -106,7 +106,7 @@ function elfzwo_render_bild_text( $args ) {
 function elfzwo_seite_hat_kopf( $post ) {
 	foreach ( parse_blocks( $post->post_content ) as $block ) {
 		if ( $block['blockName'] ) {
-			return in_array( $block['blockName'], array( 'elfzwo/home-hero', 'elfzwo/simple-hero', 'elfzwo/hero-split', 'elfzwo/jugendfeuerwehr-hero' ), true );
+			return in_array( $block['blockName'], array( 'elfzwo/home-hero', 'elfzwo/seitenkopf' ), true );
 		}
 	}
 	return false;
@@ -114,8 +114,8 @@ function elfzwo_seite_hat_kopf( $post ) {
 
 /**
  * Jumbotron für Seiten ohne eigenen Kopfbereich. Beginnt die Seite mit einer
- * Abschnitts-Überschrift oder dem Mach-mit-Formular, wandern deren Texte in
- * das Jumbotron und werden dort nicht noch einmal gezeigt.
+ * Abschnitts-Überschrift, wandert deren Titel in das Jumbotron und wird dort
+ * nicht noch einmal gezeigt.
  */
 function elfzwo_seiten_jumbotron( $post ) {
 	$args  = array(
@@ -133,13 +133,7 @@ function elfzwo_seiten_jumbotron( $post ) {
 		$typ   = WP_Block_Type_Registry::get_instance()->get_registered( $erste['blockName'] );
 		$attrs = $typ ? $typ->prepare_attributes_for_render( $erste['attrs'] ) : $erste['attrs'];
 		if ( 'elfzwo/section-heading' === $erste['blockName'] && ! empty( $attrs['title'] ) ) {
-			$args['titel']      = $attrs['title'];
-			$args['untertitel'] = $attrs['tag'] ?? '';
-			$GLOBALS['elfzwo_kopf_uebernommen'] = $erste['blockName'];
-		} elseif ( 'elfzwo/mitmachen-form' === $erste['blockName'] ) {
-			$args['titel']      = trim( ( $attrs['title'] ?? '' ) . ' ' . ( $attrs['titleHand'] ?? '' ) );
-			$args['untertitel'] = $attrs['kicker'] ?? '';
-			$args['text']       = $attrs['description'] ?? '';
+			$args['titel'] = $attrs['title'];
 			$GLOBALS['elfzwo_kopf_uebernommen'] = $erste['blockName'];
 		}
 	}

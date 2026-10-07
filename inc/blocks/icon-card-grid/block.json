@@ -49,10 +49,6 @@
 					}
 				}
 			}
-		},
-		"stil": {
-			"type": "string",
-			"default": ""
 		}
 	},
 	"supports": {

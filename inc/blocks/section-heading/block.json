@@ -7,13 +7,9 @@
 	"icon": "heading",
 	"textdomain": "11zwo",
 	"attributes": {
-		"tag": { "type": "string", "default": "" },
 		"title": { "type": "string", "default": "" },
 		"description": { "type": "string", "default": "" },
-		"descriptionSource": { "type": "string", "default": "custom" },
-		"ninaPlz": { "type": "string", "default": "" },
-		"layout": { "type": "string", "default": "split" },
-		"accent": { "type": "string", "default": "text-signal" }
+		"layout": { "type": "string", "default": "split" }
 	},
 	"supports": { "html": false },
 	"render": "file:./render.php",

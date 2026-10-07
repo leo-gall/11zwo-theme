@@ -4,7 +4,6 @@
 	var InspectorControls = wp.blockEditor.InspectorControls;
 	var PanelBody = wp.components.PanelBody;
 	var TextControl = wp.components.TextControl;
-	var RangeControl = wp.components.RangeControl;
 	var ToggleControl = wp.components.ToggleControl;
 	var Button = wp.components.Button;
 
@@ -51,9 +50,7 @@
 					InspectorControls,
 					{},
 					el( PanelBody, { title: 'Ansprechpartner' },
-						el( TextControl, { label: 'Überschrift', value: a.title, onChange: set( 'title' ) } ),
-						el( TextControl, { label: 'Text (optional)', value: a.text, onChange: set( 'text' ) } ),
-						el( RangeControl, { label: 'Spalten', min: 1, max: 4, value: a.columns, onChange: set( 'columns' ) } )
+						el( TextControl, { label: 'Überschrift', value: a.title, onChange: set( 'title' ) } )
 					),
 					el( PanelBody, { title: 'Personen', initialOpen: true },
 						people.map( function ( person, idx ) {

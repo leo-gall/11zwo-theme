@@ -17,9 +17,9 @@
 					props.setAttributes( o );
 				};
 			}
-			function imgField( n ) {
+			function imgField( n, label ) {
 				return el( ImagePicker, {
-					label: 'Foto ' + n,
+					label: label,
 					imageId: a[ 'image' + n + 'Id' ],
 					imageUrl: a[ 'image' + n + 'Url' ],
 					onSelect: function ( id, url ) {
@@ -41,14 +41,12 @@
 				el( InspectorControls, {}, el( PanelBody, { title: 'Hero-Texte' },
 					el( TextControl, { label: 'Titel Zeile 1', value: a.title1, onChange: set( 'title1' ) } ),
 					el( TextControl, { label: 'Titel Zeile 2', value: a.title2, onChange: set( 'title2' ) } ),
-					el( TextControl, { label: 'Handschrift-Zeile', value: a.subtitle, onChange: set( 'subtitle' ) } ),
 					el( TextareaControl, { label: 'Beschreibung', value: a.description, onChange: set( 'description' ) } ),
-					el( TextControl, { label: 'Button primär – Text', value: a.ctaPrimaryText, onChange: set( 'ctaPrimaryText' ) } ),
+					el( TextControl, { label: 'Button „Mitmachen“ – Text', value: a.ctaPrimaryText, onChange: set( 'ctaPrimaryText' ) } ),
 					el( TextControl, { label: 'Button sekundär – Text', value: a.ctaSecondaryText, onChange: set( 'ctaSecondaryText' ) } ),
-					el( TextControl, { label: 'Button sekundär – URL', value: a.ctaSecondaryUrl, onChange: set( 'ctaSecondaryUrl' ) } ),
-					el( TextControl, { label: 'Sprechblasen-Text', value: a.emergencyBadge, onChange: set( 'emergencyBadge' ) } )
+					el( TextControl, { label: 'Button sekundär – URL', value: a.ctaSecondaryUrl, onChange: set( 'ctaSecondaryUrl' ) } )
 				), el( PanelBody, { title: 'Fotos' },
-					imgField( 1 ), imgField( 2 ), imgField( 3 )
+					imgField( 1, 'Mannschaftsfoto (rechts)' ), imgField( 2, 'Hintergrundfoto' )
 				) ),
 				el( ServerSideRender, { block: 'elfzwo/home-hero', attributes: a } )
 			);

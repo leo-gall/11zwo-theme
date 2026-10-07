@@ -2,24 +2,10 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "elfzwo/aktuelles-uebersicht",
-	"title": "Aktuelles (Neuigkeiten und/oder letzte Einsätze, live)",
+	"title": "Neuigkeiten (die vier neuesten Beiträge)",
 	"category": "elfzwo-blocks",
 	"icon": "megaphone",
 	"textdomain": "11zwo",
-	"attributes": {
-		"anzahlEinsaetze": {
-			"type": "number",
-			"default": 6
-		},
-		"linkUrl": {
-			"type": "string",
-			"default": "/einsaetze/"
-		},
-		"teil": {
-			"type": "string",
-			"default": "beide"
-		}
-	},
 	"supports": {
 		"html": false
 	},

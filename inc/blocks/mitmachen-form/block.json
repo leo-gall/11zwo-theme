@@ -7,10 +7,6 @@
 	"icon": "feedback",
 	"textdomain": "11zwo",
 	"attributes": {
-		"kicker": {
-			"type": "string",
-			"default": "In zwei Schritten dabei"
-		},
 		"title": {
 			"type": "string",
 			"default": "Mach mit."
@@ -19,72 +15,23 @@
 			"type": "string",
 			"default": "Ohne Vorerfahrung!"
 		},
-		"description": {
-			"type": "string",
-			"default": "Kein Anschreiben, kein Lebenslauf. Sag uns nur, wie wir dich am besten erreichen — der Rest passiert bei einem Kaffee im Gerätehaus."
-		},
-		"datenschutzPageId": {
-			"type": "number",
-			"default": 0
-		},
-		"badge": {
-			"type": "string",
-			"default": "Der Kaffee geht auf uns!"
-		},
-		"image1Id": {
-			"type": "number",
-			"default": 0
-		},
-		"image1Url": {
-			"type": "string",
-			"default": ""
-		},
-		"image2Id": {
-			"type": "number",
-			"default": 0
-		},
-		"image2Url": {
-			"type": "string",
-			"default": ""
-		},
-		"steps": {
-			"type": "array",
-			"default": [
-				{
-					"title": "Du meldest dich",
-					"text": "Name und Kontakt reichen – kein Anschreiben, kein Lebenslauf."
-				},
-				{
-					"title": "Wir melden uns bei dir",
-					"text": "Jemand aus der passenden Gruppe ruft an oder schreibt dir und beantwortet deine Fragen."
-				},
-				{
-					"title": "Auf einen Kaffee ins Gerätehaus",
-					"text": "Du lernst die Truppe und die Fahrzeuge kennen und entscheidest dann ganz in Ruhe."
-				}
-			]
-		},
 		"interests": {
 			"type": "array",
 			"default": [
 				{
 					"label": "Aktive Feuerwehr",
-					"hint": "Ab 16 Jahren, echte Einsätze",
 					"gruppe": "aktive"
 				},
 				{
 					"label": "Jugendfeuerwehr",
-					"hint": "Für Kids ab 8 Jahren",
 					"gruppe": "jugend"
 				},
 				{
 					"label": "Fördermitglied",
-					"hint": "Unterstützen ohne Uniform",
 					"gruppe": "verein"
 				},
 				{
 					"label": "Erstmal nur schnuppern",
-					"hint": "Kaffee, Halle, Fragen",
 					"gruppe": "aktive"
 				}
 			]

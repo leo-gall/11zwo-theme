@@ -1,7 +1,7 @@
 /**
  * Einsätze-Seite als Single-Page-App: Jahreswechsel lädt nur die Ansicht neu
  * (AJAX, Adresse per History-API), die Legende filtert die Tabelle nach
- * Einsatzart, ohne die Seite zu verlassen.
+ * Einsatzart und ein Klick auf eine Zeile klappt die Details darunter auf.
  */
 ( function () {
 	var bereich = document.querySelector( '[data-einsaetze]' );
@@ -12,10 +12,12 @@
 	var seite  = window.location.href.split( '?' )[ 0 ].split( '#' )[ 0 ];
 
 	function filtere( art ) {
-		var zeilen  = inhalt.querySelectorAll( 'tbody tr' );
-		zeilen.forEach( function ( zeile ) {
-			var passt = ! art || zeile.dataset.art === art;
-			zeile.hidden = ! passt;
+		inhalt.querySelectorAll( '[data-zeile]' ).forEach( function ( zeile ) {
+			zeile.hidden = !! art && zeile.dataset.art !== art;
+			if ( zeile.hidden ) {
+				aufklappen( zeile, false );
+			}
+			zeile.nextElementSibling.hidden = zeile.hidden;
 		} );
 		inhalt.querySelectorAll( '[data-filter]' ).forEach( function ( knopf ) {
 			knopf.setAttribute( 'aria-pressed', knopf.dataset.filter === art ? 'true' : 'false' );
@@ -23,6 +25,30 @@
 		inhalt.querySelectorAll( 'svg [data-art]' ).forEach( function ( teil ) {
 			teil.style.opacity = ! art || teil.dataset.art === art ? '1' : '.2';
 		} );
+	}
+
+	function aufklappen( zeile, offen ) {
+		var knopf = zeile.querySelector( '[data-details]' );
+		var details = document.getElementById( knopf.getAttribute( 'aria-controls' ) );
+		knopf.setAttribute( 'aria-expanded', offen ? 'true' : 'false' );
+		zeile.toggleAttribute( 'data-offen', offen );
+		details.toggleAttribute( 'data-offen', offen );
+	}
+
+	function breiteMerken() {
+		var tabelle = inhalt.querySelector( '[data-einsaetze-tabelle]' );
+		if ( tabelle ) {
+			tabelle.style.setProperty( '--einsatz-breite', tabelle.clientWidth + 'px' );
+		}
+	}
+
+	function ausAdresse() {
+		var zeile = window.location.hash && inhalt.querySelector( window.location.hash + '[data-zeile]' );
+		if ( zeile ) {
+			aufklappen( zeile, true );
+			// Erst nach dem Laden scrollen, sonst verschieben nachladende Bilder die Zeile wieder.
+			window.addEventListener( 'load', function () { zeile.scrollIntoView( { block: 'start' } ); } );
+		}
 	}
 
 	function ladeJahr( jahr, verlauf ) {
@@ -35,6 +61,7 @@
 					throw new Error();
 				}
 				inhalt.innerHTML = antwort.data.html;
+				breiteMerken();
 				inhalt.style.opacity = '';
 				if ( verlauf ) {
 					history.pushState( { jahr: jahr }, '', seite + '?einsatz_jahr=' + jahr );
@@ -62,8 +89,17 @@
 		var knopf = e.target.closest( '[data-filter]' );
 		if ( knopf ) {
 			filtere( 'true' === knopf.getAttribute( 'aria-pressed' ) ? '' : knopf.dataset.filter );
+			return;
+		}
+		var zeile = e.target.closest( '[data-zeile]' );
+		if ( zeile ) {
+			aufklappen( zeile, 'true' !== zeile.querySelector( '[data-details]' ).getAttribute( 'aria-expanded' ) );
 		}
 	} );
+
+	breiteMerken();
+	window.addEventListener( 'resize', breiteMerken );
+	ausAdresse();
 
 	window.addEventListener( 'popstate', function () {
 		var jahr = new URL( window.location.href ).searchParams.get( 'einsatz_jahr' ) || '';

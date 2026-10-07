@@ -1,17 +1,10 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { exit; }
-$interests   = $attributes['interests'] ?? array();
-$kicker      = $attributes['kicker'] ?? '';
-$title       = $attributes['title'] ?? '';
-$title_hand  = $attributes['titleHand'] ?? '';
-$description = $attributes['description'] ?? '';
-$steps       = array_values( array_filter( $attributes['steps'] ?? array(), function ( $step ) {
-	return ! empty( $step['title'] );
-} ) );
-$datenschutz_id  = (int) ( $attributes['datenschutzPageId'] ?? 0 );
-$datenschutz_url = $datenschutz_id ? get_permalink( $datenschutz_id ) : '';
-$datenschutz_url = $datenschutz_url ?: home_url( '/datenschutzerklaerung/' );
-$post_id = get_the_ID();
+$interests       = $attributes['interests'] ?? array();
+$title           = $attributes['title'] ?? '';
+$title_hand      = $attributes['titleHand'] ?? '';
+$datenschutz_url = get_privacy_policy_url() ?: home_url( '/datenschutzerklaerung/' );
+$post_id         = get_the_ID();
 // Vorauswahl per Link, z. B. /?interesse=verein#mitmachen — passt auf das erste Interesse, dessen Name das Stichwort enthält.
 $vorauswahl = 0;
 $wunsch     = isset( $_GET['interesse'] ) ? sanitize_title( wp_unslash( $_GET['interesse'] ) ) : '';
@@ -27,19 +20,15 @@ if ( $wunsch ) {
 		}
 	}
 }
-$status  = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET['mitmachen'] ) ) : '';
-?>
-<?php
-$feld      = 'elfzwo-feld mt-2';
+$status = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET['mitmachen'] ) ) : '';
+$feld   = 'elfzwo-feld mt-2';
 ?>
 <section id="mitmachen" class="scroll-mt-28 bg-signal text-white">
 	<div class="mx-auto max-w-7xl px-5 py-14 md:px-8 md:py-20">
 	<div class="grid items-center gap-10 lg:grid-cols-[2fr_3fr] lg:gap-16">
 		<div>
-			<?php if ( ! elfzwo_kopf_uebernommen( 'elfzwo/mitmachen-form' ) ) : ?>
-				<h2 class="font-display text-3xl font-black text-white md:text-5xl"><?php echo esc_html( $title ); ?></h2>
-			<?php endif; ?>
-			<p class="mt-4 max-w-md text-lg text-white/90"><?php echo esc_html( $title_hand ? $title_hand . ' Hinterlass uns deine Kontaktdaten, wir melden uns bei dir.' : 'Hinterlass uns deine Kontaktdaten, wir melden uns bei dir.' ); ?></p>
+			<h2 class="font-display text-3xl font-black text-white md:text-5xl"><?php echo esc_html( $title ); ?></h2>
+			<p class="mt-4 max-w-md text-lg text-white/90"><?php echo esc_html( trim( $title_hand . ' Hinterlass uns deine Kontaktdaten, wir melden uns bei dir.' ) ); ?></p>
 		</div>
 		<div id="formular" class="scroll-mt-28">
 			<?php if ( 'success' === $status ) : ?>
@@ -78,7 +67,7 @@ $feld      = 'elfzwo-feld mt-2';
 							<span class="elfzwo-submit-idle">Absenden</span>
 							<span class="elfzwo-submit-busy hidden">Wird gesendet …</span>
 						</button>
-						<p class="text-sm text-white/80">Deine Angaben nutzen wir nur für die Kontaktaufnahme (<a href="<?php echo esc_url( $datenschutz_url ); ?>" class="underline underline-offset-2 hover:text-white">Datenschutz</a>).</p>
+						<p class="text-sm text-white/80">Mit dem Absenden dieses Formulars wird unsere <a href="<?php echo esc_url( $datenschutz_url ); ?>" class="underline underline-offset-2 hover:text-white">Datenschutzerklärung</a> akzeptiert.</p>
 					</div>
 				</form>
 			<?php endif; ?>

@@ -51,12 +51,6 @@ h1, h2, h1.font-display, h2.font-display {
   color: var(--smoke);
 }
 
-/* Rot-weiße Warnstreifen als Trenner, wie auf Einsatzfahrzeugen. */
-.elfzwo-warnstreifen {
-  height: 6px;
-  background: repeating-linear-gradient(-45deg, var(--signal) 0 10px, #fff 10px 20px);
-}
-
 .font-hand {
   font-family: "Titillium Web", ui-sans-serif, system-ui, sans-serif;
 }
@@ -133,12 +127,6 @@ h1, h2, h1.font-display, h2.font-display {
   padding: 0.625rem 1.25rem;
   font-size: 0.8125rem;
   line-height: 1.25rem;
-}
-
-.elfzwo-btn-icon {
-  width: 2.75rem;
-  height: 2.75rem;
-  padding: 0;
 }
 
 .elfzwo-btn-primary {
@@ -263,93 +251,6 @@ h1, h2, h1.font-display, h2.font-display {
   border-color: var(--border);
 }
 
-/* Checklist im Feature-Panel (Tailwind-Arbitrary-Selektoren mit "&" werden
-   von WordPresss the_content-Filtern (convert_chars) kaputt escaped, daher
-   feste Klassen statt [&_li]:... im Block-Markup). */
-.elfzwo-feature-list ul {
-  display: grid;
-  gap: 0.75rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-@media (min-width: 640px) {
-  .elfzwo-feature-list ul {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.elfzwo-feature-list li {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  border-bottom: 1px solid var(--border);
-  padding: 0.625rem 0;
-  font-size: 0.9375rem;
-  font-weight: 600;
-}
-
-.elfzwo-feature-list li::before {
-  content: "";
-  display: inline-block;
-  width: 1.25rem;
-  height: 1.25rem;
-  flex-shrink: 0;
-  background-color: var(--signal);
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 469.933 469.933'%3E%3Cpath fill='white' d='M429.2,44.6c-3.2-5.7-8.4-8.9-14.6-8.9c-3.4,0-6.9,1.0-9.9,2.8 c-2.0,0.9-3.7,2.1-5.3,3.7c-92.6,92.5-171.4,169.4-254.2,242.7l-43.4-52.8 c-4.2-5.1-8.9-6.2-12.1-6.2c-3.8,0-7.7,1.5-10.7,4.1l-0.7,0.3 c-23.5,15.1-45.6,27.8-67.3,38.8c-5.7,2.9-9.1,7.9-9.3,13.9c-2.6,6.5-1.1,13.5,4.2,18.6 c19.4,18.6,37.5,39.2,55.0,59.1c19.1,21.7,38.9,44.2,60.6,64.3c0.7,0.7,1.6,1.3,2.5,2.0 c3.2,4.3,7.7,6.7,12.4,6.7c3.3,0,6.6-1.1,9.7-3.5c60.7-45.8,114.8-97.5,155.2-137.4 c11.8-11.7,23.7-23.4,35.6-35.1c41.7-41.0,84.9-83.4,125.7-126.5c2.2-2.3,3.7-5.0,4.5-8.0 c3.5-5.5,3.4-12.0-0.4-17.9C452.7,84.2,440.4,64.3,429.2,44.6z M429.1,114.1 c-30.0,31.3-61.6,62.4-92.1,92.5c-16.1,15.8-32.1,31.7-48.1,47.7 c-45.5,45.5-95.3,93.6-150.7,136.7c-18.1-17.7-35.1-37.0-51.6-55.7c-12.8-14.5-26.1-29.6-39.9-43.8 c12.4-6.7,25.0-14.1,38.4-22.5l45.1,54.7c4.2,5.1,8.9,6.2,12.1,6.2c4.1,0,8.2-1.7,11.6-4.8 c1.2-0.6,2.2-1.4,3.2-2.3c88.6-77.6,173.7-160.9,252.5-239.5C415.4,92.7,421.8,102.8,429.1,114.1 z'/%3E%3C/svg%3E") no-repeat center / 100%;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 469.933 469.933'%3E%3Cpath fill='white' d='M429.2,44.6c-3.2-5.7-8.4-8.9-14.6-8.9c-3.4,0-6.9,1.0-9.9,2.8 c-2.0,0.9-3.7,2.1-5.3,3.7c-92.6,92.5-171.4,169.4-254.2,242.7l-43.4-52.8 c-4.2-5.1-8.9-6.2-12.1-6.2c-3.8,0-7.7,1.5-10.7,4.1l-0.7,0.3 c-23.5,15.1-45.6,27.8-67.3,38.8c-5.7,2.9-9.1,7.9-9.3,13.9c-2.6,6.5-1.1,13.5,4.2,18.6 c19.4,18.6,37.5,39.2,55.0,59.1c19.1,21.7,38.9,44.2,60.6,64.3c0.7,0.7,1.6,1.3,2.5,2.0 c3.2,4.3,7.7,6.7,12.4,6.7c3.3,0,6.6-1.1,9.7-3.5c60.7-45.8,114.8-97.5,155.2-137.4 c11.8-11.7,23.7-23.4,35.6-35.1c41.7-41.0,84.9-83.4,125.7-126.5c2.2-2.3,3.7-5.0,4.5-8.0 c3.5-5.5,3.4-12.0-0.4-17.9C452.7,84.2,440.4,64.3,429.2,44.6z M429.1,114.1 c-30.0,31.3-61.6,62.4-92.1,92.5c-16.1,15.8-32.1,31.7-48.1,47.7 c-45.5,45.5-95.3,93.6-150.7,136.7c-18.1-17.7-35.1-37.0-51.6-55.7c-12.8-14.5-26.1-29.6-39.9-43.8 c12.4-6.7,25.0-14.1,38.4-22.5l45.1,54.7c4.2,5.1,8.9,6.2,12.1,6.2c4.1,0,8.2-1.7,11.6-4.8 c1.2-0.6,2.2-1.4,3.2-2.3c88.6-77.6,173.7-160.9,252.5-239.5C415.4,92.7,421.8,102.8,429.1,114.1 z'/%3E%3C/svg%3E") no-repeat center / 100%;
-}
-
-/* Cream-Box (z. B. "Für Eltern"-Kurzinfo auf der Jugendfeuerwehr-Seite) */
-.elfzwo-cream-box {
-  border-radius: 0;
-  background-color: var(--cream);
-  padding: 1.5rem;
-}
-
-.elfzwo-cream-box .wp-block-heading {
-  font-family: "Titillium Web", ui-sans-serif, system-ui, sans-serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--signal);
-}
-
-.elfzwo-cream-box ul {
-  margin-top: 0.75rem;
-  padding: 0;
-  list-style: none;
-  font-size: 0.875rem;
-  color: var(--foreground);
-}
-
-.elfzwo-cream-box li {
-  margin-top: 0.5rem;
-}
-
-.elfzwo-cream-box li::before {
-  content: "• ";
-}
-
-.elfzwo-cream-box .elfzwo-cream-box-contact {
-  margin-top: 1rem;
-}
-
-/* Termin-Beschreibungstext (native post_content innerhalb der Termin-Karte) */
-.elfzwo-termin-content a {
-  text-decoration: underline;
-}
-
-.elfzwo-termin-content h2 {
-  font-family: "Titillium Web", ui-sans-serif, system-ui, sans-serif;
-  font-size: 1.25rem;
-}
-
-.elfzwo-termin-content ul {
-  list-style: disc;
-  padding-left: 1.5rem;
-}
-
 /* FAQ-Akkordeon: Höhe wird per Web-Animations-API (assets/js/faq-accordion.js) animiert */
 .elfzwo-faq-item summary {
   list-style: none;
@@ -399,67 +300,6 @@ body.admin-bar header.sticky {
   body.admin-bar header.sticky {
     top: 46px;
   }
-}
-
-/* Einsatzchronik-Jahres-Chips: horizontal scrollbar, aber ohne sichtbaren Scrollbalken (YouTube-Filterleisten-Look).
-   Die äußeren Chips laufen per Maske weich aus -- nur auf der Seite, in die noch
-   gescrollt werden kann (Klassen setzt assets/js/einsatzliste.js). */
-@property --elfzwo-fade-left {
-  syntax: '<length>';
-  inherits: false;
-  initial-value: 0px;
-}
-
-@property --elfzwo-fade-right {
-  syntax: '<length>';
-  inherits: false;
-  initial-value: 0px;
-}
-
-.elfzwo-einsatzliste-years {
-  scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--elfzwo-fade-left), #000 calc(100% - var(--elfzwo-fade-right)), transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0, #000 var(--elfzwo-fade-left), #000 calc(100% - var(--elfzwo-fade-right)), transparent 100%);
-  transition: --elfzwo-fade-left 0.2s ease, --elfzwo-fade-right 0.2s ease;
-}
-
-.elfzwo-einsatzliste-years.is-fade-left {
-  --elfzwo-fade-left: 48px;
-}
-
-.elfzwo-einsatzliste-years.is-fade-right {
-  --elfzwo-fade-right: 48px;
-}
-
-.elfzwo-einsatzliste-years::-webkit-scrollbar {
-  display: none;
-}
-
-/* Unsichtbare Klick-Zonen an den Rändern der Jahres-Chip-Leiste: kein Pfeil-Icon,
-   kein optischer Verlauf (der sah über den abgerundeten Pillen unsauber/
-   verwaschen aus) -- rein funktionale Hitbox, ein Klick scrollt die Leiste
-   per JS smooth weiter (assets/js/einsatzliste.js). Per JS an/aus geschaltet,
-   je nachdem ob in die jeweilige Richtung noch was kommt. */
-.elfzwo-einsatzliste-years-edge {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 28px;
-  z-index: 2;
-  cursor: pointer;
-  pointer-events: none;
-}
-
-.elfzwo-einsatzliste-years-edge.is-active {
-  pointer-events: auto;
-}
-
-.elfzwo-einsatzliste-years-edge--left {
-  left: 0;
-}
-
-.elfzwo-einsatzliste-years-edge--right {
-  right: 0;
 }
 
 /* Klickpunkte auf den Fahrzeugbildern (Block "Fahrzeuge-Liste"). */
@@ -573,24 +413,8 @@ textarea.elfzwo-feld {
 
 .elfzwo-lightbox img {
   max-width: 100%;
-  max-height: calc(100vh - 8rem);
+  max-height: calc(100vh - 7rem);
   object-fit: contain;
-}
-
-.elfzwo-lightbox-text {
-  margin-top: 0.75rem;
-  max-width: 48rem;
-  text-align: center;
-  font-size: 0.95rem;
-  color: rgb(255 255 255 / 0.85);
-}
-
-.elfzwo-lightbox-zaehler {
-  position: absolute;
-  top: 1.1rem;
-  left: 1.5rem;
-  font-size: 0.9rem;
-  color: rgb(255 255 255 / 0.75);
 }
 
 .elfzwo-lightbox button {
@@ -615,35 +439,72 @@ textarea.elfzwo-feld {
   right: 0.75rem;
 }
 
-.elfzwo-lightbox-vor,
-.elfzwo-lightbox-nach {
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 3.5rem !important;
-}
-
-.elfzwo-lightbox-vor {
-  left: 0.75rem;
-}
-
-.elfzwo-lightbox-nach {
-  right: 0.75rem;
-}
-
-.elfzwo-lightbox.is-einzeln .elfzwo-lightbox-vor,
-.elfzwo-lightbox.is-einzeln .elfzwo-lightbox-nach {
-  display: none;
-}
-
 @media (max-width: 640px) {
   .elfzwo-lightbox {
     padding: 3.5rem 0.75rem;
   }
+}
 
-  .elfzwo-lightbox-vor,
-  .elfzwo-lightbox-nach {
-    top: auto;
-    bottom: 0.5rem;
-    transform: none;
+
+/* Reine Textseiten (Impressum, Datenschutz): Abstand vor dem Footer, egal wie der Inhalt im Editor gesetzt ist. */
+main > .prose:last-child {
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  main > .prose:last-child {
+    padding-bottom: 6rem;
+  }
+}
+
+/* Einsatz-Details unter der Tabellenzeile (assets/js/einsaetze.js): Höhe über
+   grid-template-rows von 0fr auf 1fr, der Inhalt blendet leicht versetzt ein. */
+tr[data-zeile][data-offen] {
+  background: var(--cream);
+}
+
+.elfzwo-einsatz-details > td {
+  padding: 0;
+}
+
+.elfzwo-einsatz-klappe {
+  /* Bleibt in der auf dem Handy seitlich scrollbaren Tabelle am linken Rand und so breit wie der sichtbare Ausschnitt. */
+  position: sticky;
+  left: 0;
+  max-width: var(--einsatz-breite, none);
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.elfzwo-einsatz-klappe > div {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.elfzwo-einsatz-klappe-inhalt {
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  transition: opacity 0.2s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.elfzwo-einsatz-details[data-offen] {
+  border-bottom: 1px solid var(--border);
+}
+
+.elfzwo-einsatz-details[data-offen] .elfzwo-einsatz-klappe {
+  grid-template-rows: 1fr;
+}
+
+.elfzwo-einsatz-details[data-offen] .elfzwo-einsatz-klappe-inhalt {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.08s, 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elfzwo-einsatz-klappe,
+  .elfzwo-einsatz-klappe-inhalt {
+    transition: none;
   }
 }

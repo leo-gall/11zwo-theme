@@ -38,14 +38,6 @@
 			"type": "string",
 			"default": ""
 		},
-		"bild2Id": {
-			"type": "number",
-			"default": 0
-		},
-		"bild2Url": {
-			"type": "string",
-			"default": ""
-		},
 		"buttonText": {
 			"type": "string",
 			"default": "Mach mit!"
