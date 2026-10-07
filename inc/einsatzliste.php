@@ -167,7 +167,7 @@ function elfzwo_einsaetze_ansicht( $jahr, $seite_url ) {
 				<tbody>
 					<?php foreach ( $im_jahr as $e ) : ?>
 						<?php $id = $e['post']->ID; ?>
-						<tr id="einsatz-<?php echo esc_attr( $id ); ?>" class="cursor-pointer scroll-mt-32 border-b border-border hover:bg-ash" data-art="<?php echo esc_attr( $e['art'] ); ?>" data-zeile>
+						<tr id="einsatz-<?php echo esc_attr( $id ); ?>" class="cursor-pointer scroll-mt-32 border-b border-border hover:bg-ash" data-art="<?php echo esc_attr( $e['art'] ); ?>" data-zeile data-einsatz-nummer="<?php echo esc_attr( $e['nummer'] ); ?>" data-einsatz-titel="<?php echo esc_attr( wp_specialchars_decode( $e['post']->post_title, ENT_QUOTES ) ); ?>" data-einsatz-datum="<?php echo esc_attr( date_i18n( 'd.m.Y H:i', $e['zeit'] ) ); ?>" data-einsatz-ort="<?php echo esc_attr( $e['ort'] ); ?>">
 							<td class="py-3 pr-4 text-smoke"><?php echo esc_html( $e['nummer'] ? $e['nummer'] : '' ); ?></td>
 							<td class="whitespace-nowrap py-3 pr-4"><?php echo esc_html( date_i18n( 'd.m.Y', $e['zeit'] ) ); ?></td>
 							<td class="whitespace-nowrap py-3 pr-4 text-smoke"><?php echo esc_html( date_i18n( 'H:i', $e['zeit'] ) ); ?> Uhr</td>

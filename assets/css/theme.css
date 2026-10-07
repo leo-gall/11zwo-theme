@@ -246,6 +246,45 @@ h1, h2, h1.font-display, h2.font-display {
   height: auto;
 }
 
+.prose blockquote {
+  border-left: 4px solid var(--signal);
+  padding-left: 1.25em;
+  font-size: 1.15em;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.elfzwo-beitrag img,
+.prose figure img,
+.prose .wp-block-image img {
+  width: 100%;
+}
+
+.prose figcaption {
+  margin-top: 0.5em;
+  font-size: 0.875rem;
+  color: var(--smoke);
+}
+
+.prose .wp-block-gallery {
+  gap: 0.5rem;
+}
+
+/* Beitrags-Detailseite: Einstiegsabsatz größer, Bilder dürfen breiter als der Text werden. */
+.elfzwo-beitrag > p:first-child {
+  font-size: 1.25em;
+  line-height: 1.6;
+  color: var(--foreground);
+}
+
+@media (min-width: 1024px) {
+  .elfzwo-beitrag > .wp-block-image,
+  .elfzwo-beitrag > .wp-block-gallery {
+    margin-left: -6rem;
+    margin-right: -6rem;
+  }
+}
+
 .prose hr {
   margin: 2em 0;
   border-color: var(--border);
@@ -507,4 +546,21 @@ tr[data-zeile][data-offen] {
   .elfzwo-einsatz-klappe-inhalt {
     transition: none;
   }
+}
+
+/* 404: Seite genau bildschirmhoch und nie scrollbar, der rote Bereich füllt den Platz bis zum Footer. */
+html:has(body.error404) {
+  overflow: hidden;
+}
+
+body.error404 {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+body.error404.admin-bar {
+  height: calc(100dvh - var(--wp-admin--admin-bar--height, 32px));
 }

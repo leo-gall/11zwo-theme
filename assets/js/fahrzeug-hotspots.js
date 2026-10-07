@@ -36,14 +36,6 @@
 		next.disabled = i === spots.length - 1;
 		zaehler.textContent = spots.length > 1 ? ( i + 1 ) + ' / ' + spots.length : '';
 		dialog.scrollTop = 0;
-
-		if ( window.umami && typeof window.umami.track === 'function' ) {
-			var article = spot.closest( '[data-fahrzeug]' );
-			window.umami.track( 'Gerätefach geöffnet', {
-				fahrzeug: article ? article.getAttribute( 'data-fahrzeug' ) : '',
-				fach: titel ? titel.textContent.trim() : String( i + 1 ),
-			} );
-		}
 	}
 
 	document.addEventListener( 'click', function ( e ) {

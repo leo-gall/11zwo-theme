@@ -1,102 +1,81 @@
 /**
- * Eigene Umami-Events (siehe inc/analytics.php). Seitenaufrufe zählt Umami
- * selbst; hier kommen per Event-Delegation die Aktionen dazu, die für die
- * Feuerwehr interessant sind: Kontaktaufnahmen, Downloads, Mitmachen,
- * Klicks auf Call-to-Action-Buttons und die Nutzung von Liste/FAQ/Menü.
+ * Eigene Umami-Events (siehe inc/analytics.php): Mach-mit-Formular, Downloads,
+ * angesehene Einsätze (assets/js/einsaetze.js) und Beiträge. Seitenaufrufe
+ * zählt Umami selbst. Das Umami-Skript lädt "defer"; Events davor warten in
+ * einer Schlange.
  */
 ( function () {
+	var warteschlange = [];
+
+	function bereit() {
+		return window.umami && typeof window.umami.track === 'function';
+	}
+
 	function track( name, data ) {
-		if ( window.umami && typeof window.umami.track === 'function' ) {
+		if ( bereit() ) {
 			window.umami.track( name, data );
+		} else {
+			warteschlange.push( [ name, data ] );
 		}
 	}
 
-	function text( el ) {
-		return ( el.textContent || '' ).replace( /\s+/g, ' ' ).trim().slice( 0, 80 );
-	}
+	window.elfzwoTrack = track;
 
-	function seite() {
-		return window.location.pathname;
-	}
+	window.addEventListener( 'load', function () {
+		if ( bereit() ) {
+			warteschlange.splice( 0 ).forEach( function ( e ) { window.umami.track( e[ 0 ], e[ 1 ] ); } );
+		}
+	} );
 
 	document.addEventListener(
 		'click',
 		function ( e ) {
-			var target = e.target;
-			if ( ! target || ! target.closest ) {
+			var a = e.target && e.target.closest && e.target.closest( 'a[href]' );
+			if ( ! a ) {
 				return;
 			}
-
-			var a = target.closest( 'a[href]' );
-			if ( a ) {
-				var href = a.getAttribute( 'href' );
-				var url;
-				try {
-					url = new URL( href, window.location.href );
-				} catch ( err ) {
-					return;
-				}
-
-				if ( url.protocol === 'tel:' ) {
-					track( 'Anruf', { nummer: decodeURIComponent( url.pathname ), seite: seite() } );
-				} else if ( url.protocol === 'mailto:' ) {
-					track( 'E-Mail', { adresse: decodeURIComponent( url.pathname ), seite: seite() } );
-				} else if ( a.hasAttribute( 'download' ) || url.pathname.indexOf( '/wp-content/uploads/' ) !== -1 ) {
-					track( 'Download', { datei: url.pathname.split( '/' ).pop(), titel: text( a ), seite: seite() } );
-				} else if ( url.origin !== window.location.origin ) {
-					track( 'Externer Link', { ziel: url.hostname, url: url.href.slice( 0, 200 ), seite: seite() } );
-				} else if ( a.classList.contains( 'elfzwo-btn-primary' ) ) {
-					track( 'CTA', { text: text( a ), ziel: url.pathname, seite: seite() } );
-				}
+			var url;
+			try {
+				url = new URL( a.getAttribute( 'href' ), window.location.href );
+			} catch ( err ) {
 				return;
 			}
-
-			var more = target.closest( '[data-next-page]' );
-			if ( more ) {
-				track( 'Mehr Beiträge geladen', { seite: more.getAttribute( 'data-next-page' ) } );
+			if ( ! a.hasAttribute( 'download' ) && url.pathname.indexOf( '/wp-content/uploads/' ) === -1 ) {
 				return;
 			}
-
-			var chip = target.closest( '.elfzwo-einsatzliste-year-chip' );
-			if ( chip ) {
-				track( 'Einsatzjahr gewählt', { jahr: chip.getAttribute( 'data-year' ) || text( chip ) } );
-				return;
-			}
-
-			var summary = target.closest( '.elfzwo-faq-item > summary' );
-			if ( summary && ! summary.parentNode.open ) {
-				track( 'FAQ geöffnet', { frage: text( summary ), seite: seite() } );
-				return;
-			}
-
-			var toggle = target.closest( '#mobile-toggle' );
-			if ( toggle && toggle.getAttribute( 'aria-expanded' ) !== 'true' ) {
-				track( 'Mobiles Menü geöffnet' );
-			}
+			var datei = decodeURIComponent( url.pathname.split( '/' ).pop() );
+			track( 'Download', {
+				titel: a.dataset.downloadTitel || ( a.textContent || '' ).replace( /\s+/g, ' ' ).trim().slice( 0, 120 ) || datei,
+				kategorie: a.dataset.downloadKategorie || '',
+				datei: datei,
+				typ: ( datei.split( '.' ).pop() || '' ).toUpperCase(),
+				url: url.href,
+				seite: window.location.pathname,
+			} );
 		},
 		true
 	);
 
-	// Mach-mit-Formular: Absenden (mit gewähltem Interesse) und Erfolgsseite.
 	document.addEventListener( 'submit', function ( e ) {
 		var form = e.target;
-		if ( ! form || ! form.querySelector || ! form.querySelector( 'input[name="action"][value="elfzwo_mitmachen"]' ) ) {
+		if ( ! form || ! form.elements || ! form.elements.action || 'elfzwo_mitmachen' !== form.elements.action.value ) {
 			return;
 		}
-		var interesse = form.querySelector( 'input[name="interesse"]:checked' );
-		track( 'Mitmachen abgeschickt', { interesse: interesse ? interesse.value : '', seite: seite() } );
+		track( 'Mach mit abgeschickt', {
+			name: form.elements.name.value.trim(),
+			email: form.elements.kontakt.value.trim(),
+			interesse: form.elements.interesse ? form.elements.interesse.value : '',
+		} );
 	} );
 
-	var status = new URLSearchParams( window.location.search ).get( 'mitmachen' );
-	if ( status === 'success' || status === 'error' ) {
-		var report = function () {
-			track( status === 'success' ? 'Mitmachen erfolgreich' : 'Mitmachen fehlerhaft', { seite: seite() } );
-		};
-		// Das Umami-Skript lädt "defer" — erst nach dem Laden ist umami.track verfügbar.
-		if ( window.umami ) {
-			report();
-		} else {
-			window.addEventListener( 'load', report );
+	document.addEventListener( 'DOMContentLoaded', function () {
+		var beitrag = document.querySelector( '[data-beitrag]' );
+		if ( beitrag ) {
+			track( 'Beitrag angesehen', {
+				beitrag: beitrag.dataset.beitrag,
+				datum: beitrag.dataset.beitragDatum,
+				url: window.location.pathname,
+			} );
 		}
-	}
+	} );
 } )();

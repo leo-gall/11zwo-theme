@@ -11,14 +11,14 @@ $elfzwo_footer_cta_url = elfzwo_mitmachen_url( is_page( array( 'jugend', 'jugend
 			<div class="mx-auto max-w-7xl px-5 py-14 md:px-8 md:py-16">
 				<div>
 					<h2 class="font-display text-3xl text-white md:text-5xl">Werde Teil der Mannschaft!</h2>
-					<p class="mt-4 max-w-lg text-lg text-white/90">Ob Quereinsteiger, Jugendliche oder Fördermitglied – wir freuen uns über alle, die mit anpacken.</p>
+					<p class="mt-4 max-w-lg text-lg text-white/90">Werde Teil der Feuerwehr Greifenberg und unterstütze dein Dorf in der aktiven Mannschaft, der Jugend oder als Fördermitglied.</p>
 					<a href="<?php echo esc_url( $elfzwo_footer_cta_url ); ?>" class="elfzwo-btn elfzwo-btn-outline-light mt-6">Mach mit!</a>
 				</div>
 			</div>
 		</div>
 	<?php endif; ?>
 	<div class="bg-signal">
-		<div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 <?php echo $elfzwo_footer_cta ? 'border-t border-white/25' : ''; ?> px-5 py-6 text-sm md:px-8">
+		<div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 <?php echo $elfzwo_footer_cta || is_404() ? 'border-t border-white/25' : ''; ?> px-5 py-6 text-sm md:px-8">
 			<span class="flex flex-wrap items-center gap-x-5 gap-y-1">
 				<span>© <?php echo esc_html( gmdate( 'Y' ) ); ?> Freiwillige Feuerwehr Greifenberg e.V.</span>
 			</span>

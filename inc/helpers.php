@@ -396,6 +396,60 @@ function elfzwo_migrate_seitenkopf() {
 }
 add_action( 'init', 'elfzwo_migrate_seitenkopf', 30 );
 
+/**
+ * Mach-mit-Formular: Empfänger hängen jetzt direkt an jeder Auswahl statt an
+ * den Gruppen Aktive/Jugend/Verein; eigene Betreffs und Texte entfallen. Der
+ * Satz unter der Überschrift ist jetzt komplett editierbar (statt "titleHand"
+ * plus festem Hinweis).
+ */
+function elfzwo_migrate_mitmachen_empfaenger() {
+	if ( get_option( 'elfzwo_mitmachen_empfaenger_migriert' ) ) {
+		return;
+	}
+	update_option( 'elfzwo_mitmachen_empfaenger_migriert', 1 );
+
+	$umbauen = function ( $blocks ) use ( &$umbauen ) {
+		foreach ( $blocks as $i => $b ) {
+			if ( 'elfzwo/mitmachen-form' !== $b['blockName'] ) {
+				$blocks[ $i ]['innerBlocks'] = $umbauen( $b['innerBlocks'] );
+				continue;
+			}
+			$a    = $b['attrs'];
+			$mail = $a['mail'] ?? array();
+			if ( ! isset( $a['interests'] ) && $mail ) {
+				$a['interests'] = array( array( 'label' => 'Aktive Feuerwehr' ), array( 'label' => 'Jugendfeuerwehr' ), array( 'label' => 'Fördermitglied' ), array( 'label' => 'Erstmal nur schnuppern' ) );
+			}
+			if ( isset( $a['titleHand'] ) ) {
+				$a['text'] = trim( $a['titleHand'] . ' Hinterlass uns deine Kontaktdaten, wir melden uns bei dir.' );
+			}
+			if ( isset( $a['interests'] ) && $mail ) {
+				foreach ( $a['interests'] as $j => $interest ) {
+					$gruppe = $interest['gruppe'] ?? '';
+					$label  = strtolower( $interest['label'] ?? '' );
+					if ( ! in_array( $gruppe, array( 'aktive', 'jugend', 'verein' ), true ) ) {
+						$gruppe = preg_match( '/jugend|kinder/', $label ) ? 'jugend' : ( preg_match( '/förder|verein/', $label ) ? 'verein' : 'aktive' );
+					}
+					$a['interests'][ $j ] = array(
+						'label'      => $interest['label'] ?? '',
+						'empfaenger' => trim( preg_replace( '/[,;\s]+/', ', ', $mail[ $gruppe ]['empfaenger'] ?? '' ), ', ' ),
+					);
+				}
+			}
+			$blocks[ $i ]['attrs'] = array_diff_key( $a, array_flip( array( 'mail', 'titleHand', 'kicker', 'description', 'steps' ) ) );
+		}
+		return $blocks;
+	};
+
+	foreach ( get_posts( array( 'post_type' => array( 'page', 'post', 'wp_block' ), 'post_status' => 'any', 'posts_per_page' => -1 ) ) as $post ) {
+		if ( false === strpos( $post->post_content, 'wp:elfzwo/mitmachen-form' ) ) {
+			continue;
+		}
+		_wp_put_post_revision( $post );
+		wp_update_post( array( 'ID' => $post->ID, 'post_content' => wp_slash( serialize_blocks( $umbauen( parse_blocks( $post->post_content ) ) ) ) ) );
+	}
+}
+add_action( 'init', 'elfzwo_migrate_mitmachen_empfaenger', 30 );
+
 function elfzwo_lizenzen_weiterleitung() {
 	if ( 'lizenzen' === trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' ) ) {
 		wp_safe_redirect( home_url( '/impressum/#lizenzen' ), 301 );

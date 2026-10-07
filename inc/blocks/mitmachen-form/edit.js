@@ -4,66 +4,24 @@
 	var InspectorControls = wp.blockEditor.InspectorControls;
 	var PanelBody = wp.components.PanelBody;
 	var TextControl = wp.components.TextControl;
-	var TextareaControl = wp.components.TextareaControl;
-	var SelectControl = wp.components.SelectControl;
 	var Button = wp.components.Button;
-
-	var GRUPPEN = [
-		{ value: 'aktive', label: 'Aktive' },
-		{ value: 'jugend', label: 'Jugend/Kinder' },
-		{ value: 'verein', label: 'Verein' },
-	];
-
-	/** Wie elfzwo_mitmachen_gruppe_von() in PHP: Einträge ohne Gruppe anhand des Labels einordnen. */
-	function gruppeVon(item) {
-		if (item.gruppe) {
-			return item.gruppe;
-		}
-		var label = (item.label || '').toLowerCase();
-		if (label.indexOf('jugend') !== -1 || label.indexOf('kinder') !== -1) {
-			return 'jugend';
-		}
-		if (label.indexOf('förder') !== -1 || label.indexOf('verein') !== -1) {
-			return 'verein';
-		}
-		return 'aktive';
-	}
 
 	wp.blocks.registerBlockType('elfzwo/mitmachen-form', {
 		edit: function (props) {
 			var a = props.attributes;
 			var interests = a.interests || [];
-			var mail = a.mail || {};
 
 			function updateItem(idx, key, value) {
 				var next = interests.slice();
-				next[idx] = Object.assign({}, next[idx], (function () {
-					var o = {};
-					o[key] = value;
-					return o;
-				})());
+				var item = Object.assign({}, next[idx]);
+				item[key] = value;
+				next[idx] = item;
 				props.setAttributes({ interests: next });
 			}
 			function removeItem(idx) {
 				var next = interests.slice();
 				next.splice(idx, 1);
 				props.setAttributes({ interests: next });
-			}
-			function addItem() {
-				props.setAttributes({ interests: interests.concat([{ label: '', gruppe: 'aktive' }]) });
-			}
-			function set(key) {
-				return function (v) {
-					var o = {};
-					o[key] = v;
-					props.setAttributes(o);
-				};
-			}
-			function updateMail(gruppe, key, value) {
-				var next = Object.assign({}, mail);
-				next[gruppe] = Object.assign({}, next[gruppe]);
-				next[gruppe][key] = value;
-				props.setAttributes({ mail: next });
 			}
 
 			return el(
@@ -74,57 +32,24 @@
 					el(
 						PanelBody,
 						{ title: 'Text' },
-						el(TextControl, { label: 'Überschrift', value: a.title, onChange: set('title') }),
-						el(TextControl, { label: 'Satz vor dem Hinweis "Hinterlass uns deine Kontaktdaten …"', value: a.titleHand, onChange: set('titleHand') })
+						el(TextControl, { label: 'Überschrift', value: a.title, onChange: function (v) { props.setAttributes({ title: v }); } }),
+						el(wp.components.TextareaControl, { label: 'Text unter der Überschrift', value: a.text, rows: 3, onChange: function (v) { props.setAttributes({ text: v }); } })
 					),
 					el(
 						PanelBody,
-						{ title: 'Auswahlmöglichkeiten', initialOpen: false },
+						{ title: 'Auswahl und Empfänger' },
+						el('p', { style: { color: '#757575' } }, 'Jede Auswahl geht per E-Mail an die angegebenen Adressen (mehrere mit Komma trennen). Leer = Admin-E-Mail der Website.'),
 						interests.map(function (item, idx) {
 							return el(
 								'div',
 								{ key: idx, style: { marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #ddd' } },
-								el(TextControl, { label: 'Label ' + (idx + 1), value: item.label, onChange: function (v) { updateItem(idx, 'label', v); } }),
-								el(SelectControl, {
-									label: 'Anfrage geht an',
-									value: gruppeVon(item),
-									options: GRUPPEN,
-									onChange: function (v) { updateItem(idx, 'gruppe', v); },
-								}),
+								el(TextControl, { label: 'Auswahl ' + (idx + 1), value: item.label || '', onChange: function (v) { updateItem(idx, 'label', v); } }),
+								el(TextControl, { label: 'Geht an', type: 'text', placeholder: 'name@beispiel.de', value: item.empfaenger || '', onChange: function (v) { updateItem(idx, 'empfaenger', v); } }),
 								el(Button, { variant: 'link', isDestructive: true, onClick: function () { removeItem(idx); } }, 'Entfernen')
 							);
 						}),
-						el(Button, { variant: 'secondary', onClick: addItem }, 'Option hinzufügen')
-					),
-					GRUPPEN.map(function (g) {
-						var m = mail[g.value] || {};
-						return el(
-							PanelBody,
-							{ key: g.value, title: 'E-Mail: ' + g.label, initialOpen: false },
-							el(TextareaControl, {
-								label: 'Empfänger',
-								help: 'Eine E-Mail-Adresse pro Zeile. Leer = Admin-E-Mail der Website.',
-								value: m.empfaenger || '',
-								rows: 3,
-								onChange: function (v) { updateMail(g.value, 'empfaenger', v); },
-							}),
-							el(TextControl, {
-								label: 'Betreff',
-								help: 'Platzhalter: {name}',
-								placeholder: 'Neue Mach-mit-Anfrage von {name}',
-								value: m.betreff || '',
-								onChange: function (v) { updateMail(g.value, 'betreff', v); },
-							}),
-							el(TextareaControl, {
-								label: 'Text',
-								help: 'Platzhalter: {name}, {kontakt}, {interesse}',
-								placeholder: 'Name: {name}\nKontakt: {kontakt}\nInteresse: {interesse}',
-								value: m.text || '',
-								rows: 5,
-								onChange: function (v) { updateMail(g.value, 'text', v); },
-							})
-						);
-					})
+						el(Button, { variant: 'secondary', onClick: function () { props.setAttributes({ interests: interests.concat([{ label: '', empfaenger: '' }]) }); } }, 'Auswahl hinzufügen')
+					)
 				),
 				el(ServerSideRender, { block: 'elfzwo/mitmachen-form', attributes: a })
 			);

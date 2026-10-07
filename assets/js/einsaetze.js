@@ -30,6 +30,14 @@
 	function aufklappen( zeile, offen ) {
 		var knopf = zeile.querySelector( '[data-details]' );
 		var details = document.getElementById( knopf.getAttribute( 'aria-controls' ) );
+		if ( offen && 'true' !== knopf.getAttribute( 'aria-expanded' ) && window.elfzwoTrack ) {
+			window.elfzwoTrack( 'Einsatz angesehen', {
+				nummer: zeile.dataset.einsatzNummer,
+				einsatz: zeile.dataset.einsatzTitel,
+				datum: zeile.dataset.einsatzDatum,
+				ort: zeile.dataset.einsatzOrt,
+			} );
+		}
 		knopf.setAttribute( 'aria-expanded', offen ? 'true' : 'false' );
 		zeile.toggleAttribute( 'data-offen', offen );
 		details.toggleAttribute( 'data-offen', offen );

@@ -1,40 +1,81 @@
 <?php
 /**
- * Kommentar-Verhalten: Einsätze können nicht kommentiert werden, die
- * Kommentarverwaltung ist im Backend ausgeblendet (Inhalte laufen über
- * Beiträge), der Kommentar-RSS-Feed bleibt für Leser auffindbar.
+ * Kommentare gibt es auf der ganzen Website nicht: nirgends kommentierbar,
+ * keine Pingbacks, kein Kommentar-Feed, keine Kommentarverwaltung im Backend.
+ * Daneben der RSS-Feed mit Beiträgen und Einsätzen.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Einsätze dürfen nie kommentierbar sein — unabhängig davon, wie der
- * Beitrag gespeichert wird (klassischer Editor, REST-API, Quick Edit).
- */
-function elfzwo_force_close_einsatz_comment_status( $data, $postarr ) {
-	if ( 'einsatz' === $data['post_type'] ) {
-		$data['comment_status'] = 'closed';
-		$data['ping_status']    = 'closed';
+function elfzwo_kommentare_aus_post_types() {
+	foreach ( get_post_types() as $typ ) {
+		remove_post_type_support( $typ, 'comments' );
+		remove_post_type_support( $typ, 'trackbacks' );
 	}
+}
+add_action( 'init', 'elfzwo_kommentare_aus_post_types', 100 );
+
+function elfzwo_kommentare_geschlossen_speichern( $data ) {
+	$data['comment_status'] = 'closed';
+	$data['ping_status']    = 'closed';
 	return $data;
 }
-add_filter( 'wp_insert_post_data', 'elfzwo_force_close_einsatz_comment_status', 10, 2 );
+add_filter( 'wp_insert_post_data', 'elfzwo_kommentare_geschlossen_speichern' );
 
-function elfzwo_force_close_einsatz_comments_open( $open, $post_id ) {
-	if ( 'einsatz' === get_post_type( $post_id ) ) {
-		return false;
-	}
-	return $open;
+add_filter( 'comments_open', '__return_false', 20 );
+add_filter( 'pings_open', '__return_false', 20 );
+add_filter( 'comments_array', '__return_empty_array', 20 );
+add_filter( 'feed_links_show_comments_feed', '__return_false' );
+add_filter( 'rest_allow_anonymous_comments', '__return_false' );
+
+function elfzwo_kommentar_endpunkte_entfernen( $endpoints ) {
+	unset( $endpoints['/wp/v2/comments'], $endpoints['/wp/v2/comments/(?P<id>[\\d]+)'] );
+	return $endpoints;
 }
-add_filter( 'comments_open', 'elfzwo_force_close_einsatz_comments_open', 10, 2 );
-add_filter( 'pings_open', 'elfzwo_force_close_einsatz_comments_open', 10, 2 );
+add_filter( 'rest_endpoints', 'elfzwo_kommentar_endpunkte_entfernen' );
 
-/**
- * Kommentar-Feed (/comments/feed/) bleibt auffindbar: WordPress trägt
- * den Discovery-Link automatisch in <head> ein.
- */
+function elfzwo_pingback_entfernen( $methods ) {
+	unset( $methods['pingback.ping'], $methods['pingback.extensions.getPingbacks'] );
+	return $methods;
+}
+add_filter( 'xmlrpc_methods', 'elfzwo_pingback_entfernen' );
+
+function elfzwo_pingback_header_entfernen( $headers ) {
+	unset( $headers['X-Pingback'] );
+	return $headers;
+}
+add_filter( 'wp_headers', 'elfzwo_pingback_header_entfernen' );
+
+/** Kommentar-Feeds und direkte Kommentar-Posts laufen ins Leere. */
+function elfzwo_kommentar_feed_sperren() {
+	if ( is_comment_feed() ) {
+		wp_safe_redirect( home_url( '/' ), 301 );
+		exit;
+	}
+}
+add_action( 'template_redirect', 'elfzwo_kommentar_feed_sperren', 1 );
+
+function elfzwo_kommentar_posten_sperren() {
+	wp_die( 'Kommentare sind deaktiviert.', '', array( 'response' => 403 ) );
+}
+add_action( 'pre_comment_on_post', 'elfzwo_kommentar_posten_sperren' );
+
+/** Bestehende Beiträge und die Standard-Einstellungen einmalig auf "geschlossen" setzen. */
+function elfzwo_migrate_kommentare_schliessen() {
+	if ( get_option( 'elfzwo_kommentare_geschlossen' ) ) {
+		return;
+	}
+	update_option( 'elfzwo_kommentare_geschlossen', 1 );
+	global $wpdb;
+	$wpdb->query( "UPDATE {$wpdb->posts} SET comment_status = 'closed', ping_status = 'closed' WHERE comment_status <> 'closed' OR ping_status <> 'closed'" );
+	update_option( 'default_comment_status', 'closed' );
+	update_option( 'default_ping_status', 'closed' );
+	update_option( 'default_pingback_flag', 0 );
+}
+add_action( 'init', 'elfzwo_migrate_kommentare_schliessen', 30 );
+
 function elfzwo_theme_support_feed_links() {
 	add_theme_support( 'automatic-feed-links' );
 }
@@ -113,13 +154,11 @@ function elfzwo_skip_canonical_redirect_for_rss_xml( $redirect_url ) {
 }
 add_filter( 'redirect_canonical', 'elfzwo_skip_canonical_redirect_for_rss_xml' );
 
-/**
- * Die Kommentarverwaltung im Backend wird komplett ausgeblendet: Inhalte
- * ("Aktuelles") werden ausschließlich über Beiträge gepflegt, eine
- * separate Kommentar-Moderationsseite braucht es dafür nicht.
- */
+/** Kommentarverwaltung, Diskussions-Einstellungen und Dashboard-Widget ausblenden. */
 function elfzwo_remove_comments_admin_menu() {
 	remove_menu_page( 'edit-comments.php' );
+	remove_submenu_page( 'options-general.php', 'options-discussion.php' );
+	remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
 }
 add_action( 'admin_menu', 'elfzwo_remove_comments_admin_menu', 999 );
 
@@ -134,7 +173,7 @@ add_action( 'admin_bar_menu', 'elfzwo_remove_comments_admin_bar', 999 );
  */
 function elfzwo_redirect_away_from_comments_screen() {
 	global $pagenow;
-	if ( 'edit-comments.php' === $pagenow ) {
+	if ( in_array( $pagenow, array( 'edit-comments.php', 'options-discussion.php' ), true ) ) {
 		wp_safe_redirect( admin_url() );
 		exit;
 	}

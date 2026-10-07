@@ -48,7 +48,7 @@ $kategorien = get_terms( array( 'taxonomy' => 'download_kategorie', 'hide_empty'
 							</div>
 						</div>
 						<?php if ( $url ) : ?>
-							<a href="<?php echo esc_url( $url ); ?>" download class="elfzwo-btn elfzwo-btn-secondary elfzwo-btn-sm shrink-0">
+							<a href="<?php echo esc_url( $url ); ?>" download data-download-titel="<?php echo esc_attr( get_the_title() ); ?>" data-download-kategorie="<?php echo esc_attr( $kategorie->name ); ?>" class="elfzwo-btn elfzwo-btn-secondary elfzwo-btn-sm shrink-0">
 								<?php echo elfzwo_icon( 'download', 'h-4 w-4' ); ?> Herunterladen
 							</a>
 						<?php endif; ?>

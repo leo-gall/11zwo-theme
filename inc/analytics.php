@@ -22,7 +22,7 @@ function elfzwo_enqueue_umami() {
 		return;
 	}
 	wp_enqueue_script( 'elfzwo-umami', 'https://cloud.umami.is/script.js', array(), null, array( 'in_footer' => false, 'strategy' => 'defer' ) );
-	wp_enqueue_script( 'elfzwo-umami-events', get_template_directory_uri() . '/assets/js/umami-events.js', array(), filemtime( get_template_directory() . '/assets/js/umami-events.js' ), true );
+	wp_enqueue_script( 'elfzwo-umami-events', get_template_directory_uri() . '/assets/js/umami-events.js', array(), filemtime( get_template_directory() . '/assets/js/umami-events.js' ), false );
 }
 add_action( 'wp_enqueue_scripts', 'elfzwo_enqueue_umami' );
 
@@ -38,17 +38,24 @@ function elfzwo_umami_script_attributes( $tag, $handle ) {
 }
 add_filter( 'script_loader_tag', 'elfzwo_umami_script_attributes', 10, 2 );
 
+/** Frühere Fassung des Umami-Absatzes, wird durch die aktuelle ersetzt. */
+define( 'ELFZWO_UMAMI_TEXT_ALT', 'Wir nutzen Umami Cloud (Umami Software, Inc.), um anonym zu zählen, welche Seiten wie oft aufgerufen werden. Die Verarbeitung erfolgt auf Servern in der EU. Umami setzt keine Cookies und speichert weder IP-Adressen noch sonstige personenbezogene Daten dauerhaft. Beim Laden des Skripts wird Ihre IP-Adresse technisch bedingt an den Server von Umami übertragen. Rechtsgrundlage ist unser berechtigtes Interesse an einer bedarfsgerechten Gestaltung unserer Website (Art. 6 Abs. 1 lit. f DSGVO).' );
+define( 'ELFZWO_UMAMI_TEXT', 'Wir nutzen Umami Cloud (Umami Software, Inc.), um zu zählen, welche Seiten wie oft aufgerufen, welche Einsätze und Beiträge angesehen und welche Dateien heruntergeladen werden. Die Verarbeitung erfolgt auf Servern in der EU. Umami setzt keine Cookies und speichert keine IP-Adressen dauerhaft. Beim Laden des Skripts wird Ihre IP-Adresse technisch bedingt an den Server von Umami übertragen. Wenn Sie das Mach-mit-Formular absenden, werden zusätzlich Ihr Name, Ihre E-Mail-Adresse und Ihr gewähltes Interesse an Umami übermittelt und dort gespeichert, damit wir nachvollziehen können, welche Anfragen über die Website eingehen. Rechtsgrundlage ist unser berechtigtes Interesse an einer bedarfsgerechten Gestaltung unserer Website (Art. 6 Abs. 1 lit. f DSGVO).' );
+
 /**
  * Abschnitt zu Umami für die Datenschutzerklärung. Steht vor "Weitergabe von
- * Daten an Dritte", sonst am Ende; ist Umami schon erwähnt, bleibt der Text
- * unverändert.
+ * Daten an Dritte", sonst am Ende; die frühere Fassung wird ersetzt, ein
+ * anderweitig schon vorhandener Umami-Text bleibt unverändert.
  */
 function elfzwo_datenschutz_mit_umami( $content ) {
+	if ( false !== strpos( $content, ELFZWO_UMAMI_TEXT_ALT ) ) {
+		return str_replace( ELFZWO_UMAMI_TEXT_ALT, ELFZWO_UMAMI_TEXT, $content );
+	}
 	if ( false !== stripos( $content, 'umami' ) ) {
 		return $content;
 	}
 	$abschnitt = "<h3>Webanalyse mit Umami</h3>\n"
-		. "<p>Wir nutzen Umami Cloud (Umami Software, Inc.), um anonym zu zählen, welche Seiten wie oft aufgerufen werden. Die Verarbeitung erfolgt auf Servern in der EU. Umami setzt keine Cookies und speichert weder IP-Adressen noch sonstige personenbezogene Daten dauerhaft. Beim Laden des Skripts wird Ihre IP-Adresse technisch bedingt an den Server von Umami übertragen. Rechtsgrundlage ist unser berechtigtes Interesse an einer bedarfsgerechten Gestaltung unserer Website (Art. 6 Abs. 1 lit. f DSGVO).</p>\n\n";
+		. "<p>" . ELFZWO_UMAMI_TEXT . "</p>\n\n";
 	if ( has_blocks( $content ) ) {
 		$abschnitt = "<!-- wp:heading {\"level\":3} -->\n<h3 class=\"wp-block-heading\">Webanalyse mit Umami</h3>\n<!-- /wp:heading -->\n\n"
 			. "<!-- wp:paragraph -->\n" . substr( $abschnitt, strpos( $abschnitt, '<p>' ), -2 ) . "\n<!-- /wp:paragraph -->\n\n";
@@ -60,10 +67,10 @@ function elfzwo_datenschutz_mit_umami( $content ) {
 }
 
 function elfzwo_datenschutz_umami_ergaenzen() {
-	if ( get_option( 'elfzwo_datenschutz_umami' ) ) {
+	if ( 2 <= (int) get_option( 'elfzwo_datenschutz_umami' ) ) {
 		return;
 	}
-	update_option( 'elfzwo_datenschutz_umami', 1 );
+	update_option( 'elfzwo_datenschutz_umami', 2 );
 	$page = get_post( (int) get_option( 'wp_page_for_privacy_policy' ) );
 	foreach ( array( 'datenschutzerklaerung', 'datenschutzerklarung', 'datenschutz' ) as $slug ) {
 		if ( $page && 'publish' === $page->post_status ) {

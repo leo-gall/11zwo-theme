@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 $interests       = $attributes['interests'] ?? array();
 $title           = $attributes['title'] ?? '';
-$title_hand      = $attributes['titleHand'] ?? '';
+$text            = $attributes['text'] ?? '';
 $datenschutz_url = get_privacy_policy_url() ?: home_url( '/datenschutzerklaerung/' );
 $post_id         = get_the_ID();
 // Vorauswahl per Link, z. B. /?interesse=verein#mitmachen — passt auf das erste Interesse, dessen Name das Stichwort enthält.
@@ -28,7 +28,7 @@ $feld   = 'elfzwo-feld mt-2';
 	<div class="grid items-center gap-10 lg:grid-cols-[2fr_3fr] lg:gap-16">
 		<div>
 			<h2 class="font-display text-3xl font-black text-white md:text-5xl"><?php echo esc_html( $title ); ?></h2>
-			<p class="mt-4 max-w-md text-lg text-white/90"><?php echo esc_html( trim( $title_hand . ' Hinterlass uns deine Kontaktdaten, wir melden uns bei dir.' ) ); ?></p>
+			<p class="mt-4 max-w-md text-lg text-white/90"><?php echo esc_html( $text ); ?></p>
 		</div>
 		<div id="formular" class="scroll-mt-28">
 			<?php if ( 'success' === $status ) : ?>

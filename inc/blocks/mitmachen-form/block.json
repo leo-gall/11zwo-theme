@@ -11,50 +11,18 @@
 			"type": "string",
 			"default": "Mach mit."
 		},
-		"titleHand": {
+		"text": {
 			"type": "string",
-			"default": "Ohne Vorerfahrung!"
+			"default": "Ohne Vorerfahrung! Hinterlass uns deine Kontaktdaten, wir melden uns bei dir."
 		},
 		"interests": {
 			"type": "array",
 			"default": [
-				{
-					"label": "Aktive Feuerwehr",
-					"gruppe": "aktive"
-				},
-				{
-					"label": "Jugendfeuerwehr",
-					"gruppe": "jugend"
-				},
-				{
-					"label": "Fördermitglied",
-					"gruppe": "verein"
-				},
-				{
-					"label": "Erstmal nur schnuppern",
-					"gruppe": "aktive"
-				}
+				{ "label": "Aktive Feuerwehr", "empfaenger": "" },
+				{ "label": "Jugendfeuerwehr", "empfaenger": "" },
+				{ "label": "Fördermitglied", "empfaenger": "" },
+				{ "label": "Erstmal nur schnuppern", "empfaenger": "" }
 			]
-		},
-		"mail": {
-			"type": "object",
-			"default": {
-				"aktive": {
-					"empfaenger": "",
-					"betreff": "",
-					"text": ""
-				},
-				"jugend": {
-					"empfaenger": "",
-					"betreff": "",
-					"text": ""
-				},
-				"verein": {
-					"empfaenger": "",
-					"betreff": "",
-					"text": ""
-				}
-			}
 		}
 	},
 	"supports": {
