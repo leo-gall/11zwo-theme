@@ -18,10 +18,10 @@
 		"interests": {
 			"type": "array",
 			"default": [
-				{ "label": "Aktive Feuerwehr", "empfaenger": "" },
-				{ "label": "Jugendfeuerwehr", "empfaenger": "" },
-				{ "label": "Fördermitglied", "empfaenger": "" },
-				{ "label": "Erstmal nur schnuppern", "empfaenger": "" }
+				{ "label": "Aktive Feuerwehr" },
+				{ "label": "Jugendfeuerwehr" },
+				{ "label": "Fördermitglied" },
+				{ "label": "Erstmal nur schnuppern" }
 			]
 		}
 	},

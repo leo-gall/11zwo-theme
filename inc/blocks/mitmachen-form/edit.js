@@ -37,18 +37,17 @@
 					),
 					el(
 						PanelBody,
-						{ title: 'Auswahl und Empfänger' },
-						el('p', { style: { color: '#757575' } }, 'Jede Auswahl geht per E-Mail an die angegebenen Adressen (mehrere mit Komma trennen). Leer = Admin-E-Mail der Website.'),
+						{ title: 'Auswahlmöglichkeiten' },
+						el('p', { style: { color: '#757575' } }, 'Anfragen landen im Backend unter „Anfragen“.'),
 						interests.map(function (item, idx) {
 							return el(
 								'div',
 								{ key: idx, style: { marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #ddd' } },
 								el(TextControl, { label: 'Auswahl ' + (idx + 1), value: item.label || '', onChange: function (v) { updateItem(idx, 'label', v); } }),
-								el(TextControl, { label: 'Geht an', type: 'text', placeholder: 'name@beispiel.de', value: item.empfaenger || '', onChange: function (v) { updateItem(idx, 'empfaenger', v); } }),
 								el(Button, { variant: 'link', isDestructive: true, onClick: function () { removeItem(idx); } }, 'Entfernen')
 							);
 						}),
-						el(Button, { variant: 'secondary', onClick: function () { props.setAttributes({ interests: interests.concat([{ label: '', empfaenger: '' }]) }); } }, 'Auswahl hinzufügen')
+						el(Button, { variant: 'secondary', onClick: function () { props.setAttributes({ interests: interests.concat([{ label: '' }]) }); } }, 'Auswahl hinzufügen')
 					)
 				),
 				el(ServerSideRender, { block: 'elfzwo/mitmachen-form', attributes: a })
