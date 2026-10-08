@@ -191,21 +191,6 @@ add_action( 'admin_post_elfzwo_mail_protokoll', 'elfzwo_mail_protokoll_download'
 
 /* ------------------------------------------------------------- Versand */
 
-/**
- * Mails des Formulars gehen mit Absender der eigenen Domain und passendem
- * Envelope-Sender (Return-Path) raus; ohne den lehnen viele Postfächer Mails
- * über PHP mail() ab oder sortieren sie als Spam aus.
- */
-function elfzwo_mitmachen_absender( $phpmailer ) {
-	if ( empty( $GLOBALS['elfzwo_mitmachen_versand'] ) ) {
-		return;
-	}
-	$host = wp_parse_url( home_url(), PHP_URL_HOST );
-	$von  = 'wordpress@' . preg_replace( '/^www\./', '', (string) $host );
-	$phpmailer->setFrom( $von, 'Website Feuerwehr Greifenberg', true );
-}
-add_action( 'phpmailer_init', 'elfzwo_mitmachen_absender' );
-
 function elfzwo_mitmachen_mail_fehler( $fehler ) {
 	if ( ! empty( $GLOBALS['elfzwo_mitmachen_versand'] ) ) {
 		$GLOBALS['elfzwo_mitmachen_fehler'] = $fehler->get_error_message();
