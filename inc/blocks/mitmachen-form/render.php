@@ -60,12 +60,9 @@ $feld   = 'elfzwo-feld mt-2';
 							<input required type="email" name="kontakt" autocomplete="email" placeholder="name@beispiel.de" class="<?php echo esc_attr( $feld ); ?>">
 						</label>
 					</div>
-					<div class="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2">
-						<button type="submit" class="elfzwo-btn elfzwo-btn-light disabled:opacity-80">
-							<span class="elfzwo-submit-idle">Absenden</span>
-							<span class="elfzwo-submit-busy hidden">Wird gesendet …</span>
-						</button>
-						<p class="text-sm text-white/80">Mit dem Absenden dieses Formulars wird unsere <a href="<?php echo esc_url( $datenschutz_url ); ?>" class="underline underline-offset-2 hover:text-white">Datenschutzerklärung</a> akzeptiert.</p>
+					<div class="flex flex-col items-start gap-3 pt-2">
+						<button type="submit" class="elfzwo-btn elfzwo-btn-light disabled:cursor-wait disabled:opacity-70">Absenden</button>
+						<p class="elfzwo-mitmachen-hinweis text-sm text-white/80">Mit dem Absenden dieses Formulars wird unsere <a href="<?php echo esc_url( $datenschutz_url ); ?>" class="underline underline-offset-2 hover:text-white">Datenschutzerklärung</a> akzeptiert.</p>
 					</div>
 				</form>
 			<?php endif; ?>

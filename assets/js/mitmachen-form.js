@@ -1,39 +1,22 @@
 /**
  * Mach-mit-Formular: schickt im Hintergrund ab, ohne die Seite neu zu laden.
- * Während des Sendens ist der Button gesperrt (kein doppeltes Absenden),
- * danach ersetzt die Bestätigung den Button (ohne Button lässt sich das
- * Formular auch per Enter nicht erneut abschicken). Ohne JavaScript oder bei einem
+ * Bewusst ohne Bewegung: Während des Sendens wird der Button nur blasser,
+ * danach steht an seiner Stelle der Dank in derselben Höhe; ein Fehler
+ * ersetzt den Hinweistext daneben. Ohne JavaScript oder bei einem
  * Netzwerkfehler läuft das normale Absenden mit Weiterleitung.
  */
 ( function () {
-	var FEHLER = 'Das hat nicht geklappt. Bitte versuche es noch einmal.';
-
-	function setzeBusy( button, busy ) {
-		button.disabled = busy;
-		button.toggleAttribute( 'aria-busy', busy );
-		button.querySelector( '.elfzwo-submit-idle' ).classList.toggle( 'hidden', busy );
-		button.querySelector( '.elfzwo-submit-busy' ).classList.toggle( 'hidden', ! busy );
-	}
-
-	function zeigeFehler( form ) {
-		var hinweis = form.querySelector( '.elfzwo-mitmachen-fehler' );
-		if ( ! hinweis ) {
-			hinweis = document.createElement( 'p' );
-			hinweis.className = 'elfzwo-mitmachen-fehler bg-white px-3 py-2 font-semibold text-signal';
-			hinweis.setAttribute( 'role', 'alert' );
-			hinweis.textContent = FEHLER;
-			form.insertBefore( hinweis, form.querySelector( '.grid' ) );
-		}
-	}
-
 	document.querySelectorAll( '.elfzwo-mitmachen-form' ).forEach( function ( form ) {
+		var hinweis = form.querySelector( '.elfzwo-mitmachen-hinweis' );
+		var hinweisHtml = hinweis ? hinweis.innerHTML : '';
+
 		form.addEventListener( 'submit', function ( e ) {
 			var button = form.querySelector( 'button[type="submit"]' );
 			if ( ! button || button.disabled || ! window.fetch ) {
 				return;
 			}
 			e.preventDefault();
-			setzeBusy( button, true );
+			button.disabled = true;
 
 			var daten = new FormData( form );
 			daten.append( 'ajax', '1' );
@@ -42,24 +25,25 @@
 				.then( function ( r ) { return r.json(); } )
 				.then( function ( antwort ) {
 					if ( 'success' !== antwort.status ) {
-						setzeBusy( button, false );
-						zeigeFehler( form );
+						button.disabled = false;
+						if ( hinweis ) {
+							hinweis.textContent = 'Das hat nicht geklappt. Bitte versuche es noch einmal.';
+							hinweis.classList.add( 'font-semibold', 'text-white' );
+						}
 						return;
 					}
-					var alt = form.querySelector( '.elfzwo-mitmachen-fehler' );
-					if ( alt ) {
-						alt.remove();
-					}
 					var danke = document.createElement( 'p' );
-					danke.className = 'border-l-4 border-white pl-4 text-lg font-semibold outline-none';
+					danke.className = 'flex items-center font-semibold';
+					danke.style.minHeight = button.offsetHeight + 'px';
 					danke.setAttribute( 'role', 'status' );
-					danke.tabIndex = -1;
-					danke.textContent = 'Danke! Wir melden uns in den nächsten Tagen bei dir.';
+					danke.textContent = 'Danke! Wir melden uns bei dir.';
 					button.replaceWith( danke );
-					danke.focus( { preventScroll: true } );
+					if ( hinweis ) {
+						hinweis.innerHTML = hinweisHtml;
+						hinweis.classList.remove( 'font-semibold', 'text-white' );
+					}
 				} )
 				.catch( function () {
-					// Im Zweifel klassisch absenden, damit keine Anfrage verloren geht.
 					form.submit();
 				} );
 		} );
