@@ -6,7 +6,7 @@
  * Netzwerkfehler läuft das normale Absenden mit Weiterleitung.
  */
 ( function () {
-	var FEHLER = 'Das hat nicht geklappt. Bitte prüfe deinen Namen und deine E-Mail-Adresse und versuche es noch einmal.';
+	var FEHLER = 'Das hat nicht geklappt. Bitte versuche es noch einmal.';
 
 	function setzeBusy( button, busy ) {
 		button.disabled = busy;

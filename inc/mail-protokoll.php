@@ -4,7 +4,7 @@
  * oder fehlgeschlagen) und jede Einsendung des Mach-mit-Formulars, eine Datei
  * pro Monat unter wp-content/uploads/mail-protokoll-…/. Der Ordner ist per
  * .htaccess gesperrt und hat einen nicht erratbaren Namen, weil die Dateien
- * Namen und E-Mail-Adressen enthalten. Pfad siehe Werkzeuge → Mach-mit-Anfragen.
+ * Namen und E-Mail-Adressen enthalten.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

@@ -37,11 +37,9 @@ $feld   = 'elfzwo-feld mt-2';
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="elfzwo-mitmachen-form space-y-4">
 					<input type="hidden" name="action" value="elfzwo_mitmachen">
 					<input type="hidden" name="redirect_id" value="<?php echo esc_attr( $post_id ); ?>">
-					<?php wp_nonce_field( 'elfzwo_mitmachen', 'elfzwo_mitmachen_nonce' ); ?>
-					<?php elfzwo_mitmachen_spamschutz_felder(); ?>
 
 					<?php if ( 'error' === $status ) : ?>
-						<p class="elfzwo-mitmachen-fehler bg-white px-3 py-2 font-semibold text-signal">Das hat nicht geklappt. Bitte prüfe deinen Namen und deine E-Mail-Adresse und versuche es noch einmal.</p>
+						<p class="elfzwo-mitmachen-fehler bg-white px-3 py-2 font-semibold text-signal">Das hat nicht geklappt. Bitte versuche es noch einmal.</p>
 					<?php endif; ?>
 
 					<div class="grid gap-4 sm:grid-cols-2">
