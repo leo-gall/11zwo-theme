@@ -137,3 +137,41 @@ function elfzwo_anfragen_widget_inhalt() {
 	echo '</tbody></table>';
 	printf( '<p><a href="%s">Alle Anfragen ansehen</a></p>', esc_url( admin_url( 'edit.php?post_type=anfrage' ) ) );
 }
+
+/**
+ * Einmalig: die Datenschutzerklärung beschreibt statt des früheren
+ * Kontaktformulars das Mach-mit-Formular (Name, E-Mail, Interesse, gespeichert
+ * im Backend der Website).
+ */
+function elfzwo_migrate_datenschutz_mitmachen() {
+	if ( get_option( 'elfzwo_datenschutz_mitmachen' ) ) {
+		return;
+	}
+	update_option( 'elfzwo_datenschutz_mitmachen', 1 );
+	$seite = get_post( (int) get_option( 'wp_page_for_privacy_policy' ) );
+	foreach ( array( 'datenschutzerklaerung', 'datenschutzerklarung', 'datenschutz' ) as $slug ) {
+		if ( $seite && 'publish' === $seite->post_status ) {
+			break;
+		}
+		$seite = get_page_by_path( $slug );
+	}
+	if ( ! $seite || 'publish' !== $seite->post_status ) {
+		return;
+	}
+	$neu = str_replace(
+		array(
+			"<strong>Kontaktdaten (Kontaktformular):</strong><br>\nWenn Sie unser Kontaktformular nutzen, verarbeiten und speichern wir Ihren Namen, Ihre E-Mail-Adresse und/oder Telefonnummer sowie Ihre Nachricht, um Ihre Anfrage zu beantworten.",
+			'sowie ein verschlüsseltes Kontaktformular.',
+		),
+		array(
+			"<strong>Kontaktdaten (Mach-mit-Formular):</strong><br>\nWenn Sie unser Mach-mit-Formular nutzen, speichern wir Ihren Namen, Ihre E-Mail-Adresse und Ihr gewähltes Interesse in der Verwaltung unserer Website, um uns bei Ihnen zu melden. Weitere Daten werden nicht abgefragt. Die Angaben werden verschlüsselt übertragen und sind nur für die zuständigen Mitglieder des Vereins einsehbar.",
+			'sowie ein Mach-mit-Formular, über das Sie uns Ihren Namen, Ihre E-Mail-Adresse und Ihr Interesse an einer Mitgliedschaft mitteilen können.',
+		),
+		$seite->post_content
+	);
+	if ( $neu !== $seite->post_content ) {
+		_wp_put_post_revision( $seite );
+		wp_update_post( array( 'ID' => $seite->ID, 'post_content' => wp_slash( $neu ) ) );
+	}
+}
+add_action( 'init', 'elfzwo_migrate_datenschutz_mitmachen', 30 );

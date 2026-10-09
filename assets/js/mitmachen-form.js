@@ -1,14 +1,13 @@
 /**
  * Mach-mit-Formular: schickt im Hintergrund ab, ohne die Seite neu zu laden.
  * Bewusst ohne Bewegung: Während des Sendens wird der Button nur blasser,
- * danach steht an seiner Stelle der Dank in derselben Höhe; ein Fehler
- * ersetzt den Hinweistext daneben. Ohne JavaScript oder bei einem
+ * danach ersetzt der Dank das ganze Formular in derselben Höhe; ein Fehler
+ * ersetzt den Hinweistext unter dem Button. Ohne JavaScript oder bei einem
  * Netzwerkfehler läuft das normale Absenden mit Weiterleitung.
  */
 ( function () {
 	document.querySelectorAll( '.elfzwo-mitmachen-form' ).forEach( function ( form ) {
 		var hinweis = form.querySelector( '.elfzwo-mitmachen-hinweis' );
-		var hinweisHtml = hinweis ? hinweis.innerHTML : '';
 
 		form.addEventListener( 'submit', function ( e ) {
 			var button = form.querySelector( 'button[type="submit"]' );
@@ -32,16 +31,15 @@
 						}
 						return;
 					}
-					var danke = document.createElement( 'p' );
-					danke.className = 'flex items-center font-semibold';
-					danke.style.minHeight = button.offsetHeight + 'px';
+					// Der Dank ersetzt das ganze Formular in genau dessen Höhe, damit darunter nichts springt.
+					var danke = document.createElement( 'div' );
+					danke.className = 'flex flex-col justify-center';
 					danke.setAttribute( 'role', 'status' );
-					danke.textContent = 'Danke! Wir melden uns bei dir.';
-					button.replaceWith( danke );
-					if ( hinweis ) {
-						hinweis.innerHTML = hinweisHtml;
-						hinweis.classList.remove( 'font-semibold', 'text-white' );
-					}
+					danke.innerHTML = '<p class="font-display text-3xl font-black md:text-4xl">Danke!</p><p class="mt-2 text-lg text-white/90">Wir melden uns in den nächsten Tagen bei dir.</p>';
+					var bereich = form.parentNode;
+					bereich.style.height = bereich.getBoundingClientRect().height + 'px';
+					bereich.style.display = 'flex';
+					form.replaceWith( danke );
 				} )
 				.catch( function () {
 					form.submit();
