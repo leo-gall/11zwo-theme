@@ -32,10 +32,9 @@
 						return;
 					}
 					// Der Dank ersetzt das ganze Formular in genau dessen Höhe, damit darunter nichts springt.
-					var danke = document.createElement( 'div' );
-					danke.className = 'flex flex-col justify-center';
-					danke.setAttribute( 'role', 'status' );
-					danke.innerHTML = '<p class="font-display text-3xl font-black md:text-4xl">Danke!</p><p class="mt-2 text-lg text-white/90">Wir melden uns in den nächsten Tagen bei dir.</p>';
+					var vorlage = form.parentNode.querySelector( '.elfzwo-mitmachen-danke' );
+					var danke = vorlage.content.firstElementChild.cloneNode( true );
+					danke.classList.remove( 'min-h-[19rem]' );
 					var bereich = form.parentNode;
 					bereich.style.height = bereich.getBoundingClientRect().height + 'px';
 					bereich.style.display = 'flex';

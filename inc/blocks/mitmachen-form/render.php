@@ -22,6 +22,12 @@ if ( $wunsch ) {
 }
 $status = isset( $_GET['mitmachen'] ) ? sanitize_text_field( wp_unslash( $_GET['mitmachen'] ) ) : '';
 $feld   = 'elfzwo-feld mt-2';
+// Dank nach dem Absenden: ohne JavaScript direkt, mit JavaScript per <template> an Stelle des Formulars.
+$danke = '<div class="flex min-h-[19rem] w-full flex-col items-center justify-center bg-white px-8 py-12 text-center text-foreground" role="status">'
+	. '<span class="grid h-14 w-14 place-items-center bg-signal text-white"><svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>'
+	. '<p class="mt-5 font-display text-2xl font-black text-signal md:text-3xl">Danke für deine Anfrage!</p>'
+	. '<p class="mt-2 max-w-sm text-smoke">Wir melden uns in den nächsten Tagen bei dir.</p>'
+	. '</div>';
 ?>
 <section id="mitmachen" class="scroll-mt-28 bg-signal text-white">
 	<div class="mx-auto max-w-7xl px-5 py-14 md:px-8 md:py-20">
@@ -32,7 +38,7 @@ $feld   = 'elfzwo-feld mt-2';
 		</div>
 		<div id="formular" class="scroll-mt-28">
 			<?php if ( 'success' === $status ) : ?>
-				<p class="border-l-4 border-white pl-4 text-lg font-semibold">Danke! Wir melden uns in den nächsten Tagen bei dir.</p>
+				<?php echo $danke; // phpcs:ignore -- statisches Markup ?>
 			<?php else : ?>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="elfzwo-mitmachen-form space-y-4">
 					<input type="hidden" name="action" value="elfzwo_mitmachen">
@@ -65,6 +71,7 @@ $feld   = 'elfzwo-feld mt-2';
 						<p class="elfzwo-mitmachen-hinweis text-sm text-white/80">Mit dem Absenden dieses Formulars wird unsere <a href="<?php echo esc_url( $datenschutz_url ); ?>" class="underline underline-offset-2 hover:text-white">Datenschutzerklärung</a> akzeptiert.</p>
 					</div>
 				</form>
+				<template class="elfzwo-mitmachen-danke"><?php echo $danke; // phpcs:ignore -- statisches Markup ?></template>
 			<?php endif; ?>
 		</div>
 	</div>
